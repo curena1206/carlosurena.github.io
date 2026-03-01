@@ -112,14 +112,14 @@
             const inputId = `${q.id}_${i}`;
             const checked = state.answers[q.id] === opt.score ? "checked" : "";
             return `
-            <label class="option" for="${inputId}">
-              <input type="radio" name="${q.id}" id="${inputId}" value="${opt.score}" ${checked} />
-              <div>
-                <div class="option-label">${opt.label}</div>
-                <div class="option-sub">${opt.sub}</div>
-              </div>
-            </label>
-          `;
+              <label class="option" for="${inputId}">
+                <input type="radio" name="${q.id}" id="${inputId}" value="${opt.score}" ${checked} />
+                <div>
+                  <div class="option-label">${opt.label}</div>
+                  <div class="option-sub">${opt.sub}</div>
+                </div>
+              </label>
+            `;
           })
           .join("");
 
@@ -146,7 +146,6 @@
       wrap.appendChild(body);
 
       if (idx === 0) wrap.classList.add("open");
-
       els.pillarsContainer.appendChild(wrap);
     });
 
@@ -201,7 +200,7 @@
     return a;
   }
 
-  // ✅ Tiered rules: highest priority first
+  // ✅ Tiered + balanced rules output
   function runRules(a) {
     const triggered = [];
 
@@ -213,6 +212,7 @@
 
     if (triggered.length === 0) {
       triggered.push({
+        id: "baseline_mixed",
         tier: 2,
         diagnosis:
           "Baseline portfolio profile is mixed; focus on the lowest-scoring pillar and establish KPI cadence.",
@@ -220,18 +220,49 @@
       });
     }
 
-triggered.sort((x, y) => {
-  // Primary: tier ordering
-  if ((x.tier || 99) !== (y.tier || 99)) {
-    return (x.tier || 99) - (y.tier || 99);
+    // Tier first. Within Tier 2, elevate monetization gap.
+    triggered.sort((x, y) => {
+      const tx = x.tier || 99;
+      const ty = y.tier || 99;
+      if (tx !== ty) return tx - ty;
+
+      if (x.id === "monetization_capture_gap") return -1;
+      if (y.id === "monetization_capture_gap") return 1;
+
+      return 0;
+    });
+
+    // Diagnoses: top 3 unique
+    const diag = [];
+    for (const r of triggered) {
+      if (diag.length >= 3) break;
+      if (r.diagnosis && !diag.includes(r.diagnosis)) diag.push(r.diagnosis);
+    }
+
+    // Recommendations: balanced round-robin across triggered rules (max 5 unique)
+    const recIds = [];
+    let round = 0;
+
+    while (recIds.length < 5) {
+      let addedInRound = false;
+
+      for (const r of triggered) {
+        if (!r.recs || round >= r.recs.length) continue;
+
+        const rec = r.recs[round];
+        if (rec && !recIds.includes(rec)) {
+          recIds.push(rec);
+          addedInRound = true;
+          if (recIds.length >= 5) break;
+        }
+      }
+
+      if (!addedInRound) break;
+      round++;
+    }
+
+    return { diag, recIds };
   }
-
-  // Secondary: if monetization gap rule, elevate it within Tier 2
-  if (x.id === "monetization_capture_gap") return -1;
-  if (y.id === "monetization_capture_gap") return 1;
-
-  return 0;
-});
 
   function renderHeatmap(pillarScores) {
     els.heatmap.innerHTML = "";
