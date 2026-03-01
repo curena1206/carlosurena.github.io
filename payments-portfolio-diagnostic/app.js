@@ -220,25 +220,18 @@
       });
     }
 
-    triggered.sort((x, y) => (x.tier || 99) - (y.tier || 99));
-
-    const diag = [];
-    const recIds = [];
-
-    for (const r of triggered) {
-      if (diag.length < 3 && r.diagnosis && !diag.includes(r.diagnosis)) {
-        diag.push(r.diagnosis);
-      }
-
-      for (const rec of r.recs || []) {
-        if (recIds.length < 5 && !recIds.includes(rec)) {
-          recIds.push(rec);
-        }
-      }
-    }
-
-    return { diag, recIds };
+triggered.sort((x, y) => {
+  // Primary: tier ordering
+  if ((x.tier || 99) !== (y.tier || 99)) {
+    return (x.tier || 99) - (y.tier || 99);
   }
+
+  // Secondary: if monetization gap rule, elevate it within Tier 2
+  if (x.id === "monetization_capture_gap") return -1;
+  if (y.id === "monetization_capture_gap") return 1;
+
+  return 0;
+});
 
   function renderHeatmap(pillarScores) {
     els.heatmap.innerHTML = "";
