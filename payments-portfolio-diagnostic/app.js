@@ -205,30 +205,42 @@
   }
 
   function runRules(a) {
-    const triggered = [];
-    rules.forEach((r) => {
-      try {
-        if (r.when(a)) triggered.push(r);
-      } catch (_) {
-        // ignore rule errors to keep UX stable
-      }
+  const triggered = [];
+
+  rules.forEach((r) => {
+    try {
+      if (r.when(a)) triggered.push(r);
+    } catch (_) {}
+  });
+
+  if (triggered.length === 0) {
+    triggered.push({
+      tier: 2,
+      diagnosis: "Baseline portfolio profile is mixed; focus on the lowest-scoring pillar and establish KPI cadence.",
+      recs: ["R19","R20","R8"]
     });
+  }
 
-    // If nothing triggers, provide default diagnosis
-    if (triggered.length === 0) {
-      triggered.push({
-        id: "default",
-        diagnosis: "Baseline portfolio profile is mixed; focus on the lowest-scoring pillar and establish a KPI cadence to drive execution.",
-        recs: ["R19","R20","R8"]
-      });
+  // 🔥 Sort by tier (1 = highest priority)
+  triggered.sort((a,b) => a.tier - b.tier);
+
+  const diag = [];
+  const recIds = [];
+
+  for (const r of triggered) {
+    if (diag.length < 3 && !diag.includes(r.diagnosis)) {
+      diag.push(r.diagnosis);
     }
 
-    // Diagnosis: top 3 unique bullets
-    const diag = [];
-    for (const r of triggered) {
-      if (diag.length >= 3) break;
-      if (!diag.includes(r.diagnosis)) diag.push(r.diagnosis);
+    for (const rec of r.recs || []) {
+      if (recIds.length < 5 && !recIds.includes(rec)) {
+        recIds.push(rec);
+      }
     }
+  }
+
+  return { diag, recIds };
+}
 
     // Recommendations: pick top 5 unique
     const recIds = [];
