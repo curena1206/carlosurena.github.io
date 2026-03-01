@@ -484,19 +484,15 @@ const rules = [
   {
   id: "exception_margin_crisis",
   tier: 1,
-  // Only catastrophic exception profile
   when: (a) => (a.MC2 <= 1 && a.MC3 <= 1),
   diagnosis: "Exception/repair costs are critically compressing margin and threatening franchise economics.",
-  recs: ["R6", "R7", "R10", "R16"]
+  recs: [
+    "R6",   // Stand up Exception Reduction Program
+    "R10",  // STP scorecard by rail/segment
+    "R19",  // Monthly Portfolio Performance Review
+    "R8"    // Unit cost model
+  ]
 },
-  {
-    id: "unit_econ_blind_spot",
-    tier: 1,
-    // True blind spot (not just immature)
-    when: (a) => (a.RA3 <= 1 || a.MC4 <= 1),
-    diagnosis: "The portfolio lacks a usable unit economics model, limiting pricing discipline and strategic tradeoffs.",
-    recs: ["R8", "R19", "R20"]
-  },
   {
     id: "operating_system_absent",
     tier: 1,
