@@ -482,13 +482,13 @@ const rules = [
   // 🔴 Tier 1 — Structural Failure (rare / severe only)
 
   {
-    id: "exception_margin_leak",
-    tier: 1,
-    // Severe repair rate AND weak cost visibility = true structural bleed
-    when: (a) => (a.MC2 <= 1 && a.MC3 <= 2),
-    diagnosis: "Exception/repair costs are materially compressing margin and degrading client experience.",
-    recs: ["R6", "R7", "R10", "R16"]
-  },
+  id: "exception_margin_crisis",
+  tier: 1,
+  // Only catastrophic exception profile
+  when: (a) => (a.MC2 <= 1 && a.MC3 <= 1),
+  diagnosis: "Exception/repair costs are critically compressing margin and threatening franchise economics.",
+  recs: ["R6", "R7", "R10", "R16"]
+},
   {
     id: "unit_econ_blind_spot",
     tier: 1,
