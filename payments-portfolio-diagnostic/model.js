@@ -477,79 +477,82 @@ window.PPD_MODEL = (() => {
 
   // Light-B: rules engine that produces diagnosis bullets + recommended actions
   const rules = [
-    {
-      id: "monetization_capture_gap",
-      when: (a) => (a.RA5 <= 2 && a.GE5 >= 3),
-      diagnosis: "Growth is present, but monetization capture is lagging; pricing and packaging are the constraint.",
-      recs: ["R1","R3","R2"]
-    },
-    {
-      id: "concentration_risk",
-      when: (a) => (a.RA4 <= 2),
-      diagnosis: "Revenue concentration elevates earnings volatility; diversify revenue sources or strengthen defensible pricing.",
-      recs: ["R11","R1","R18"]
-    },
-    {
-      id: "exception_margin_leak",
-      when: (a) => (a.MC2 <= 1 || (a.MC2 <= 3 && a.MC3 <= 2)),
-      diagnosis: "Exception/repair costs are likely a primary hidden margin driver (and a CX drag).",
-      recs: ["R6","R7","R10","R16"]
-    },
-    {
-      id: "weak_unit_economics",
-      when: (a) => (a.RA3 <= 2 || a.MC4 <= 2),
-      diagnosis: "Limited unit economics visibility makes pricing discipline and roadmap tradeoffs difficult.",
-      recs: ["R8","R19","R20"]
-    },
-    {
-      id: "pricing_leakage_governance",
-      when: (a) => (a.MC6 <= 2 && a.GO2 <= 2),
-      diagnosis: "Discounting/overrides are likely eroding margin; governance is the lever.",
-      recs: ["R18","R2","R13"]
-    },
-    {
-      id: "rtp_readiness_gap",
-      when: (a) => (a.MR1 <= 2 && a.GE3 >= 3),
-      diagnosis: "Workflow embedding exists, but limited real-time send capability constrains use-case expansion.",
-      recs: ["R15","R17","R11"]
-    },
-    {
-      id: "data_iso_constraint",
-      when: (a) => (a.MR2 <= 2 && a.MC2 <= 3),
-      diagnosis: "Structured data maturity is likely contributing to STP drag and repair volume.",
-      recs: ["R16","R7","R10"]
-    },
-    {
-      id: "fx_without_corridor",
-      when: (a) => (a.MR4 <= 2 && a.RA6 >= 3),
-      diagnosis: "FX-enabled flows exist, but corridor playbooks and pricing discipline likely leave revenue on the table.",
-      recs: ["R5","R1","R19"]
-    },
-    {
-      id: "float_dependency_risk",
-      when: (a) => (a.RA1 <= 2 && a.BL5 <= 2),
-      diagnosis: "Revenue architecture appears rate-cycle sensitive; diversify fee/FX levers and clarify rate exposure.",
-      recs: ["R3","R4","R19"]
-    },
-    {
-      id: "balances_not_monetized",
-      when: (a) => (a.BL1 <= 2 && a.BL4 <= 2),
-      diagnosis: "Balance contribution is likely under-monetized or missing in pricing decisions.",
-      recs: ["R4","R11","R13"]
-    },
-    {
-      id: "operating_system_gap",
-      when: (a) => (a.GO4 <= 2 || a.GO3 <= 2),
-      diagnosis: "Execution risk: without a strong KPI cadence and decision forum, even good strategy will stall.",
-      recs: ["R19","R20","R18"]
-    },
-    {
-      id: "roadmap_not_econ_anchored",
-      when: (a) => (a.GO6 <= 2 && a.RA3 <= 3),
-      diagnosis: "Roadmap decisions appear decoupled from economics; anchor delivery to business KPIs.",
-      recs: ["R20","R8","R19"]
-    }
-  ];
+  // 🔴 Tier 1 — Structural Failure
+  {
+    id: "exception_margin_leak",
+    tier: 1,
+    when: (a) => (a.MC2 <= 1 || (a.MC2 <= 3 && a.MC3 <= 2)),
+    diagnosis: "Exception/repair costs are materially compressing margin and degrading client experience.",
+    recs: ["R6","R7","R10","R16"]
+  },
+  {
+    id: "weak_unit_economics",
+    tier: 1,
+    when: (a) => (a.RA3 <= 2 || a.MC4 <= 2),
+    diagnosis: "The portfolio lacks unit economics visibility, limiting pricing discipline and strategic tradeoffs.",
+    recs: ["R8","R19","R20"]
+  },
+  {
+    id: "operating_system_gap",
+    tier: 1,
+    when: (a) => (a.GO4 <= 2 || a.GO3 <= 2),
+    diagnosis: "The franchise lacks an operating cadence and KPI governance structure required to execute strategy consistently.",
+    recs: ["R19","R20","R18"]
+  },
+  {
+    id: "pricing_leakage_governance",
+    tier: 1,
+    when: (a) => (a.MC6 <= 2 && a.GO2 <= 2),
+    diagnosis: "Pricing governance is weak, increasing margin leakage through uncontrolled discounting and overrides.",
+    recs: ["R18","R2","R13"]
+  },
+
+  // 🟡 Tier 2 — Monetization Design
+  {
+    id: "monetization_capture_gap",
+    tier: 2,
+    when: (a) => (a.RA5 <= 2 && a.GE5 >= 3),
+    diagnosis: "Growth is present, but monetization capture is lagging due to pricing and packaging design gaps.",
+    recs: ["R1","R3","R2"]
+  },
+  {
+    id: "fx_without_corridor",
+    tier: 2,
+    when: (a) => (a.MR4 <= 2 && a.RA6 >= 3),
+    diagnosis: "FX-enabled flows exist, but corridor strategy and pricing discipline are likely under-optimized.",
+    recs: ["R5","R1","R19"]
+  },
+  {
+    id: "rtp_readiness_gap",
+    tier: 2,
+    when: (a) => (a.MR1 <= 2 && a.GE3 >= 3),
+    diagnosis: "Workflow embedding exists, but limited real-time send capability constrains monetizable use cases.",
+    recs: ["R15","R17","R11"]
+  },
+  {
+    id: "balances_not_monetized",
+    tier: 2,
+    when: (a) => (a.BL1 <= 2 && a.BL4 <= 2),
+    diagnosis: "Balance contribution appears under-monetized or not reflected in pricing strategy.",
+    recs: ["R4","R11","R13"]
+  },
+
+  // 🔵 Tier 3 — Portfolio Risk (Elevate only if extreme)
+  {
+    id: "concentration_risk",
+    tier: 3,
+    when: (a) => (a.RA4 <= 1), // only extreme concentration
+    diagnosis: "Revenue concentration risk is elevated and may threaten earnings stability.",
+    recs: ["R11","R1","R18"]
+  },
+  {
+    id: "float_dependency_risk",
+    tier: 3,
+    when: (a) => (a.RA1 <= 1 && a.BL5 <= 2),
+    diagnosis: "Revenue mix appears rate-cycle sensitive and overly dependent on balance-driven income.",
+    recs: ["R3","R4","R19"]
+  }
+];
 
   // Sub-score mapping (directional)
   const subScoreMap = {
