@@ -26,9 +26,8 @@
   };
 
   const state = {
-    // answers keyed by question id: number score
     answers: {},
-    lastResult: null
+    lastResult: null,
   };
 
   function totalQuestions() {
@@ -72,7 +71,7 @@
 
   function avg(arr) {
     if (!arr.length) return 0;
-    return arr.reduce((a,b) => a+b, 0) / arr.length;
+    return arr.reduce((a, b) => a + b, 0) / arr.length;
   }
 
   function renderPillars() {
@@ -89,7 +88,7 @@
         <div>
           <div class="pillar-title">${pillar.name}</div>
           <div class="pillar-meta">
-            <span>${Math.round(pillar.weight*100)}% weight</span>
+            <span>${Math.round(pillar.weight * 100)}% weight</span>
             <span class="dot">•</span>
             <span>${pillar.subtitle}</span>
           </div>
@@ -108,10 +107,11 @@
         const qEl = document.createElement("div");
         qEl.className = "q";
 
-        const optionsHtml = q.options.map((opt, i) => {
-          const inputId = `${q.id}_${i}`;
-          const checked = state.answers[q.id] === opt.score ? "checked" : "";
-          return `
+        const optionsHtml = q.options
+          .map((opt, i) => {
+            const inputId = `${q.id}_${i}`;
+            const checked = state.answers[q.id] === opt.score ? "checked" : "";
+            return `
             <label class="option" for="${inputId}">
               <input type="radio" name="${q.id}" id="${inputId}" value="${opt.score}" ${checked} />
               <div>
@@ -120,7 +120,8 @@
               </div>
             </label>
           `;
-        }).join("");
+          })
+          .join("");
 
         qEl.innerHTML = `
           <div class="q-title">${q.id}. ${q.title}</div>
@@ -128,12 +129,11 @@
           <div class="q-options">${optionsHtml}</div>
         `;
 
-        // attach listeners
         qEl.querySelectorAll(`input[name="${q.id}"]`).forEach((radio) => {
           radio.addEventListener("change", (e) => {
             const val = Number(e.target.value);
             state.answers[q.id] = val;
-            state.lastResult = null; // invalidate results until recompute
+            state.lastResult = null;
             els.btnCopy.disabled = true;
             setProgress();
           });
@@ -145,7 +145,6 @@
       wrap.appendChild(header);
       wrap.appendChild(body);
 
-      // open first pillar by default
       if (idx === 0) wrap.classList.add("open");
 
       els.pillarsContainer.appendChild(wrap);
@@ -155,21 +154,19 @@
   }
 
   function computePillarScores() {
-    // returns { pillarId: {score5, score100, answered, total} }
     const out = {};
     pillars.forEach((p) => {
       const scores = [];
       p.questions.forEach((q) => {
         if (typeof state.answers[q.id] === "number") scores.push(state.answers[q.id]);
       });
+
       const score5 = avg(scores);
-      const total = p.questions.length;
-      const answered = scores.length;
       out[p.id] = {
         score5,
         score100: score5 * 20,
-        answered,
-        total
+        answered: scores.length,
+        total: p.questions.length,
       };
     });
     return out;
@@ -178,81 +175,69 @@
   function computeOverall(pillarScores) {
     let weighted = 0;
     pillars.forEach((p) => {
-      const s = pillarScores[p.id].score5; // 0–5
+      const s = pillarScores[p.id].score5;
       weighted += (s / 5) * (p.weight * 100);
     });
     return clamp(Math.round(weighted), 0, 100);
   }
 
   function computeSubScores(pillarScores) {
-    // return { monetization, margin, readiness } as 0–100
     const sub = {};
     Object.keys(subScoreMap).forEach((k) => {
       const pillarIds = subScoreMap[k];
-      const scores = pillarIds.map((pid) => pillarScores[pid].score5 / 5 * 100);
+      const scores = pillarIds.map((pid) => (pillarScores[pid].score5 / 5) * 100);
       sub[k] = Math.round(avg(scores));
     });
     return sub;
   }
 
   function answersMapForRules() {
-    // creates a map like {RA5:2, GE5:4, ...} with default 0 if missing
     const a = {};
-    pillars.forEach((p) => p.questions.forEach((q) => {
-      a[q.id] = typeof state.answers[q.id] === "number" ? state.answers[q.id] : 0;
-    }));
+    pillars.forEach((p) =>
+      p.questions.forEach((q) => {
+        a[q.id] = typeof state.answers[q.id] === "number" ? state.answers[q.id] : 0;
+      })
+    );
     return a;
   }
 
+  // ✅ Tiered rules: highest priority first
   function runRules(a) {
-  const triggered = [];
+    const triggered = [];
 
-  rules.forEach((r) => {
-    try {
-      if (r.when(a)) triggered.push(r);
-    } catch (_) {}
-  });
-
-  if (triggered.length === 0) {
-    triggered.push({
-      tier: 2,
-      diagnosis: "Baseline portfolio profile is mixed; focus on the lowest-scoring pillar and establish KPI cadence.",
-      recs: ["R19","R20","R8"]
+    rules.forEach((r) => {
+      try {
+        if (r.when(a)) triggered.push(r);
+      } catch (_) {}
     });
-  }
 
-  // 🔥 Sort by tier (1 = highest priority)
-  triggered.sort((a,b) => a.tier - b.tier);
-
-  const diag = [];
-  const recIds = [];
-
-  for (const r of triggered) {
-    if (diag.length < 3 && !diag.includes(r.diagnosis)) {
-      diag.push(r.diagnosis);
+    if (triggered.length === 0) {
+      triggered.push({
+        tier: 2,
+        diagnosis:
+          "Baseline portfolio profile is mixed; focus on the lowest-scoring pillar and establish KPI cadence.",
+        recs: ["R19", "R20", "R8"],
+      });
     }
 
-    for (const rec of r.recs || []) {
-      if (recIds.length < 5 && !recIds.includes(rec)) {
-        recIds.push(rec);
-      }
-    }
-  }
+    triggered.sort((x, y) => (x.tier || 99) - (y.tier || 99));
 
-  return { diag, recIds };
-}
-
-    // Recommendations: pick top 5 unique
+    const diag = [];
     const recIds = [];
+
     for (const r of triggered) {
-      for (const rec of r.recs || []) {
-        if (recIds.length >= 5) break;
-        if (!recIds.includes(rec)) recIds.push(rec);
+      if (diag.length < 3 && r.diagnosis && !diag.includes(r.diagnosis)) {
+        diag.push(r.diagnosis);
       }
-      if (recIds.length >= 5) break;
+
+      for (const rec of r.recs || []) {
+        if (recIds.length < 5 && !recIds.includes(rec)) {
+          recIds.push(rec);
+        }
+      }
     }
 
-    return { diag, recIds, triggeredIds: triggered.map(t => t.id) };
+    return { diag, recIds };
   }
 
   function renderHeatmap(pillarScores) {
@@ -265,7 +250,7 @@
       row.innerHTML = `
         <div class="hm-left">
           <div class="hm-title">${p.name}</div>
-          <div class="hm-sub">${Math.round(p.weight*100)}% weight</div>
+          <div class="hm-sub">${Math.round(p.weight * 100)}% weight</div>
         </div>
         <div class="hm-score">${s.toFixed(1)} / 5.0</div>
       `;
@@ -302,13 +287,14 @@
   }
 
   function render3090(recIds) {
-    // simple mapping: first 2 → 0-2 weeks, next 2 → weeks 3-6, last → weeks 7-12
-    const w0 = recIds.slice(0, 2).map(id => recommendations[id]?.title).filter(Boolean);
-    const w1 = recIds.slice(2, 4).map(id => recommendations[id]?.title).filter(Boolean);
-    const w2 = recIds.slice(4, 5).map(id => recommendations[id]?.title).filter(Boolean);
+    const w0 = recIds.slice(0, 2).map((id) => recommendations[id]?.title).filter(Boolean);
+    const w1 = recIds.slice(2, 4).map((id) => recommendations[id]?.title).filter(Boolean);
+    const w2 = recIds.slice(4, 5).map((id) => recommendations[id]?.title).filter(Boolean);
 
     function col(title, items) {
-      const ul = items.length ? `<ul>${items.map(x => `<li>${x}</li>`).join("")}</ul>` : `<div class="micro">No items selected.</div>`;
+      const ul = items.length
+        ? `<ul>${items.map((x) => `<li>${x}</li>`).join("")}</ul>`
+        : `<div class="micro">No items selected.</div>`;
       return `
         <div class="plan-col">
           <div class="plan-title">${title}</div>
@@ -378,13 +364,12 @@
     if (!state.lastResult) return "";
     const r = state.lastResult;
 
-    // Top 2 weakest pillars (by score5)
     const byWeak = pillars
-      .map(p => ({ name: p.name, score: r.pillarScores[p.id].score5 }))
-      .sort((a,b) => a.score - b.score)
+      .map((p) => ({ name: p.name, score: r.pillarScores[p.id].score5 }))
+      .sort((a, b) => a.score - b.score)
       .slice(0, 2);
 
-    const priorities = r.rules.recIds.map(id => recommendations[id]?.title).filter(Boolean);
+    const priorities = r.rules.recIds.map((id) => recommendations[id]?.title).filter(Boolean);
 
     return [
       `Payments Portfolio Diagnostic — Executive Summary`,
@@ -393,15 +378,15 @@
       `Sub-scores: Monetization ${r.sub.monetization}/100 • Margin durability ${r.sub.margin}/100 • Strategic readiness ${r.sub.readiness}/100`,
       ``,
       `Primary diagnosis:`,
-      ...r.rules.diag.map(d => `- ${d}`),
+      ...r.rules.diag.map((d) => `- ${d}`),
       ``,
       `Lowest pillars (focus areas):`,
-      ...byWeak.map(x => `- ${x.name}: ${x.score.toFixed(1)}/5.0`),
+      ...byWeak.map((x) => `- ${x.name}: ${x.score.toFixed(1)}/5.0`),
       ``,
       `Recommended 90-day priorities:`,
-      ...priorities.map(p => `- ${p}`),
+      ...priorities.map((p) => `- ${p}`),
       ``,
-      `Note: V1 is scoped to commercial banking payments (ACH, wires, RTP/FedNow, cross-border, FX-enabled flows, liquidity overlays).`
+      `Note: V1 is scoped to commercial banking payments (ACH, wires, RTP/FedNow, cross-border, FX-enabled flows, liquidity overlays).`,
     ].join("\n");
   }
 
@@ -412,7 +397,6 @@
       await navigator.clipboard.writeText(text);
       alert("Executive summary copied to clipboard.");
     } catch (e) {
-      // fallback
       const ta = document.createElement("textarea");
       ta.value = text;
       document.body.appendChild(ta);
@@ -423,7 +407,6 @@
     }
   }
 
-  // Wire up buttons
   els.btnStart.addEventListener("click", () => {
     document.getElementById("tool").scrollIntoView({ behavior: "smooth" });
   });
@@ -431,6 +414,5 @@
   els.btnCompute.addEventListener("click", computeAndShow);
   els.btnCopy.addEventListener("click", copySummary);
 
-  // init
   renderPillars();
 })();
