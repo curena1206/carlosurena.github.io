@@ -476,81 +476,123 @@ window.PPD_MODEL = (() => {
   };
 
   // Light-B: rules engine that produces diagnosis bullets + recommended actions
-  const rules = [
-  // 🔴 Tier 1 — Structural Failure
+  
+  // Light-B: rules engine that produces diagnosis bullets + recommended actions
+const rules = [
+  // 🔴 Tier 1 — Structural Failure (rare / severe only)
+
   {
     id: "exception_margin_leak",
     tier: 1,
-    when: (a) => (a.MC2 <= 1 || (a.MC2 <= 3 && a.MC3 <= 2)),
+    // Severe repair rate AND weak cost visibility = true structural bleed
+    when: (a) => (a.MC2 <= 1 && a.MC3 <= 2),
     diagnosis: "Exception/repair costs are materially compressing margin and degrading client experience.",
-    recs: ["R6","R7","R10","R16"]
+    recs: ["R6", "R7", "R10", "R16"]
   },
   {
-    id: "weak_unit_economics",
+    id: "unit_econ_blind_spot",
     tier: 1,
-    when: (a) => (a.RA3 <= 2 || a.MC4 <= 2),
-    diagnosis: "The portfolio lacks unit economics visibility, limiting pricing discipline and strategic tradeoffs.",
-    recs: ["R8","R19","R20"]
+    // True blind spot (not just immature)
+    when: (a) => (a.RA3 <= 1 || a.MC4 <= 1),
+    diagnosis: "The portfolio lacks a usable unit economics model, limiting pricing discipline and strategic tradeoffs.",
+    recs: ["R8", "R19", "R20"]
   },
   {
-    id: "operating_system_gap",
+    id: "operating_system_absent",
     tier: 1,
-    when: (a) => (a.GO4 <= 2 || a.GO3 <= 2),
-    diagnosis: "The franchise lacks an operating cadence and KPI governance structure required to execute strategy consistently.",
-    recs: ["R19","R20","R18"]
+    // Truly absent cadence/KPI system
+    when: (a) => (a.GO3 <= 1 || a.GO4 <= 1),
+    diagnosis: "The franchise lacks an operating system (KPI cadence + cross-functional execution forum) required to run the portfolio.",
+    recs: ["R19", "R20", "R18"]
   },
   {
-    id: "pricing_leakage_governance",
+    id: "pricing_governance_breakdown",
     tier: 1,
-    when: (a) => (a.MC6 <= 2 && a.GO2 <= 2),
-    diagnosis: "Pricing governance is weak, increasing margin leakage through uncontrolled discounting and overrides.",
-    recs: ["R18","R2","R13"]
+    // Sales-driven + weak controls + weak cost view = severe leakage risk
+    when: (a) => (a.GO2 <= 1 && a.MC6 <= 2 && (a.RA3 <= 2 || a.MC4 <= 2)),
+    diagnosis: "Pricing governance is failing, increasing margin leakage through uncontrolled discounting and overrides.",
+    recs: ["R18", "R2", "R13"]
   },
 
-  // 🟡 Tier 2 — Monetization Design
+  // 🟡 Tier 2 — Monetization & Margin Improvement (dominant for mid-range portfolios)
+
   {
     id: "monetization_capture_gap",
     tier: 2,
+    // Growth engine strong but revenue not keeping up
     when: (a) => (a.RA5 <= 2 && a.GE5 >= 3),
-    diagnosis: "Growth is present, but monetization capture is lagging due to pricing and packaging design gaps.",
-    recs: ["R1","R3","R2"]
+    diagnosis: "Growth is present, but monetization capture is lagging; pricing and packaging design are the constraint.",
+    recs: ["R1", "R3", "R2"]
   },
   {
-    id: "fx_without_corridor",
+    id: "pricing_leakage_controls_weak",
     tier: 2,
-    when: (a) => (a.MR4 <= 2 && a.RA6 >= 3),
-    diagnosis: "FX-enabled flows exist, but corridor strategy and pricing discipline are likely under-optimized.",
-    recs: ["R5","R1","R19"]
+    // Controls inconsistent even if governance isn't fully broken
+    when: (a) => (a.MC6 <= 2 || a.GO2 <= 2),
+    diagnosis: "Discounting and override controls are inconsistent, creating silent margin leakage and deal-by-deal volatility.",
+    recs: ["R2", "R18", "R13"]
   },
   {
-    id: "rtp_readiness_gap",
+    id: "exceptions_material_but_not_crisis",
     tier: 2,
-    when: (a) => (a.MR1 <= 2 && a.GE3 >= 3),
-    diagnosis: "Workflow embedding exists, but limited real-time send capability constrains monetizable use cases.",
-    recs: ["R15","R17","R11"]
+    // Moderate leakage: not a crisis, but a top margin lever
+    when: (a) => (a.MC2 <= 3 && a.MC2 >= 2),
+    diagnosis: "Exception/repair volume is likely a meaningful hidden margin driver (and a CX drag).",
+    recs: ["R6", "R10", "R7"]
+  },
+  {
+    id: "unit_cost_immature",
+    tier: 2,
+    // Immature (not blind): move to instrumentation
+    when: (a) => (a.MC4 <= 2 || a.RA3 <= 2),
+    diagnosis: "Unit cost and rail-level economics are under-instrumented, weakening pricing floors and roadmap ROI decisions.",
+    recs: ["R8", "R20", "R19"]
+  },
+  {
+    id: "cadence_weak_not_absent",
+    tier: 2,
+    // Cadence exists but low impact
+    when: (a) => (a.GO3 === 2 || a.GO4 === 2),
+    diagnosis: "Operating cadence exists but lacks executive rhythm and closure; execution discipline is likely inconsistent.",
+    recs: ["R19", "R20", "R18"]
   },
   {
     id: "balances_not_monetized",
     tier: 2,
     when: (a) => (a.BL1 <= 2 && a.BL4 <= 2),
     diagnosis: "Balance contribution appears under-monetized or not reflected in pricing strategy.",
-    recs: ["R4","R11","R13"]
+    recs: ["R4", "R13", "R19"]
+  },
+  {
+    id: "fx_without_corridor",
+    tier: 2,
+    when: (a) => (a.MR4 <= 2 && a.RA6 >= 3),
+    diagnosis: "FX-enabled flows exist, but corridor strategy and pricing discipline are likely under-optimized.",
+    recs: ["R5", "R1", "R19"]
+  },
+  {
+    id: "rtp_readiness_gap",
+    tier: 2,
+    when: (a) => (a.MR1 <= 2 && a.GE3 >= 3),
+    diagnosis: "Workflow embedding exists, but limited real-time send capability constrains monetizable use cases.",
+    recs: ["R15", "R17", "R11"]
   },
 
-  // 🔵 Tier 3 — Portfolio Risk (Elevate only if extreme)
+  // 🔵 Tier 3 — Portfolio Risk (only extreme)
+
   {
-    id: "concentration_risk",
+    id: "concentration_risk_extreme",
     tier: 3,
-    when: (a) => (a.RA4 <= 1), // only extreme concentration
+    when: (a) => (a.RA4 <= 1),
     diagnosis: "Revenue concentration risk is elevated and may threaten earnings stability.",
-    recs: ["R11","R1","R18"]
+    recs: ["R11", "R1", "R18"]
   },
   {
     id: "float_dependency_risk",
     tier: 3,
     when: (a) => (a.RA1 <= 1 && a.BL5 <= 2),
     diagnosis: "Revenue mix appears rate-cycle sensitive and overly dependent on balance-driven income.",
-    recs: ["R3","R4","R19"]
+    recs: ["R3", "R4", "R19"]
   }
 ];
 
