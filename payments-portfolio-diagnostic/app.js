@@ -7,7 +7,7 @@
       return false;
     }
 
-    const { pillars, rules, recommendations, subScoreMap } = model;
+    const { pillars, rules, recommendations, subScoreMap, pillarFloorGuard } = model;
 
     const els = {
       pillarsContainer: document.getElementById("pillarsContainer"),
@@ -32,10 +32,9 @@
       plan3090: document.getElementById("plan3090"),
     };
 
-    // If the container is missing, don't crash silently.
     if (!els.pillarsContainer) {
       console.error("[PPD] pillarsContainer not found. Check index.html element IDs.");
-      return true; // model exists; DOM mismatch is the issue
+      return true;
     }
 
     const state = {
@@ -44,6 +43,7 @@
     };
 
     function totalQuestions() {
+      // Exclude MR4 null-scored option from total when N/A is selected
       return pillars.reduce((sum, p) => sum + p.questions.length, 0);
     }
 
@@ -66,10 +66,11 @@
     }
 
     function maturityLabel(score100) {
+      // Thresholds tightened: a 55 score reflects structural gaps, not just margin fragility
       if (score100 >= 85) return "Enterprise-grade franchise";
       if (score100 >= 70) return "Growth-ready, monetization gaps";
-      if (score100 >= 55) return "Volume-rich, margin-fragile";
-      return "Structurally under-engineered";
+      if (score100 >= 52) return "Volume-rich, margin-fragile";
+      return "Structurally under-engineered — stabilize before scaling";
     }
 
     function heatColor(score5) {
@@ -123,10 +124,12 @@
           const optionsHtml = q.options
             .map((opt, i) => {
               const inputId = `${q.id}_${i}`;
+              // Handle null scores (e.g. MR4 N/A) — store as string "null" in value
+              const optValue = opt.score === null ? "null" : opt.score;
               const checked = state.answers[q.id] === opt.score ? "checked" : "";
               return `
                 <label class="option" for="${inputId}">
-                  <input type="radio" name="${q.id}" id="${inputId}" value="${opt.score}" ${checked} />
+                  <input type="radio" name="${q.id}" id="${inputId}" value="${optValue}" ${checked} />
                   <div>
                     <div class="option-label">${opt.label}</div>
                     <div class="option-sub">${opt.sub}</div>
@@ -144,7 +147,9 @@
 
           qEl.querySelectorAll(`input[name="${q.id}"]`).forEach((radio) => {
             radio.addEventListener("change", (e) => {
-              const val = Number(e.target.value);
+              const raw = e.target.value;
+              // Preserve null for N/A options so scoring can exclude them
+              const val = raw === "null" ? null : Number(raw);
               state.answers[q.id] = val;
               state.lastResult = null;
               if (els.btnCopy) els.btnCopy.disabled = true;
@@ -170,7 +175,9 @@
       pillars.forEach((p) => {
         const scores = [];
         p.questions.forEach((q) => {
-          if (typeof state.answers[q.id] === "number") scores.push(state.answers[q.id]);
+          const ans = state.answers[q.id];
+          // Exclude null answers (N/A selections like MR4) from pillar average
+          if (typeof ans === "number" && ans !== null) scores.push(ans);
         });
 
         const score5 = avg(scores);
@@ -190,7 +197,23 @@
         const s = pillarScores[p.id].score5;
         weighted += (s / 5) * (p.weight * 100);
       });
-      return clamp(Math.round(weighted), 0, 100);
+
+      let composite = Math.round(weighted);
+
+      // Pillar floor guard: penalize composite score for each collapsed pillar
+      if (pillarFloorGuard) {
+        const { threshold, penalty } = pillarFloorGuard;
+        pillars.forEach((p) => {
+          const s = pillarScores[p.id].score5;
+          const answered = pillarScores[p.id].answered;
+          // Only apply penalty if the pillar has at least 3 answers (avoid penalizing unanswered pillars)
+          if (answered >= 3 && s < threshold) {
+            composite -= penalty;
+          }
+        });
+      }
+
+      return clamp(composite, 0, 100);
     }
 
     function computeSubScores(pillarScores) {
@@ -207,7 +230,9 @@
       const a = {};
       pillars.forEach((p) =>
         p.questions.forEach((q) => {
-          a[q.id] = typeof state.answers[q.id] === "number" ? state.answers[q.id] : 0;
+          const ans = state.answers[q.id];
+          // Pass null through for N/A — rules engine checks for null explicitly (e.g. MR4)
+          a[q.id] = (ans === undefined) ? 0 : ans;
         })
       );
       return a;
@@ -227,20 +252,18 @@
           id: "baseline_mixed",
           tier: 2,
           diagnosis:
-            "Baseline portfolio profile is mixed; focus on the lowest-scoring pillar and establish KPI cadence.",
+            "Baseline portfolio profile is mixed. Focus on the lowest-scoring pillar and establish KPI cadence as the first operating priority.",
           recs: ["R19", "R20", "R8"],
         });
       }
 
-      // Tier first. Within Tier 2, elevate monetization gap.
+      // Sort: Tier first. Within Tier 2, elevate monetization_capture_gap.
       triggered.sort((x, y) => {
         const tx = x.tier || 99;
         const ty = y.tier || 99;
         if (tx !== ty) return tx - ty;
-
         if (x.id === "monetization_capture_gap") return -1;
         if (y.id === "monetization_capture_gap") return 1;
-
         return 0;
       });
 
@@ -257,7 +280,6 @@
 
       while (recIds.length < 5) {
         let addedInRound = false;
-
         for (const r of triggered) {
           if (!r.recs || round >= r.recs.length) continue;
           const rec = r.recs[round];
@@ -267,7 +289,6 @@
             if (recIds.length >= 5) break;
           }
         }
-
         if (!addedInRound) break;
         round++;
       }
@@ -283,9 +304,14 @@
         const row = document.createElement("div");
         row.className = `hm-row ${heatColor(s)}`;
 
+        // Flag collapsed pillars visually
+        const floorFlag = pillarFloorGuard && pillarScores[p.id].answered >= 3 && s < pillarFloorGuard.threshold
+          ? `<span class="hm-floor-flag" title="Collapsed pillar — floor penalty applied">⚠</span>`
+          : "";
+
         row.innerHTML = `
           <div class="hm-left">
-            <div class="hm-title">${p.name}</div>
+            <div class="hm-title">${p.name} ${floorFlag}</div>
             <div class="hm-sub">${Math.round(p.weight * 100)}% weight</div>
           </div>
           <div class="hm-score">${s.toFixed(1)} / 5.0</div>
@@ -327,9 +353,12 @@
     function render3090(recIds) {
       if (!els.plan3090) return;
 
+      // Fixed slice overlap: previously slice(0,2), slice(2,4), slice(4,5)
+      // caused index 2 to appear in both Week 0-2 and Week 3-6 blocks.
+      // Now: [0,1], [2,3], [4] — clean non-overlapping slices.
       const w0 = recIds.slice(0, 2).map((id) => recommendations[id]?.title).filter(Boolean);
       const w1 = recIds.slice(2, 4).map((id) => recommendations[id]?.title).filter(Boolean);
-      const w2 = recIds.slice(4, 5).map((id) => recommendations[id]?.title).filter(Boolean);
+      const w2 = recIds.slice(4).map((id) => recommendations[id]?.title).filter(Boolean);
 
       function col(title, items) {
         const ul = items.length
@@ -344,7 +373,7 @@
       }
 
       els.plan3090.innerHTML = `
-        ${col("Weeks 0–2: Stabilize & measure", w0)}
+        ${col("Weeks 1–2: Stabilize & measure", w0)}
         ${col("Weeks 3–6: Fix leakage & align levers", w1)}
         ${col("Weeks 7–12: Scale the winners", w2)}
       `;
@@ -413,11 +442,25 @@
 
       const priorities = r.rules.recIds.map((id) => recommendations[id]?.title).filter(Boolean);
 
+      // Note collapsed pillars in summary
+      const collapsedPillars = pillars
+        .filter((p) =>
+          pillarFloorGuard &&
+          r.pillarScores[p.id].answered >= 3 &&
+          r.pillarScores[p.id].score5 < pillarFloorGuard.threshold
+        )
+        .map((p) => p.name);
+
+      const floorNote = collapsedPillars.length
+        ? [``, `Collapsed pillars (floor penalty applied):`, ...collapsedPillars.map((n) => `- ${n}`)]
+        : [];
+
       return [
         `Payments Portfolio Diagnostic — Executive Summary`,
         ``,
         `Overall score: ${r.overall}/100 (${maturityLabel(r.overall)})`,
         `Sub-scores: Monetization ${r.sub.monetization}/100 • Margin durability ${r.sub.margin}/100 • Strategic readiness ${r.sub.readiness}/100`,
+        ...floorNote,
         ``,
         `Primary diagnosis:`,
         ...r.rules.diag.map((d) => `- ${d}`),
@@ -429,6 +472,7 @@
         ...priorities.map((p) => `- ${p}`),
         ``,
         `Note: V1 is scoped to commercial banking payments (ACH, wires, RTP/FedNow, cross-border, FX-enabled flows, liquidity overlays).`,
+        `This is a structured decision aid designed to surface likely constraints — not a definitive assessment.`,
       ].join("\n");
     }
 
@@ -463,11 +507,9 @@
     return true;
   }
 
-  // Wait for DOM, then wait for model (handles script-order issues)
   function boot(retries = 40) {
     const ok = initApp();
     if (ok) return;
-
     if (retries <= 0) {
       console.error("[PPD] Failed to initialize after retries. Likely model.js not loading or path mismatch.");
       return;
