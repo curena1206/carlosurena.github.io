@@ -144,11 +144,11 @@
 
         <div class="actions">
           <button id="btnCompute" class="btn btn-primary btn-lg">Compute Results</button>
-          <button id="btnCopy" class="btn btn-secondary" disabled>Copy Executive Summary</button>
+          <button id="btnCopy" class="btn btn-secondary" disabled>Download PDF</button>
         </div>
 
         <div class="tool-micro">
-          If a question doesn't apply (e.g. cross-border not in scope), select "Not applicable" where available.
+          Answer from direct operational experience — not aspirationally. MR4 (cross-border corridor strategy) includes a 'Not applicable' option if cross-border is outside your portfolio scope.
           Answer from direct operational experience — not aspirationally.
         </div>
       </div>
@@ -218,7 +218,7 @@
                   ← Back to diagnostic
                 </button>
                 <button id="btnResetResults" class="btn btn-ghost">Reset all answers</button>
-                <button id="btnCopy2" class="btn btn-primary">Copy Executive Summary</button>
+                <button id="btnCopy2" class="btn btn-primary">Download PDF</button>
               </div>
             </div>
           </div>
@@ -311,7 +311,8 @@
   <!-- Back to top -->
   <button id="backToTop" class="back-to-top hidden" aria-label="Back to top">↑</button>
 
-  <script src="model.js?v=4"></script>
-  <script src="app.js?v=4"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="model.js?v=5"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>
