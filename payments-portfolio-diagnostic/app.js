@@ -87,6 +87,8 @@
       scenarioLabel:     document.getElementById("scenarioLabel"),
       btnStart:          document.getElementById("btnStart"),
       btnReset:          document.getElementById("btnReset"),
+      btnResetResults:   document.getElementById("btnResetResults"),
+      btnCopy2:          document.getElementById("btnCopy2"),
       btnCompute:        document.getElementById("btnCompute"),
       btnCopy:           document.getElementById("btnCopy"),
       progressText:      document.getElementById("progressText"),
@@ -640,6 +642,8 @@
       document.getElementById("tool")?.scrollIntoView({ behavior: "smooth" });
     });
     els.btnReset?.addEventListener("click", resetAll);
+    els.btnResetResults?.addEventListener("click", resetAll);
+    els.btnCopy2?.addEventListener("click", copySummary);
     els.btnCompute?.addEventListener("click", () => computeAndShow(false));
     els.btnCopy?.addEventListener("click", copySummary);
 
