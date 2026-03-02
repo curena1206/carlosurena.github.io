@@ -281,6 +281,7 @@
               state.lastResult = null;
               state.activeScenario = null;
               if (els.btnCopy) els.btnCopy.disabled = true;
+              if (els.btnCopy2) els.btnCopy2.disabled = true;
               if (els.scenarioLabel) els.scenarioLabel.classList.add("hidden");
               qEl.querySelectorAll(".option").forEach((l) => l.classList.remove("option-selected"));
               e.target.closest(".option")?.classList.add("option-selected");
@@ -545,6 +546,7 @@
       const result = { pillarScores, overall, sub, rules: ruleOutput };
       state.lastResult = result;
       if (els.btnCopy) els.btnCopy.disabled = false;
+      if (els.btnCopy2) els.btnCopy2.disabled = false;
 
       renderResults(result);
       setTimeout(() => {
@@ -559,6 +561,7 @@
       state.lastResult = null;
       state.activeScenario = null;
       if (els.btnCopy) els.btnCopy.disabled = true;
+      if (els.btnCopy2) els.btnCopy2.disabled = true;
       if (els.scenarioLabel) els.scenarioLabel.classList.add("hidden");
       renderScenarios();
       renderPillars();
