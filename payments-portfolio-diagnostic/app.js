@@ -35,18 +35,18 @@
       tag: "Monetization gap",
       tagColor: "tag-yellow",
       answers: {
-        // Revenue Architecture — growth present but capture lagging, FX weak
-        RA1: 2, RA2: 2, RA3: 2, RA4: 2, RA5: 1, RA6: 2, RA7: 2,
+        // Revenue Architecture — some segmentation and FX, monetization capture lagging
+        RA1: 3, RA2: 3, RA3: 3, RA4: 3, RA5: 2, RA6: 3, RA7: 3,
         // Growth Engine — strong GTM, good pipeline, decent embed
         GE1: 4, GE2: 3, GE3: 3, GE4: 3, GE5: 4, GE6: 4, GE7: 3,
         // Margin & Cost — moderate exceptions, partial cost visibility
-        MC1: 3, MC2: 3, MC3: 2, MC4: 2, MC5: 3, MC6: 2, MC7: 2,
+        MC1: 3, MC2: 3, MC3: 2, MC4: 2, MC5: 3, MC6: 2, MC7: 3,
         // Multi-Rail — some RTP, ISO in progress, corridor undefined
-        MR1: 3, MR2: 2, MR3: 2, MR4: 2, MR5: 3, MR6: 3, MR7: 3,
-        // Balance & Liquidity — balances exist but not monetized or priced
-        BL1: 2, BL2: 2, BL3: 2, BL4: 1, BL5: 2, BL6: 3, BL7: 2,
-        // Governance — some cadence, pricing partially controlled
-        GO1: 3, GO2: 2, GO3: 2, GO4: 3, GO5: 3, GO6: 3, GO7: 3,
+        MR1: 3, MR2: 3, MR3: 2, MR4: 2, MR5: 3, MR6: 3, MR7: 3,
+        // Balance & Liquidity — balances tracked but not systematically priced
+        BL1: 3, BL2: 3, BL3: 2, BL4: 2, BL5: 2, BL6: 3, BL7: 3,
+        // Governance — cadence established, pricing governance partial
+        GO1: 3, GO2: 2, GO3: 3, GO4: 3, GO5: 3, GO6: 3, GO7: 3,
       }
     },
     {
@@ -863,28 +863,41 @@
         const rec = window.PPD_MODEL.recommendations[id];
         if (!rec) return;
 
+        // Row background alternating
+        if (idx % 2 === 0) {
+          doc.setFillColor(...SOFT);
+          doc.rect(ML, y, CONTENT_W, 16, "F");
+        }
+
         // Number badge
         doc.setFillColor(245, 236, 215);
-        doc.roundedRect(ML, y, 6, 6, 1, 1, "F");
+        doc.roundedRect(ML + 2, y + 3, 7, 7, 1, 1, "F");
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(7);
+        doc.setFontSize(8);
         doc.setTextColor(...GOLD);
-        doc.text(`${idx + 1}`, ML + 3, y + 4.3, { align: "center" });
+        doc.text(`${idx + 1}`, ML + 5.5, y + 8.2, { align: "center" });
 
         // Title
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(8);
+        doc.setFontSize(8.5);
         doc.setTextColor(...NAVY);
-        const titleLines = doc.splitTextToSize(rec.title, CONTENT_W - 12);
-        doc.text(titleLines, ML + 9, y + 4.5);
-        y += titleLines.length * 4;
+        const titleLines = doc.splitTextToSize(rec.title, CONTENT_W - 16);
+        doc.text(titleLines, ML + 12, y + 7);
 
-        // Owner + KPI
+        // Owner line
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(7);
+        doc.setFontSize(7.5);
         doc.setTextColor(...SLATE);
-        doc.text(`Owner: ${rec.owner}  ·  KPI: ${rec.metric}`, ML + 9, y + 2);
-        y += 7;
+        const ownerLine = `Owner: ${rec.owner}`;
+        doc.text(ownerLine, ML + 12, y + 12.5);
+
+        // KPI line  
+        const kpiLine = `KPI: ${rec.metric}`;
+        const kpiLines = doc.splitTextToSize(kpiLine, CONTENT_W - 16);
+        doc.setTextColor(100, 116, 139);
+        doc.text(kpiLines, ML + 12, y + 16 - (kpiLines.length > 1 ? 2 : 0));
+
+        y += kpiLines.length > 1 ? 20 : 17;
       });
 
       // ── Footer ──
