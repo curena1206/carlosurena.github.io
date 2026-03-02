@@ -699,6 +699,27 @@ window.PPD_MODEL = (() => {
       when: (a) => (a.RA1 <= 1 && a.BL5 <= 2),
       diagnosis: "Revenue mix is heavily weighted toward balance-driven income, and rate-cycle sensitivity is not measured or managed. A rate decline would hit this franchise harder than peers with a more diversified revenue mix.",
       recs: ["R3", "R4", "R19"]
+    },
+    {
+      id: "rate_cycle_exposure_mature",
+      tier: 3,
+      when: (a) => (a.BL5 <= 2 && a.BL1 >= 3),
+      diagnosis: "Balance contribution is tracked and meaningful, but rate-cycle sensitivity is not yet measured or managed at the segment level. A rate decline will compress NII in ways that are currently unquantified.",
+      recs: ["R4", "R3", "R19"]
+    },
+    {
+      id: "rtp_commercial_gap_mature",
+      tier: 3,
+      when: (a) => (a.MR1 <= 2 && a.GO1 >= 3),
+      diagnosis: "The operating model is sound, but real-time send capability is not yet at commercial scale. As embedded clients expect real-time use cases, this gap will become a GTM constraint.",
+      recs: ["R15", "R17", "R12"]
+    },
+    {
+      id: "revenue_mix_concentration_mature",
+      tier: 3,
+      when: (a) => (a.RA1 <= 2 && a.RA5 >= 3),
+      diagnosis: "Revenue is growing ahead of volume, but mix concentration remains — one lever dominates the P&L. As the franchise matures, deliberate mix diversification becomes a strategic priority.",
+      recs: ["R1", "R3", "R5"]
     }
   ];
 
