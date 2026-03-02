@@ -727,7 +727,6 @@
 
       // ── PAGE 1: Score · Heatmap · Diagnosis ──────────────────────────────
       drawHeader(1);
-      drawFooter(1);
       let y = 28;
 
       // Scenario label
@@ -843,6 +842,7 @@
       });
 
       // ── PAGE 2: 90-Day Priorities ────────────────────────────────────────
+      drawFooter(1);
       doc.addPage();
       drawHeader(2);
       drawFooter(2);
