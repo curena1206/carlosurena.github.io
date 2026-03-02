@@ -698,12 +698,10 @@
         doc.setFontSize(7);
         doc.setTextColor(180, 190, 210);
         doc.text("Citi  ·  Deutsche Bank  ·  HSBC  ·  Mashreq", PAGE_W - MR, 16, { align: "right" });
-        doc.setFontSize(6.5);
-        doc.setTextColor(140, 155, 180);
-        doc.text("Page " + pageNum + " of 2", PAGE_W / 2, 16, { align: "center" });
+
       }
 
-      function drawFooter() {
+      function drawFooter(pageNum) {
         doc.setFillColor(...NAVY);
         doc.rect(0, PAGE_H - 11, PAGE_W, 11, "F");
         doc.setFont("helvetica", "normal");
@@ -712,6 +710,8 @@
         doc.text("Carlos Urena  ·  linkedin.com/in/carlosurena", ML, PAGE_H - 4);
         doc.setTextColor(150, 165, 195);
         doc.text("V1  ·  Commercial banking payments  ·  No data stored", PAGE_W - MR, PAGE_H - 4, { align: "right" });
+        doc.setTextColor(180, 195, 220);
+        doc.text("Page " + pageNum + " of 2", PAGE_W / 2, PAGE_H - 4, { align: "center" });
       }
 
       function sectionLabel(label, y) {
@@ -727,7 +727,7 @@
 
       // ── PAGE 1: Score · Heatmap · Diagnosis ──────────────────────────────
       drawHeader(1);
-      drawFooter();
+      drawFooter(1);
       let y = 28;
 
       // Scenario label
@@ -845,7 +845,7 @@
       // ── PAGE 2: 90-Day Priorities ────────────────────────────────────────
       doc.addPage();
       drawHeader(2);
-      drawFooter();
+      drawFooter(2);
       y = 30;
 
       y = sectionLabel("90-DAY PRIORITIES", y);
