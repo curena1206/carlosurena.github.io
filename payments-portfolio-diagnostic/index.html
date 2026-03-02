@@ -348,9 +348,30 @@
             <div id="plan3090" class="plan-grid"></div>
           </div>
 
+          <!-- Results action bar -->
+          <div class="card card-full results-actions-bar">
+            <div class="results-actions-inner">
+              <div class="results-actions-left">
+                <span class="results-actions-label">Try another scenario or reset to answer fresh</span>
+              </div>
+              <div class="results-actions-right">
+                <button id="btnTryScenario" class="btn btn-outline" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+                  ← Try another scenario
+                </button>
+                <button id="btnResetResults" class="btn btn-ghost">Reset all answers</button>
+                <button id="btnCopy2" class="btn btn-secondary">Copy Executive Summary</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
+
+    <!-- BACK TO TOP -->
+    <button id="backToTop" class="back-to-top hidden" aria-label="Back to top" title="Back to top">
+      ↑
+    </button>
 
     <!-- FOOTER -->
     <footer class="footer">
