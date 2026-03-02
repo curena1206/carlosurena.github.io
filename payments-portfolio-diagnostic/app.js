@@ -134,10 +134,10 @@
       return arr.reduce((a, b) => a + b, 0) / arr.length;
     }
     function maturityLabel(score100) {
-      if (score100 >= 85) return "Enterprise-grade franchise";
-      if (score100 >= 70) return "Growth-ready, monetization gaps";
-      if (score100 >= 52) return "Volume-rich, margin-fragile";
-      return "Structurally under-engineered — stabilize before scaling";
+      if (score100 >= 85) return "Mature franchise — optimize and defend";
+      if (score100 >= 70) return "Growing franchise — monetization is the gap";
+      if (score100 >= 52) return "Volume present, margin discipline missing";
+      return "Franchise needs stabilization before growth";
     }
     function heatColor(score5) {
       if (score5 >= 4.0) return "hm-green";
