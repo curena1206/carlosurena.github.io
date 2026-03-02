@@ -324,12 +324,15 @@
       let composite = Math.round(weighted);
       if (pillarFloorGuard) {
         const { threshold, penalty } = pillarFloorGuard;
+        let totalPenalty = 0;
         pillars.forEach((p) => {
           const { score5, answered } = pillarScores[p.id];
-          if (answered >= 3 && score5 < threshold) composite -= penalty;
+          if (answered >= 3 && score5 < threshold) totalPenalty += penalty;
         });
+        // Cap total penalty at 30 — prevents catastrophic scores zeroing out
+        composite -= Math.min(totalPenalty, 30);
       }
-      return clamp(composite, 0, 100);
+      return clamp(composite, 8, 100);
     }
 
     function computeSubScores(pillarScores) {
