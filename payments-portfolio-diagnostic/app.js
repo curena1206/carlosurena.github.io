@@ -643,218 +643,208 @@
     function exportPDF() {
       if (!state.lastResult) return;
       const r = state.lastResult;
-
-      // jsPDF must be loaded
-      if (!window.jspdf) {
-        alert("PDF library not loaded. Please refresh and try again.");
-        return;
-      }
+      if (!window.jspdf) { alert("PDF library not loaded. Please refresh and try again."); return; }
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
 
       const PAGE_W = 215.9;
       const PAGE_H = 279.4;
-      const ML = 18, MR = 18, MT = 16;
+      const ML = 14, MR = 14;
       const CONTENT_W = PAGE_W - ML - MR;
+      const FOOTER_H = 12;
+      const USABLE_BOTTOM = PAGE_H - FOOTER_H - 4;
 
-      // ── Palette ──
-      const NAVY   = [15, 31, 61];
-      const GOLD   = [183, 136, 44];
-      const SLATE  = [74, 85, 104];
-      const WHITE  = [255, 255, 255];
-      const SOFT   = [247, 249, 252];
-      const LINE   = [226, 232, 240];
-      const GREEN  = [22, 101, 52];
-      const GREEN_BG = [240, 253, 244];
-      const YELLOW = [146, 64, 14];
+      const NAVY      = [15, 31, 61];
+      const GOLD      = [183, 136, 44];
+      const GOLD_LIGHT= [245, 236, 215];
+      const SLATE     = [74, 85, 104];
+      const SLATE_2   = [100, 116, 139];
+      const WHITE     = [255, 255, 255];
+      const SOFT      = [247, 249, 252];
+      const GREEN     = [22, 101, 52];
+      const GREEN_BG  = [240, 253, 244];
+      const YELLOW    = [146, 64, 14];
       const YELLOW_BG = [255, 251, 235];
-      const RED    = [155, 28, 28];
-      const RED_BG = [255, 245, 245];
-
-      let y = MT;
-
-      // ── Header bar ──
-      doc.setFillColor(...NAVY);
-      doc.rect(0, 0, PAGE_W, 28, "F");
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(13);
-      doc.setTextColor(...WHITE);
-      doc.text("Payments Portfolio Diagnostic", ML, 11);
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(8);
-      doc.setTextColor(180, 190, 210);
-      doc.text("Commercial banking · Operator-grade framework · V1", ML, 17);
-
-      // Author right-aligned
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(9);
-      doc.setTextColor(...WHITE);
-      doc.text("Carlos Urena", PAGE_W - MR, 11, { align: "right" });
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7.5);
-      doc.setTextColor(180, 190, 210);
-      doc.text("Citi · Deutsche Bank · HSBC · Mashreq", PAGE_W - MR, 17, { align: "right" });
-
-      // Gold rule under header
-      doc.setDrawColor(...GOLD);
-      doc.setLineWidth(0.8);
-      doc.line(0, 28, PAGE_W, 28);
-
-      y = 38;
-
-      // ── Scenario label if active ──
-      const activeScenario = SCENARIOS.find((s) => s.id === state.activeScenario);
-      if (activeScenario) {
-        doc.setFillColor(245, 236, 215);
-        doc.roundedRect(ML, y - 4, CONTENT_W, 9, 1.5, 1.5, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(7.5);
-        doc.setTextColor(...GOLD);
-        doc.text("SCENARIO", ML + 4, y + 1.5);
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(80, 60, 20);
-        doc.text(activeScenario.label, ML + 26, y + 1.5);
-        y += 13;
-      }
-
-      // ── Score block ──
-      doc.setFillColor(...SOFT);
-      doc.roundedRect(ML, y, CONTENT_W, 26, 2, 2, "F");
-      doc.setDrawColor(...GOLD);
-      doc.setLineWidth(0.5);
-      doc.line(ML, y, ML, y + 26);
-      doc.setLineWidth(0.1);
-
-      // Big score
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(38);
-      doc.setTextColor(...NAVY);
-      doc.text(`${r.overall}`, ML + 8, y + 19);
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(11);
-      doc.setTextColor(...SLATE);
-      doc.text("/100", ML + 28, y + 19);
-
-      // Maturity label
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(10.5);
-      doc.setTextColor(...NAVY);
-      doc.text(maturityLabel(r.overall), ML + 52, y + 9);
-
-      // Sub-scores
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(8);
-      doc.setTextColor(...SLATE);
-      doc.text(`Monetization: ${r.sub.monetization}/100`, ML + 52, y + 16);
-      doc.text(`Margin durability: ${r.sub.margin}/100`, ML + 52, y + 21);
-      doc.text(`Strategic readiness: ${r.sub.readiness}/100`, ML + 113, y + 16);
-
-      y += 32;
-
-      // ── Pillar heatmap ──
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(7.5);
-      doc.setTextColor(...GOLD);
-      doc.text("PILLAR HEATMAP", ML, y);
-      y += 4;
-
-      const pillarModel = window.PPD_MODEL.pillars;
-      const BAR_H = 8.5;
-      const BAR_GAP = 2;
-
-      pillarModel.forEach((p) => {
-        const s = r.pillarScores[p.id].score5;
-        const pct = s / 5;
-
-        let bg, ink;
-        if (s >= 4.0)      { bg = GREEN_BG;  ink = GREEN; }
-        else if (s >= 2.5) { bg = YELLOW_BG; ink = YELLOW; }
-        else               { bg = RED_BG;    ink = RED; }
-
-        // Row background
-        doc.setFillColor(...bg);
-        doc.roundedRect(ML, y, CONTENT_W, BAR_H, 1, 1, "F");
-
-        // Pillar name
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(8);
-        doc.setTextColor(...NAVY);
-        doc.text(p.name, ML + 3, y + 5.5);
-
-        // Weight
-        doc.setFontSize(7);
-        doc.setTextColor(...SLATE);
-        doc.text(`${Math.round(p.weight * 100)}%`, ML + 82, y + 5.5);
-
-        // Score pill
-        doc.setFillColor(...ink);
-        doc.roundedRect(PAGE_W - MR - 22, y + 1.5, 22, 5.5, 1, 1, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(7.5);
-        doc.setTextColor(...WHITE);
-        doc.text(`${s.toFixed(1)} / 5.0`, PAGE_W - MR - 11, y + 5.5, { align: "center" });
-
-        // Floor flag
-        if (window.PPD_MODEL.pillarFloorGuard) {
-          const { threshold } = window.PPD_MODEL.pillarFloorGuard;
-          if (r.pillarScores[p.id].answered >= 3 && s < threshold) {
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(7);
-            doc.setTextColor(...YELLOW);
-            doc.text("⚠", PAGE_W - MR - 26, y + 5.5);
-          }
-        }
-
-        y += BAR_H + BAR_GAP;
-      });
-
-      y += 4;
-
-      // ── Diagnosis ──
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(7.5);
-      doc.setTextColor(...GOLD);
-      doc.text("EXECUTIVE DIAGNOSIS", ML, y);
-      y += 4;
+      const RED       = [155, 28, 28];
+      const RED_BG    = [255, 245, 245];
+      const GREY_BG   = [241, 245, 249];
+      const GREY_INK  = [74, 85, 104];
 
       const TIER_META = {
         1: { label: "STRUCTURAL FAILURE", bg: RED_BG,    ink: RED    },
         2: { label: "MONETIZATION GAP",   bg: YELLOW_BG, ink: YELLOW },
-        3: { label: "PORTFOLIO RISK",      bg: [241,245,249], ink: SLATE },
+        3: { label: "PORTFOLIO RISK",      bg: GREY_BG,   ink: GREY_INK },
       };
+
+      // ── HEADER ──────────────────────────────────────────────────────────
+      doc.setFillColor(...NAVY);
+      doc.rect(0, 0, PAGE_W, 24, "F");
+      doc.setDrawColor(...GOLD);
+      doc.setLineWidth(0.7);
+      doc.line(0, 24, PAGE_W, 24);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor(...WHITE);
+      doc.text("Payments Portfolio Diagnostic", ML, 10);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(180, 190, 210);
+      doc.text("Commercial banking  ·  Operator-grade framework  ·  V1", ML, 16);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(...WHITE);
+      doc.text("Carlos Urena", PAGE_W - MR, 10, { align: "right" });
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7);
+      doc.setTextColor(180, 190, 210);
+      doc.text("Citi  ·  Deutsche Bank  ·  HSBC  ·  Mashreq", PAGE_W - MR, 16, { align: "right" });
+
+      let y = 30;
+
+      // ── SCENARIO LABEL ───────────────────────────────────────────────────
+      const activeScenario = SCENARIOS.find((s) => s.id === state.activeScenario);
+      if (activeScenario) {
+        doc.setFillColor(...GOLD_LIGHT);
+        doc.rect(ML, y, CONTENT_W, 7, "F");
+        doc.setFillColor(...GOLD);
+        doc.rect(ML, y, 2, 7, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7);
+        doc.setTextColor(...GOLD);
+        doc.text("SCENARIO", ML + 5, y + 4.8);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(80, 55, 10);
+        doc.text(activeScenario.label, ML + 28, y + 4.8);
+        y += 10;
+      }
+
+      // ── SCORE BLOCK ──────────────────────────────────────────────────────
+      doc.setFillColor(...SOFT);
+      doc.rect(ML, y, CONTENT_W, 22, "F");
+      doc.setFillColor(...GOLD);
+      doc.rect(ML, y, 2, 22, "F");
+
+      // Score number
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(34);
+      doc.setTextColor(...NAVY);
+      doc.text(`${r.overall}`, ML + 9, y + 16);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(...SLATE);
+      doc.text("/100", ML + 30, y + 16);
+
+      // Vertical divider
+      doc.setDrawColor(226, 232, 240);
+      doc.setLineWidth(0.3);
+      doc.line(ML + 50, y + 3, ML + 50, y + 19);
+
+      // Maturity label + sub-scores
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(...NAVY);
+      doc.text(maturityLabel(r.overall), ML + 54, y + 8);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...SLATE);
+      doc.text(`Monetization: ${r.sub.monetization}/100`, ML + 54, y + 14);
+      doc.text(`Margin durability: ${r.sub.margin}/100`, ML + 54, y + 19);
+      doc.text(`Strategic readiness: ${r.sub.readiness}/100`, ML + 120, y + 14);
+
+      y += 26;
+
+      // ── TWO-COLUMN LAYOUT: Heatmap (left) | Diagnosis (right) ───────────
+      const COL_GAP = 5;
+      const COL_L_W = 82;
+      const COL_R_W = CONTENT_W - COL_L_W - COL_GAP;
+      const COL_R_X = ML + COL_L_W + COL_GAP;
+      const col_start_y = y;
+
+      // LEFT: Heatmap
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(7);
+      doc.setTextColor(...GOLD);
+      doc.text("PILLAR HEATMAP", ML, y);
+      y += 3.5;
+
+      const pillarModel = window.PPD_MODEL.pillars;
+      const BAR_H = 7.5;
+      const BAR_GAP = 1.5;
+
+      pillarModel.forEach((p) => {
+        const s = r.pillarScores[p.id].score5;
+        let bg, ink;
+        if (s >= 4.0)      { bg = GREEN_BG;  ink = GREEN;  }
+        else if (s >= 2.5) { bg = YELLOW_BG; ink = YELLOW; }
+        else               { bg = RED_BG;    ink = RED;    }
+
+        doc.setFillColor(...bg);
+        doc.rect(ML, y, COL_L_W, BAR_H, "F");
+
+        // Short pillar name (abbreviated for column width)
+        const shortName = p.name.replace(" & Future Readiness","").replace(" & Liquidity Contribution","").replace(" & Operating Model","");
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(7);
+        doc.setTextColor(...NAVY);
+        doc.text(shortName, ML + 2, y + 5);
+
+        // Score pill
+        doc.setFillColor(...ink);
+        doc.roundedRect(ML + COL_L_W - 18, y + 1.5, 17, 4.5, 1, 1, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6.5);
+        doc.setTextColor(...WHITE);
+        doc.text(`${s.toFixed(1)}/5`, ML + COL_L_W - 9.5, y + 5, { align: "center" });
+
+        y += BAR_H + BAR_GAP;
+      });
+
+      const heatmap_bottom = y;
+
+      // RIGHT: Diagnosis
+      let ry = col_start_y;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(7);
+      doc.setTextColor(...GOLD);
+      doc.text("EXECUTIVE DIAGNOSIS", COL_R_X, ry);
+      ry += 3.5;
 
       r.rules.diag.forEach((d, i) => {
         const src = r.rules.diagSources[i];
         const meta = src ? TIER_META[src.tier] : null;
 
-        // Tier badge
         if (meta) {
           doc.setFillColor(...meta.bg);
-          doc.roundedRect(ML, y, 36, 4.5, 1, 1, "F");
+          doc.roundedRect(COL_R_X, ry, 30, 3.8, 0.8, 0.8, "F");
           doc.setFont("helvetica", "bold");
-          doc.setFontSize(6);
+          doc.setFontSize(5.5);
           doc.setTextColor(...meta.ink);
-          doc.text(meta.label, ML + 18, y + 3, { align: "center" });
-          y += 6;
+          doc.text(meta.label, COL_R_X + 15, ry + 2.8, { align: "center" });
+          ry += 5;
         }
 
-        // Diagnosis text — wrap at content width
+        // First sentence only for PDF brevity
+        const firstSentence = d.split(/\.\s/)[0] + ".";
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(8);
+        doc.setFontSize(7.5);
         doc.setTextColor(...NAVY);
-        const lines = doc.splitTextToSize(`${i + 1}. ${d}`, CONTENT_W - 4);
-        doc.text(lines, ML + 2, y);
-        y += lines.length * 4 + 3;
+        const dlines = doc.splitTextToSize(`${i + 1}. ${firstSentence}`, COL_R_W - 2);
+        doc.text(dlines, COL_R_X + 1, ry);
+        ry += dlines.length * 3.8 + 3;
       });
 
-      y += 2;
+      y = Math.max(heatmap_bottom, ry) + 5;
 
-      // ── 90-day priorities ──
+      // ── DIVIDER ──────────────────────────────────────────────────────────
+      doc.setDrawColor(...GOLD);
+      doc.setLineWidth(0.3);
+      doc.line(ML, y - 2, ML + CONTENT_W, y - 2);
+
+      // ── 90-DAY PRIORITIES ────────────────────────────────────────────────
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(7.5);
+      doc.setFontSize(7);
       doc.setTextColor(...GOLD);
       doc.text("90-DAY PRIORITIES", ML, y);
       y += 4;
@@ -862,63 +852,59 @@
       r.rules.recIds.forEach((id, idx) => {
         const rec = window.PPD_MODEL.recommendations[id];
         if (!rec) return;
+        if (y > USABLE_BOTTOM - 10) return; // safety clip
 
-        // Calculate row height dynamically
-        const titleLines = doc.splitTextToSize(rec.title, CONTENT_W - 18);
-        const ownerLines = doc.splitTextToSize(`Owner: ${rec.owner}`, CONTENT_W - 18);
-        const kpiLines   = doc.splitTextToSize(`KPI: ${rec.metric}`, CONTENT_W - 18);
-        const ROW_H = 8 + (titleLines.length * 5) + (ownerLines.length * 4.5) + (kpiLines.length * 4.5);
+        // Compact single-line layout
+        const titleW = CONTENT_W - 12;
+        const metaW  = CONTENT_W - 12;
 
-        // Row background
+        // Row bg
         doc.setFillColor(idx % 2 === 0 ? 247 : 255, idx % 2 === 0 ? 249 : 255, idx % 2 === 0 ? 252 : 255);
+        const titleLines = doc.splitTextToSize(rec.title, titleW);
+        const ROW_H = 5 + (titleLines.length * 4.5) + 8;
         doc.rect(ML, y, CONTENT_W, ROW_H, "F");
 
-        // Left gold rule
+        // Gold left accent
         doc.setFillColor(...GOLD);
-        doc.rect(ML, y, 2, ROW_H, "F");
+        doc.rect(ML, y, 1.5, ROW_H, "F");
 
-        // Number badge
-        doc.setFillColor(245, 236, 215);
-        doc.roundedRect(ML + 5, y + 4, 8, 8, 1.5, 1.5, "F");
+        // Number
+        doc.setFillColor(...GOLD_LIGHT);
+        doc.roundedRect(ML + 3, y + 2, 6, 6, 1, 1, "F");
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(9);
+        doc.setFontSize(7.5);
         doc.setTextColor(...GOLD);
-        doc.text(`${idx + 1}`, ML + 9, y + 9.5, { align: "center" });
+        doc.text(`${idx + 1}`, ML + 6, y + 6.5, { align: "center" });
 
         // Title
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(9);
+        doc.setFontSize(8);
         doc.setTextColor(...NAVY);
-        doc.text(titleLines, ML + 17, y + 8);
-        let innerY = y + 8 + (titleLines.length * 5);
+        doc.text(titleLines, ML + 12, y + 6);
+        let iy = y + 6 + (titleLines.length * 4.5);
 
-        // Owner
+        // Owner · KPI on one compact line
+        const metaText = `${rec.owner}  ·  KPI: ${rec.metric}`;
+        const metaLines = doc.splitTextToSize(metaText, metaW);
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(7.5);
-        doc.setTextColor(...SLATE);
-        doc.text(ownerLines, ML + 17, innerY + 2);
-        innerY += ownerLines.length * 4.5 + 2;
+        doc.setFontSize(6.5);
+        doc.setTextColor(...SLATE_2);
+        doc.text(metaLines, ML + 12, iy + 2);
 
-        // KPI
-        doc.setFont("helvetica", "italic");
-        doc.setFontSize(7.5);
-        doc.setTextColor(100, 116, 139);
-        doc.text(kpiLines, ML + 17, innerY + 1.5);
-
-        y += ROW_H + 3;
+        y += ROW_H + 2;
       });
 
-      // ── Footer ──
+      // ── FOOTER ──────────────────────────────────────────────────────────
       doc.setFillColor(...NAVY);
-      doc.rect(0, PAGE_H - 14, PAGE_W, 14, "F");
+      doc.rect(0, PAGE_H - FOOTER_H, PAGE_W, FOOTER_H, "F");
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(7.5);
+      doc.setFontSize(7);
       doc.setTextColor(...WHITE);
-      doc.text("Carlos Urena  ·  linkedin.com/in/carlosurena", ML, PAGE_H - 7);
-      doc.setTextColor(180, 190, 210);
-      doc.text("V1 · Commercial banking payments · No data stored", PAGE_W - MR, PAGE_H - 7, { align: "right" });
+      doc.text("Carlos Urena  ·  linkedin.com/in/carlosurena", ML, PAGE_H - 4.5);
+      doc.setTextColor(160, 175, 200);
+      doc.text("V1  ·  Commercial banking payments  ·  No data stored", PAGE_W - MR, PAGE_H - 4.5, { align: "right" });
 
-      // ── Save ──
+      // ── SAVE ─────────────────────────────────────────────────────────────
       const filename = activeScenario
         ? `PPD_${activeScenario.id}_${r.overall}.pdf`
         : `PPD_assessment_${r.overall}.pdf`;
