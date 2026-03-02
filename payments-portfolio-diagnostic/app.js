@@ -56,15 +56,15 @@
       tag: "Optimize & future-proof",
       tagColor: "tag-blue",
       answers: {
-        // Revenue Architecture — strong mix but balance-heavy, FX embedded
-        RA1: 2, RA2: 4, RA3: 4, RA4: 3, RA5: 4, RA6: 4, RA7: 4,
+        // Revenue Architecture — diversified mix, balance-heavy, FX embedded
+        RA1: 3, RA2: 4, RA3: 4, RA4: 3, RA5: 4, RA6: 4, RA7: 4,
         // Growth Engine — mature, repeatable, deeply embedded
         GE1: 4, GE2: 4, GE3: 4, GE4: 4, GE5: 4, GE6: 4, GE7: 4,
         // Margin & Cost — strong but some leakage at edges
         MC1: 4, MC2: 4, MC3: 4, MC4: 3, MC5: 4, MC6: 4, MC7: 3,
-        // Multi-Rail — limited RTP send, ISO implemented, routing partial
-        MR1: 2, MR2: 4, MR3: 2, MR4: 4, MR5: 4, MR6: 4, MR7: 4,
-        // Balance & Liquidity — high penetration, rate sensitivity not managed
+        // Multi-Rail — limited RTP send, ISO implemented, some routing optimization
+        MR1: 2, MR2: 4, MR3: 3, MR4: 4, MR5: 4, MR6: 4, MR7: 4,
+        // Balance & Liquidity — high penetration, rate sensitivity blind spot
         BL1: 4, BL2: 4, BL3: 4, BL4: 4, BL5: 1, BL6: 4, BL7: 4,
         // Governance — strong operating model throughout
         GO1: 4, GO2: 4, GO3: 4, GO4: 4, GO5: 4, GO6: 4, GO7: 4,
@@ -134,9 +134,9 @@
       return arr.reduce((a, b) => a + b, 0) / arr.length;
     }
     function maturityLabel(score100) {
-      if (score100 >= 85) return "Mature franchise — optimize and defend";
-      if (score100 >= 70) return "Growing franchise — monetization is the gap";
-      if (score100 >= 52) return "Volume present, margin discipline missing";
+      if (score100 >= 75) return "Mature franchise — optimize and defend";
+      if (score100 >= 58) return "Established franchise — monetization gaps present";
+      if (score100 >= 42) return "Volume present, margin discipline missing";
       return "Franchise needs stabilization before growth";
     }
     function heatColor(score5) {
@@ -863,41 +863,49 @@
         const rec = window.PPD_MODEL.recommendations[id];
         if (!rec) return;
 
-        // Row background alternating
-        if (idx % 2 === 0) {
-          doc.setFillColor(...SOFT);
-          doc.rect(ML, y, CONTENT_W, 16, "F");
-        }
+        // Calculate row height dynamically
+        const titleLines = doc.splitTextToSize(rec.title, CONTENT_W - 18);
+        const ownerLines = doc.splitTextToSize(`Owner: ${rec.owner}`, CONTENT_W - 18);
+        const kpiLines   = doc.splitTextToSize(`KPI: ${rec.metric}`, CONTENT_W - 18);
+        const ROW_H = 8 + (titleLines.length * 5) + (ownerLines.length * 4.5) + (kpiLines.length * 4.5);
+
+        // Row background
+        doc.setFillColor(idx % 2 === 0 ? 247 : 255, idx % 2 === 0 ? 249 : 255, idx % 2 === 0 ? 252 : 255);
+        doc.rect(ML, y, CONTENT_W, ROW_H, "F");
+
+        // Left gold rule
+        doc.setFillColor(...GOLD);
+        doc.rect(ML, y, 2, ROW_H, "F");
 
         // Number badge
         doc.setFillColor(245, 236, 215);
-        doc.roundedRect(ML + 2, y + 3, 7, 7, 1, 1, "F");
+        doc.roundedRect(ML + 5, y + 4, 8, 8, 1.5, 1.5, "F");
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(8);
+        doc.setFontSize(9);
         doc.setTextColor(...GOLD);
-        doc.text(`${idx + 1}`, ML + 5.5, y + 8.2, { align: "center" });
+        doc.text(`${idx + 1}`, ML + 9, y + 9.5, { align: "center" });
 
         // Title
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(8.5);
+        doc.setFontSize(9);
         doc.setTextColor(...NAVY);
-        const titleLines = doc.splitTextToSize(rec.title, CONTENT_W - 16);
-        doc.text(titleLines, ML + 12, y + 7);
+        doc.text(titleLines, ML + 17, y + 8);
+        let innerY = y + 8 + (titleLines.length * 5);
 
-        // Owner line
+        // Owner
         doc.setFont("helvetica", "normal");
         doc.setFontSize(7.5);
         doc.setTextColor(...SLATE);
-        const ownerLine = `Owner: ${rec.owner}`;
-        doc.text(ownerLine, ML + 12, y + 12.5);
+        doc.text(ownerLines, ML + 17, innerY + 2);
+        innerY += ownerLines.length * 4.5 + 2;
 
-        // KPI line  
-        const kpiLine = `KPI: ${rec.metric}`;
-        const kpiLines = doc.splitTextToSize(kpiLine, CONTENT_W - 16);
+        // KPI
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(7.5);
         doc.setTextColor(100, 116, 139);
-        doc.text(kpiLines, ML + 12, y + 16 - (kpiLines.length > 1 ? 2 : 0));
+        doc.text(kpiLines, ML + 17, innerY + 1.5);
 
-        y += kpiLines.length > 1 ? 20 : 17;
+        y += ROW_H + 3;
       });
 
       // ── Footer ──
