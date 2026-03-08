@@ -9,39 +9,325 @@
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://carlosurena.com/" />
 
-  <!-- Open Graph / LinkedIn -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Carlos Ureña | Payments Strategy, Product Economics & Commercialization" />
   <meta property="og:description" content="Senior payments leader specializing in product economics, pricing strategy, commercialization, and portfolio performance across multi-rail payment platforms and global ecosystems." />
   <meta property="og:url" content="https://carlosurena.com/" />
 
   <style>
-    :root { color-scheme: light; }
-    body { margin: 0; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; line-height: 1.55; }
-    .wrap { max-width: 920px; margin: 0 auto; padding: 56px 20px; }
-    .top { display:flex; flex-wrap:wrap; gap:18px; align-items:flex-end; justify-content:space-between; }
-    h1 { margin: 0; font-size: 36px; letter-spacing: -0.02em; }
-    .subtitle { margin: 10px 0 0; font-size: 16px; opacity: 0.85; max-width: 720px; }
-    .pillrow { display:flex; flex-wrap:wrap; gap:10px; margin: 18px 0 0; }
-    .pill { border: 1px solid rgba(0,0,0,0.15); padding: 7px 10px; border-radius: 999px; font-size: 13px; opacity: 0.9; }
-    h2 { margin: 34px 0 10px; font-size: 18px; letter-spacing: -0.01em; }
-    p { margin: 10px 0; }
-    ul { margin: 8px 0 0 18px; }
-    li { margin: 8px 0; }
-    .grid { display:grid; grid-template-columns: 1fr; gap: 14px; }
-    .card { border: 1px solid rgba(0,0,0,0.12); border-radius: 14px; padding: 16px; }
-    .role { font-weight: 650; }
-    .meta { opacity: 0.8; font-size: 14px; margin-top: 6px; }
-    .links { display:flex; flex-wrap:wrap; gap:14px; margin-top: 18px; }
-    a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
-    footer { margin-top: 44px; font-size: 13px; opacity: 0.75; }
-    @media (min-width: 820px) {
+    :root {
+      --navy:      #0f1f3d;
+      --gold:      #b7882c;
+      --gold-light:#f5ead7;
+      --ink:       #1a2332;
+      --slate:     #4a5568;
+      --muted:     #6b7280;
+      --border:    #e2e8f0;
+      --bg:        #ffffff;
+      --soft:      #f7f9fc;
+      color-scheme: light;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    /* ── Top nav bar ─────────────────────────────────────── */
+    .site-nav {
+      background: var(--navy);
+      border-bottom: 2px solid var(--gold);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+    }
+
+    .site-nav-name {
+      font-family: Georgia, serif;
+      font-size: 14px;
+      font-weight: normal;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+
+    .site-nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .site-nav-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.15s;
+    }
+
+    .site-nav-links a:hover { color: var(--gold); }
+    .site-nav-links a.active { color: var(--gold); }
+
+    /* ── Layout ──────────────────────────────────────────── */
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 56px 24px 72px;
+    }
+
+    /* ── Hero ────────────────────────────────────────────── */
+    .hero {
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: Georgia, serif;
+      font-size: 38px;
+      font-weight: normal;
+      color: var(--navy);
+      margin: 0 0 16px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--slate);
+      max-width: 680px;
+      line-height: 1.65;
+      margin: 0 0 22px;
+    }
+
+    .pillrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .pill {
+      border: 1px solid var(--border);
+      background: var(--soft);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      color: var(--slate);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .links a {
+      font-size: 13.5px;
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 1px;
+      transition: color 0.15s;
+    }
+
+    .links a:hover { color: var(--gold); }
+
+    /* ── Section label ───────────────────────────────────── */
+    .section-block {
+      margin-bottom: 48px;
+    }
+
+    .section-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    h2 {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      font-weight: normal;
+      color: var(--navy);
+      margin: 0 0 14px;
+    }
+
+    p { margin: 0 0 12px; color: var(--slate); }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Diagnostic CTA card ─────────────────────────────── */
+    .diagnostic-card {
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      border-radius: 6px;
+      padding: 24px 28px;
+      background: var(--soft);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .diagnostic-card-body { flex: 1; min-width: 260px; }
+
+    .diagnostic-card-eyebrow {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .diagnostic-card-title {
+      font-family: Georgia, serif;
+      font-size: 18px;
+      color: var(--navy);
+      margin: 0 0 10px;
+    }
+
+    .diagnostic-card-desc {
+      font-size: 13.5px;
+      color: var(--slate);
+      line-height: 1.6;
+      margin: 0 0 16px;
+    }
+
+    .diagnostic-pillrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .diagnostic-pill {
+      font-size: 11.5px;
+      color: var(--slate);
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .btn-diagnostic {
+      display: inline-block;
+      background: var(--navy);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 4px;
+      text-decoration: none;
+      white-space: nowrap;
+      align-self: center;
+      transition: background 0.15s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-diagnostic:hover { background: #1a3460; }
+
+    /* ── Career grid ─────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 18px;
+      background: #fff;
+    }
+
+    .role {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--navy);
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── Focus list ──────────────────────────────────────── */
+    ul {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    li {
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--slate);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    li:last-child { border-bottom: none; }
+
+    li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      margin-top: 56px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    @media (min-width: 640px) {
       .grid { grid-template-columns: 1fr 1fr; }
-      h1 { font-size: 40px; }
+      h1 { font-size: 44px; }
     }
   </style>
 
-  <!-- Minimal person schema for AI/knowledge systems -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -50,84 +336,128 @@
     "alternateName": "Carlos Urena",
     "jobTitle": "Payments Strategy and Commercialization Leader",
     "url": "https://carlosurena.com/",
-    "sameAs": [
-      "https://www.linkedin.com/"
-    ]
+    "sameAs": ["https://www.linkedin.com/in/carlosurena/"]
   }
   </script>
 </head>
 
 <body>
+
+  <!-- Nav -->
+  <nav class="site-nav">
+    <span class="site-nav-name">Carlos Ureña</span>
+    <div class="site-nav-links">
+      <a href="/" class="active">Home</a>
+      <a href="/payments-portfolio-diagnostic/">Diagnostic</a>
+      <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </nav>
+
   <main class="wrap">
-    <div class="top">
-      <div>
-        <h1>Carlos Ureña</h1>
-        <p class="subtitle">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-eyebrow">Payments Strategy · Product Economics · Commercialization</div>
+      <h1>Carlos Ureña</h1>
+      <p class="hero-sub">
         Payments product economics and commercialization leader driving revenue growth, pricing strategy, and portfolio performance across global banks and multi-rail payment platforms.
-        </p>
-        <div class="pillrow" aria-label="Focus areas">
-          <span class="pill">Product Economics</span>
-          <span class="pill">Pricing Strategy</span>
-          <span class="pill">Portfolio Performance</span>
-          <span class="pill">Commercialization</span>
-          <span class="pill">Multi-Rail Payments</span>
-          <span class="pill">GTM Strategy</span>
-        </div>
+      </p>
+      <div class="pillrow" aria-label="Focus areas">
+        <span class="pill">Product Economics</span>
+        <span class="pill">Pricing Strategy</span>
+        <span class="pill">Portfolio Performance</span>
+        <span class="pill">Commercialization</span>
+        <span class="pill">Multi-Rail Payments</span>
+        <span class="pill">GTM Strategy</span>
+      </div>
+      <div class="links">
+        <a href="https://www.linkedin.com/in/carlosurena/" rel="me noopener" target="_blank">LinkedIn ↗</a>
+        <a href="mailto:urena.m.carlos@gmail.com">Email</a>
+      </div>
+    </div>
 
-        <div class="links">
-          <a href="https://www.linkedin.com/in/carlosurena/" rel="me noopener" target="_blank">LinkedIn</a>
-          <a href="mailto:urena.m.carlos@gmail.com">Email</a>
+    <!-- Overview -->
+    <div class="section-block">
+      <div class="section-label">Overview</div>
+      <p>
+        20 years driving product economics, pricing strategy, and commercialization across complex, regulated payment ecosystems. Proven track record owning $50M–$200M+ P&L portfolios and delivering revenue growth, margin expansion, and disciplined operating performance across multi-rail payment platforms.
+      </p>
+      <p>
+        Experience spans pricing architecture, portfolio performance strategy, and monetization design across large-scale core payment platforms supporting high-volume transaction flows.
+      </p>
+      <p>
+        I translate complex payment platforms into scalable, revenue-generating portfolios through structured pricing governance, portfolio prioritization, and disciplined go-to-market execution. My work bridges product, finance, sales, operations, and risk to ensure monetization strategy aligns with financial performance and long-term market positioning.
+      </p>
+    </div>
+
+    <!-- Diagnostic CTA -->
+    <div class="section-block">
+      <div class="section-label">Diagnostic Tool</div>
+      <div class="diagnostic-card">
+        <div class="diagnostic-card-body">
+          <div class="diagnostic-card-eyebrow">Payments Portfolio Diagnostic · V1</div>
+          <div class="diagnostic-card-title">How mature is your commercial payments franchise?</div>
+          <p class="diagnostic-card-desc">
+            A 42-question operator-grade framework across six pillars — Revenue Architecture, Margin & Cost, Multi-Rail Strategy, Balance Sheet contribution, Growth Engine quality, and Governance. Produces a maturity score, pillar heatmap, executive diagnosis, and 90-day priority plan.
+          </p>
+          <div class="diagnostic-pillrow">
+            <span class="diagnostic-pill">Revenue Architecture</span>
+            <span class="diagnostic-pill">Margin & Cost</span>
+            <span class="diagnostic-pill">Multi-Rail</span>
+            <span class="diagnostic-pill">Balance Sheet</span>
+            <span class="diagnostic-pill">Growth Engine</span>
+            <span class="diagnostic-pill">Governance</span>
+          </div>
+        </div>
+        <a href="/payments-portfolio-diagnostic/" class="btn-diagnostic">Run the diagnostic →</a>
+      </div>
+    </div>
+
+    <!-- Career -->
+    <div class="section-block">
+      <div class="section-label">Career Highlights</div>
+      <div class="grid">
+        <div class="card">
+          <div class="role">Vice President – Payments &amp; Liquidity Portfolio</div>
+          <div class="meta">Mashreq Bank</div>
+        </div>
+        <div class="card">
+          <div class="role">Vice President – Payments &amp; FX Portfolio Strategy</div>
+          <div class="meta">HSBC</div>
+        </div>
+        <div class="card">
+          <div class="role">Assistant Vice President – Global Pricing Strategy &amp; Analytics</div>
+          <div class="meta">Deutsche Bank</div>
+        </div>
+        <div class="card">
+          <div class="role">Assistant Vice President – Pricing Analyst | Corporate Payments</div>
+          <div class="meta">Citi</div>
         </div>
       </div>
     </div>
 
-    <h2>Overview</h2>
-    <p>
-      20 years driving product economics, pricing strategy, and commercialization across complex, regulated payment ecosystems. Proven track record owning $50M–$200M+ P&L portfolios and delivering revenue growth, margin expansion, and disciplined operating performance across multi-rail payment platforms.
-    </p>
-     <p>
-      Experience spans pricing architecture, portfolio performance strategy, and monetization design across large-scale core payment platforms supporting high-volume transaction flows.
-    </p>
-    <p>   
-      I translate complex payment platforms into scalable, revenue-generating portfolios through structured pricing governance, portfolio prioritization, and disciplined go-to-market execution. My work bridges product, finance, sales, operations, and risk to ensure monetization strategy aligns with financial performance and long-term market positioning.
-    </p>
-    <p> 
-      Measurable performance improvements delivered across high-volume payment portfolios through embedded monetization architecture, multi-rail optimization (ACH, RTP, Wires, FX), and enhanced portfolio-level visibility.
-    <p> 
-
-    <h2>Career highlights</h2>
-    <div class="grid">
-      <div class="card">
-        <div class="role">Vice President – Payments &amp; Liquidity Portfolio</div>
-        <div class="meta">Mashreq Bank</div>
-      </div>
-      <div class="card">
-        <div class="role">Vice President – Payments &amp; FX Portfolio Strategy</div>
-        <div class="meta">HSBC</div>
-      </div>
-      <div class="card">
-        <div class="role">Assistant Vice President – Global Pricing Strategy &amp; Analytics</div>
-        <div class="meta">Deutsche Bank</div>
-      </div>
-      <div class="card">
-        <div class="role">Assistant Vice President –  Pricing Analyst | Corporate Payments</div>
-        <div class="meta">Citi</div>
-      </div>
+    <!-- Focus -->
+    <div class="section-block">
+      <div class="section-label">Focus Areas</div>
+      <ul>
+        <li>Product Economics &amp; Pricing Strategy</li>
+        <li>Commercialization &amp; GTM Execution</li>
+        <li>Portfolio Performance &amp; Margin Optimization</li>
+        <li>Multi-Rail Payments (ACH, RTP, Wires, FX Integration)</li>
+        <li>Pricing Governance &amp; Risk-Aligned Growth</li>
+        <li>Cross-Functional Executive Alignment</li>
+      </ul>
     </div>
-
-    <h2>Focus areas</h2>
-    <ul>
-      <li>Product Economics & Pricing Strategy</li>
-      <li>Commercialization & GTM Execution</li>
-      <li>Portfolio Performance & Margin Optimization</li>
-      <li>Multi-Rail Payments (ACH, RTP, Wires, FX Integration)</li>
-      <li>Pricing Governance & Risk-Aligned Growth</li>
-      <li>Cross-Functional Executive Alignment</li>
-    </ul>
 
     <footer>
-      © <span id="y"></span> Carlos Ureña - All rights reserved.
+      <span>© <span id="y"></span> Carlos Ureña — All rights reserved.</span>
+      <span>
+        <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">LinkedIn</a>
+        &nbsp;·&nbsp;
+        <a href="mailto:urena.m.carlos@gmail.com" style="color:inherit;text-decoration:none;">urena.m.carlos@gmail.com</a>
+      </span>
     </footer>
+
   </main>
 
   <script>
