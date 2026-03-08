@@ -747,6 +747,50 @@ button { font-family: var(--font-body); }
 /* Diagnosis */
 .diagnosis-list { list-style: none; display: grid; gap: 12px; }
 .diagnosis-item { display: flex; flex-direction: column; gap: 6px; }
+
+/* ── Pillar Narratives ─────────────────────────────────────── */
+.pillar-narratives { display: flex; flex-direction: column; gap: 0; }
+
+.pn-row {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.pn-row:last-child { border-bottom: none; }
+
+.pn-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.pn-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  font-family: Georgia, serif;
+}
+
+.pn-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.pn-critical    { background: #fee2e2; color: #991b1b; }
+.pn-weak        { background: #fef3c7; color: #92400e; }
+.pn-developing  { background: #e0f2fe; color: #0c4a6e; }
+.pn-strong      { background: #dcfce7; color: #166534; }
+.pn-exceptional { background: #f3e8ff; color: #581c87; }
+
+.pn-text {
+  font-size: 12.5px;
+  color: #374151;
+  line-height: 1.55;
+}
 .diag-tier {
   display: inline-flex;
   font-size: 10px;
