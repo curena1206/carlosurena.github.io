@@ -102,6 +102,7 @@
       badgeMargin:       document.getElementById("badgeMargin"),
       badgeReadiness:    document.getElementById("badgeReadiness"),
       heatmap:           document.getElementById("heatmap"),
+      pillarNarratives:  document.getElementById("pillarNarratives"),
       diagnosisList:     document.getElementById("diagnosisList"),
       prioritiesList:    document.getElementById("prioritiesList"),
       plan3090:          document.getElementById("plan3090"),
@@ -139,6 +140,59 @@
       if (score100 >= 42) return "Volume present, margin discipline missing";
       return "Franchise needs stabilization before growth";
     }
+
+    function pillarBand(score5) {
+      if (score5 < 2.0) return "critical";
+      if (score5 < 3.0) return "weak";
+      if (score5 < 4.0) return "developing";
+      if (score5 < 5.0) return "strong";
+      return "exceptional";
+    }
+
+    const PILLAR_NARRATIVES = {
+      revenue_arch: {
+        critical:    "Revenue is driven by a single lever with no segmentation discipline — pricing, mix, and rail economics are not managed as a system.",
+        weak:        "Some revenue levers exist but pricing segmentation is inconsistent and monetization capture is lagging volume growth.",
+        developing:  "Revenue mix is reasonable but rail-level economics and pricing segmentation are not yet fully operationalized.",
+        strong:      "Revenue architecture is disciplined — mix is diversified, pricing is segmented, and monetization capture is tracking ahead of volume.",
+        exceptional: "Fully optimized revenue architecture with intentional mix targets, value-based segmentation, and consistent monetization capture."
+      },
+      growth_engine: {
+        critical:    "Growth is relationship-dependent with no repeatable engine, low workflow embed, and a pipeline dominated by price-driven deals.",
+        weak:        "GTM motions exist but are inconsistent — pipeline quality is mixed and workflow embedding has not yet created durable switching costs.",
+        developing:  "A structured GTM engine is emerging with improving embed depth, but conversion discipline and differentiation clarity are still developing.",
+        strong:      "Growth is repeatable and defensible — workflow embedding is creating switching costs and the pipeline converts on value, not just price.",
+        exceptional: "Multiple diversified GTM engines with deep workflow integration, predictable conversion, and quantified client outcome differentiation."
+      },
+      margin_cost: {
+        critical:    "Margin is under severe pressure — exception rates are high, repair costs are untracked, and pricing leakage is occurring without visibility.",
+        weak:        "Exception and repair volume is a meaningful margin drag, unit cost discipline is limited, and override controls are inconsistently applied.",
+        developing:  "Margin structure is adequate but leakage control and unit cost visibility are not yet fully embedded in operating decisions.",
+        strong:      "Margin is well-managed with controlled exception rates, unit cost visibility informing pricing, and override discipline enforced.",
+        exceptional: "High-margin franchise with documented lever playbook, near-zero exception rates, and pricing decisions fully anchored in unit economics."
+      },
+      multi_rail: {
+        critical:    "Rail strategy is absent — real-time send capability is limited, routing is static, and data quality is creating repair and rejection risk.",
+        weak:        "Some rail infrastructure is in place but RTP send, ISO leverage, and routing optimization are not yet generating commercial value.",
+        developing:  "Rail readiness is progressing — ISO migration underway, some routing optimization — but real-time use cases are not yet monetized.",
+        strong:      "Multi-rail strategy is commercially active — RTP send is scaled, ISO data is improving STP, and routing is managed as an economics lever.",
+        exceptional: "Rail strategy is a competitive differentiator — real-time use cases are packaged and monetized, routing is dynamically optimized, ISO data drives automation."
+      },
+      balance_liquidity: {
+        critical:    "Balance contribution is invisible — payments-to-balance linkage is absent, pricing ignores NII, and rate-cycle exposure is unquantified.",
+        weak:        "Balances are present but not systematically linked to pricing or GTM decisions — franchise ROE is being systematically understated.",
+        developing:  "Balance contribution is tracked for priority clients but not yet embedded in pricing discipline or rate-cycle management across the book.",
+        strong:      "Balance-adjusted pricing is standard practice, operating balance penetration is managed, and rate-cycle sensitivity is measured and owned.",
+        exceptional: "Fully integrated treasury and payments franchise — balance economics drive pricing, overlays optimize ROE, and rate exposure is managed by client cohort."
+      },
+      governance: {
+        critical:    "The franchise lacks a functioning operating system — P&L ownership is diffuse, pricing is sales-driven, and KPIs are undefined or unused.",
+        weak:        "Governance structures exist but lack enforcement — pricing controls are inconsistent, KPI cadence is fragmented, and accountability is unclear.",
+        developing:  "Operating model is establishing itself — P&L ownership is clear and a KPI cadence is forming, but pricing governance and execution discipline are still developing.",
+        strong:      "Strong operating model with clear P&L authority, enforced pricing governance, and a monthly KPI review driving decisions.",
+        exceptional: "Best-in-class operating system — pricing is governed with elasticity data, every KPI drives resource allocation, and the operating cadence is a competitive advantage."
+      }
+    };
     function heatColor(score5) {
       if (score5 >= 4.0) return "hm-green";
       if (score5 >= 2.5) return "hm-yellow";
@@ -437,6 +491,45 @@
       });
     }
 
+    // ── Render: pillar narratives ─────────────────────────────────────────
+
+    function renderPillarNarratives(pillarScores) {
+      if (!els.pillarNarratives) return;
+      els.pillarNarratives.innerHTML = "";
+      pillars.forEach((p) => {
+        const s = pillarScores[p.id].score5;
+        const band = pillarBand(s);
+        const narrative = PILLAR_NARRATIVES[p.id] && PILLAR_NARRATIVES[p.id][band];
+        if (!narrative) return;
+
+        const bandLabels = {
+          critical:    "Critical",
+          weak:        "Developing",
+          developing:  "Progressing",
+          strong:      "Strong",
+          exceptional: "Optimized"
+        };
+        const bandClasses = {
+          critical:    "pn-critical",
+          weak:        "pn-weak",
+          developing:  "pn-developing",
+          strong:      "pn-strong",
+          exceptional: "pn-exceptional"
+        };
+
+        const row = document.createElement("div");
+        row.className = "pn-row";
+        row.innerHTML = `
+          <div class="pn-header">
+            <span class="pn-name">${p.name}</span>
+            <span class="pn-badge ${bandClasses[band]}">${bandLabels[band]}</span>
+          </div>
+          <div class="pn-text">${narrative}</div>
+        `;
+        els.pillarNarratives.appendChild(row);
+      });
+    }
+
     // ── Render: diagnosis with tier transparency ───────────────────────────
 
     const TIER_META = {
@@ -524,6 +617,7 @@
       if (els.badgeReadiness) els.badgeReadiness.textContent = `Strategic readiness: ${result.sub.readiness}/100`;
 
       renderHeatmap(result.pillarScores);
+      renderPillarNarratives(result.pillarScores);
       renderDiagnosis(result.rules.diag, result.rules.diagSources);
       renderPriorities(result.rules.recIds);
       render3090(result.rules.recIds);
@@ -674,6 +768,18 @@
         3: { label: "PORTFOLIO RISK",      bg: GREY_BG,   ink: SLATE  },
       };
 
+      const bandLabelsPDF = {
+        critical: "CRITICAL", weak: "DEVELOPING", developing: "PROGRESSING",
+        strong: "STRONG", exceptional: "OPTIMIZED"
+      };
+      const bandColorsPDF = {
+        critical:    { bg: RED_BG,          ink: RED              },
+        weak:        { bg: YELLOW_BG,        ink: YELLOW           },
+        developing:  { bg: [224,242,254],    ink: [12,74,110]      },
+        strong:      { bg: GREEN_BG,         ink: GREEN            },
+        exceptional: { bg: [243,232,255],    ink: [88,28,135]      }
+      };
+
       const activeScenario = SCENARIOS.find((s) => s.id === state.activeScenario);
 
       function drawHeader(pageNum) {
@@ -711,7 +817,7 @@
         doc.setTextColor(150, 165, 195);
         doc.text("V1  ·  Commercial banking payments  ·  No data stored", PAGE_W - MR, PAGE_H - 4, { align: "right" });
         doc.setTextColor(180, 195, 220);
-        doc.text("Page " + pageNum + " of 2", PAGE_W / 2, PAGE_H - 4, { align: "center" });
+        doc.text("Page " + pageNum + " of 3", PAGE_W / 2, PAGE_H - 4, { align: "center" });
       }
 
       function sectionLabel(label, y) {
@@ -814,9 +920,55 @@
         y += BAR_H + BAR_GAP;
       });
 
+      // ── PAGE 2: What Drove Your Score · Diagnosis ───────────────────────
+      drawFooter(1);
+      doc.addPage();
+      drawHeader(2);
+      drawFooter(2);
+      y = 36;
+
+      // Narratives on page 2
+      y = sectionLabel("WHAT DROVE YOUR SCORE", y);
+
+      pillarModel.forEach(function(p) {
+        var s = r.pillarScores[p.id].score5;
+        var band = s < 2.0 ? "critical" : s < 3.0 ? "weak" : s < 4.0 ? "developing" : s < 5.0 ? "strong" : "exceptional";
+        var narrative = PILLAR_NARRATIVES[p.id] && PILLAR_NARRATIVES[p.id][band];
+        if (!narrative) return;
+
+        var bc = bandColorsPDF[band];
+        var narLines = doc.splitTextToSize(narrative, CW - 38);
+        var ROW_H = 6 + narLines.length * 3.8 + 4;
+
+        doc.setFillColor(250, 251, 252);
+        doc.rect(ML, y, CW, ROW_H, "F");
+        doc.setDrawColor(...LINE);
+        doc.setLineWidth(0.15);
+        doc.line(ML, y + ROW_H, ML + CW, y + ROW_H);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        doc.setTextColor(...NAVY);
+        doc.text(p.name, ML + 2, y + 5.5);
+
+        doc.setFillColor.apply(doc, bc.bg);
+        doc.roundedRect(ML + CW - 28, y + 1.5, 28, 4.5, 1, 1, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(5.5);
+        doc.setTextColor.apply(doc, bc.ink);
+        doc.text(bandLabelsPDF[band], ML + CW - 14, y + 5, { align: "center" });
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(7);
+        doc.setTextColor(55, 65, 81);
+        doc.text(narLines, ML + 2, y + 9);
+
+        y += ROW_H + 1;
+      });
+
       y += 6;
 
-      // Diagnosis
+      // Diagnosis on page 2
       y = sectionLabel("EXECUTIVE DIAGNOSIS", y);
 
       r.rules.diag.forEach(function(d, i) {
@@ -841,12 +993,12 @@
         y += dlines.length * 4.2 + 5;
       });
 
-      // ── PAGE 2: 90-Day Priorities ────────────────────────────────────────
-      drawFooter(1);
-      doc.addPage();
-      drawHeader(2);
+      // ── PAGE 3: 90-Day Priorities ─────────────────────────────────────────
       drawFooter(2);
-      y = 30;
+      doc.addPage();
+      drawHeader(3);
+      drawFooter(3);
+      y = 36;
 
       y = sectionLabel("90-DAY PRIORITIES", y);
       y += 3;
