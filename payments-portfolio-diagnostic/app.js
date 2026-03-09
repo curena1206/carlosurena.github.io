@@ -1152,12 +1152,16 @@
     const urlParam = new URLSearchParams(window.location.search).get("r");
     if (urlParam) {
       const decoded = decodeAnswers(urlParam);
-      if (decoded) {
+      if (decoded && Object.keys(decoded).length >= 10) {
         state.answers = decoded;
         renderPillars();
         updateProgress();
-        computeAndShow(false);
-        document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => {
+          computeAndShow(true);  // pass true to bypass the minimum answer alert
+          setTimeout(() => {
+            document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
+          }, 300);
+        }, 150);
       }
     }
 
