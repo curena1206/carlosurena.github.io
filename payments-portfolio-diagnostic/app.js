@@ -1170,11 +1170,8 @@
         if (Object.keys(decoded).length < 10) return;
         state.answers = decoded;
         renderPillars();
-        console.log("[PPD-SHARE] answers loaded:", Object.keys(decoded).length, "lastResult before:", state.lastResult);
         setTimeout(() => {
-          console.log("[PPD-SHARE] firing computeAndShow, answeredCount:", Object.keys(state.answers).length);
           computeAndShow(true);
-          console.log("[PPD-SHARE] after compute, lastResult:", state.lastResult);
         }, 500);
       } catch(e) { console.warn("[PPD] Share URL decode failed", e); }
     })();
