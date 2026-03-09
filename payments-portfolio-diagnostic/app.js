@@ -1148,43 +1148,39 @@
     renderScenarios();
     renderPillars();
 
+    // Auto-load from URL param — inside initApp so state is in scope
+    (function() {
+      const urlParam = new URLSearchParams(window.location.search).get("r");
+      if (!urlParam) return;
+      try {
+        const padded = urlParam.replace(/-/g, "+").replace(/_/g, "/");
+        const pad = padded.length % 4 ? padded + "=".repeat(4 - padded.length % 4) : padded;
+        const raw = atob(pad);
+        if (raw.length !== 42) return;
+        const Q_ORDER_SHARE = ["RA1","RA2","RA3","RA4","RA5","RA6","RA7",
+                               "GE1","GE2","GE3","GE4","GE5","GE6","GE7",
+                               "MC1","MC2","MC3","MC4","MC5","MC6","MC7",
+                               "MR1","MR2","MR3","MR4","MR5","MR6","MR7",
+                               "BL1","BL2","BL3","BL4","BL5","BL6","BL7",
+                               "GO1","GO2","GO3","GO4","GO5","GO6","GO7"];
+        const decoded = {};
+        Q_ORDER_SHARE.forEach((id, i) => {
+          if (raw[i] !== "-") decoded[id] = parseInt(raw[i], 10);
+        });
+        if (Object.keys(decoded).length < 10) return;
+        state.answers = decoded;
+        renderPillars();
+        updateProgress();
+        setTimeout(() => { computeAndShow(true); }, 300);
+      } catch(e) { console.warn("[PPD] Share URL decode failed", e); }
+    })();
+
     return true;
   }
 
   function boot(retries = 40) {
     const ok = initApp();
-    if (ok) {
-      // Auto-load from URL param — runs once after successful init
-      const urlParam = new URLSearchParams(window.location.search).get("r");
-      if (urlParam) {
-        const Q_ORDER_BOOT = ["RA1","RA2","RA3","RA4","RA5","RA6","RA7",
-                              "GE1","GE2","GE3","GE4","GE5","GE6","GE7",
-                              "MC1","MC2","MC3","MC4","MC5","MC6","MC7",
-                              "MR1","MR2","MR3","MR4","MR5","MR6","MR7",
-                              "BL1","BL2","BL3","BL4","BL5","BL6","BL7",
-                              "GO1","GO2","GO3","GO4","GO5","GO6","GO7"];
-        try {
-          const padded = urlParam.replace(/-/g, "+").replace(/_/g, "/");
-          const pad = padded.length % 4 ? padded + "=".repeat(4 - padded.length % 4) : padded;
-          const raw = atob(pad);
-          if (raw.length === 42) {
-            const decoded = {};
-            Q_ORDER_BOOT.forEach((id, i) => {
-              if (raw[i] !== "-") decoded[id] = parseInt(raw[i], 10);
-            });
-            if (Object.keys(decoded).length >= 10) {
-              state.answers = decoded;
-              renderPillars();
-              updateProgress();
-              setTimeout(() => {
-                computeAndShow(true);
-              }, 200);
-            }
-          }
-        } catch(e) { console.warn("[PPD] Share URL decode failed", e); }
-      }
-      return;
-    }
+    if (ok) return;
     if (retries <= 0) {
       console.error("[PPD] Failed to initialize after retries.");
       return;
