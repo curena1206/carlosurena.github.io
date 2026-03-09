@@ -36,9 +36,9 @@
       tagColor: "tag-yellow",
       answers: {
         // Revenue Architecture — some segmentation and FX, monetization capture lagging
-        RA1: 3, RA2: 3, RA3: 3, RA4: 3, RA5: 2, RA6: 3, RA7: 3,
+        RA1: 2, RA2: 3, RA3: 3, RA4: 3, RA5: 2, RA6: 3, RA7: 2,
         // Growth Engine — strong GTM, good pipeline, decent embed
-        GE1: 4, GE2: 3, GE3: 3, GE4: 3, GE5: 4, GE6: 4, GE7: 3,
+        GE1: 4, GE2: 3, GE3: 3, GE4: 3, GE5: 4, GE6: 4, GE7: 4,
         // Margin & Cost — moderate exceptions, partial cost visibility
         MC1: 3, MC2: 3, MC3: 2, MC4: 2, MC5: 3, MC6: 2, MC7: 3,
         // Multi-Rail — some RTP, ISO in progress, corridor undefined
@@ -57,7 +57,7 @@
       tagColor: "tag-blue",
       answers: {
         // Revenue Architecture — diversified mix, balance-heavy, FX embedded
-        RA1: 3, RA2: 4, RA3: 4, RA4: 3, RA5: 4, RA6: 4, RA7: 4,
+        RA1: 4, RA2: 4, RA3: 4, RA4: 3, RA5: 4, RA6: 4, RA7: 4,
         // Growth Engine — mature, repeatable, deeply embedded
         GE1: 4, GE2: 4, GE3: 4, GE4: 4, GE5: 4, GE6: 4, GE7: 4,
         // Margin & Cost — strong but some leakage at edges
