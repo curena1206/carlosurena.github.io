@@ -183,77 +183,6 @@
     p { margin: 0 0 12px; color: var(--slate); }
     p:last-child { margin-bottom: 0; }
 
-    /* ── Diagnostic CTA card ─────────────────────────────── */
-    .diagnostic-card {
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--gold);
-      border-radius: 6px;
-      padding: 24px 28px;
-      background: var(--soft);
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .diagnostic-card-body { flex: 1; min-width: 260px; }
-
-    .diagnostic-card-eyebrow {
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 8px;
-    }
-
-    .diagnostic-card-title {
-      font-family: Georgia, serif;
-      font-size: 18px;
-      color: var(--navy);
-      margin: 0 0 10px;
-    }
-
-    .diagnostic-card-desc {
-      font-size: 13.5px;
-      color: var(--slate);
-      line-height: 1.6;
-      margin: 0 0 16px;
-    }
-
-    .diagnostic-pillrow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .diagnostic-pill {
-      font-size: 11.5px;
-      color: var(--slate);
-      background: #fff;
-      border: 1px solid var(--border);
-      padding: 3px 10px;
-      border-radius: 999px;
-    }
-
-    .btn-diagnostic {
-      display: inline-block;
-      background: var(--navy);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 10px 22px;
-      border-radius: 4px;
-      text-decoration: none;
-      white-space: nowrap;
-      align-self: center;
-      transition: background 0.15s;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-diagnostic:hover { background: #1a3460; }
 
     /* ── Career grid ─────────────────────────────────────── */
     .grid {
@@ -326,6 +255,70 @@
       .grid { grid-template-columns: 1fr 1fr; }
       h1 { font-size: 44px; }
     }
+
+    /* ── Card hover tooltip ──────────────────────────────── */
+    .card-hover {
+      position: relative;
+      cursor: default;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .card-hover:hover {
+      border-color: var(--gold);
+      box-shadow: 0 4px 16px rgba(15,31,61,0.10);
+    }
+
+    .card-tooltip {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      width: 320px;
+      background: var(--navy);
+      border: 1px solid rgba(183,136,44,0.4);
+      border-radius: 6px;
+      padding: 14px 16px;
+      z-index: 50;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+
+    .card-hover:hover .card-tooltip { display: block; }
+
+    /* Keep tooltip on screen for right-column cards */
+    .card-hover:nth-child(even) .card-tooltip {
+      left: auto;
+      right: 0;
+    }
+
+    .tooltip-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tooltip-list li {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.55;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: block;
+    }
+
+    .tooltip-list li::before { display: none; }
+    .tooltip-list li:last-child { border-bottom: none; padding-bottom: 0; }
+
+    @media (max-width: 639px) {
+      .card-tooltip { 
+        width: 100%;
+        position: static;
+        display: block;
+        margin-top: 12px;
+        background: var(--soft);
+        border-color: var(--border);
+      }
+      .tooltip-list li { color: var(--slate); }
+    }
   </style>
 
   <script type="application/ld+json">
@@ -357,10 +350,10 @@
 
     <!-- Hero -->
     <div class="hero">
-      <div class="hero-eyebrow">Payments Strategy · Product Economics · Commercialization</div>
+      <div class="hero-eyebrow">Payments Commercialization &amp; Strategy · $200M+ P&amp;L · Multi-Rail</div>
       <h1>Carlos Ureña</h1>
       <p class="hero-sub">
-        Payments product economics and commercialization leader driving revenue growth, pricing strategy, and portfolio performance across global banks and multi-rail payment platforms.
+        I build the commercial layer that turns payment infrastructure into revenue. 20 years owning P&amp;L, designing pricing models, and leading go-to-market strategy across ACH, wires, cross-border, and FX-enabled flows at global banks.
       </p>
       <div class="pillrow" aria-label="Focus areas">
         <span class="pill">Product Economics</span>
@@ -372,7 +365,7 @@
       </div>
       <div class="links">
         <a href="https://www.linkedin.com/in/carlosurena/" rel="me noopener" target="_blank">LinkedIn ↗</a>
-        <a href="mailto:urena.m.carlos@gmail.com">Email</a>
+        <a href="/cdn-cgi/l/email-protection#512423343f307f3c7f3230233d3e2211363c30383d7f323e3c">Email</a>
       </div>
     </div>
 
@@ -380,59 +373,80 @@
     <div class="section-block">
       <div class="section-label">Overview</div>
       <p>
-        20 years driving product economics, pricing strategy, and commercialization across complex, regulated payment ecosystems. Proven track record owning $50M–$200M+ P&L portfolios and delivering revenue growth, margin expansion, and disciplined operating performance across multi-rail payment platforms.
+        My work sits at the intersection of product economics, client value, and revenue performance. I have led commercialization across global banks managing $50M to $200M+ payment portfolios — building the pricing governance, monetization frameworks, and operating discipline that scale revenue without sacrificing margin.
       </p>
       <p>
-        Experience spans pricing architecture, portfolio performance strategy, and monetization design across large-scale core payment platforms supporting high-volume transaction flows.
+        What I do well is translate complex payment infrastructure into commercial strategies that work. That means aligning product, finance, sales, and operations around a shared revenue model — and holding accountability for the outcome.
       </p>
       <p>
-        I translate complex payment platforms into scalable, revenue-generating portfolios through structured pricing governance, portfolio prioritization, and disciplined go-to-market execution. My work bridges product, finance, sales, operations, and risk to ensure monetization strategy aligns with financial performance and long-term market positioning.
+        Currently focused on how payment platforms build durable commercial advantage and what it takes to monetize new rails before competitors do. Open to senior product, commercialization, and strategy roles across banks, payment networks, and fintech companies building at scale.
       </p>
-    </div>
-
-    <!-- Diagnostic CTA -->
-    <div class="section-block">
-      <div class="section-label">Diagnostic Tool</div>
-      <div class="diagnostic-card">
-        <div class="diagnostic-card-body">
-          <div class="diagnostic-card-eyebrow">Payments Portfolio Diagnostic · V1</div>
-          <div class="diagnostic-card-title">How mature is your commercial payments franchise?</div>
-          <p class="diagnostic-card-desc">
-            A 42-question operator-grade framework across six pillars — Revenue Architecture, Margin & Cost, Multi-Rail Strategy, Balance Sheet contribution, Growth Engine quality, and Governance. Produces a maturity score, pillar heatmap, executive diagnosis, and 90-day priority plan.
-          </p>
-          <div class="diagnostic-pillrow">
-            <span class="diagnostic-pill">Revenue Architecture</span>
-            <span class="diagnostic-pill">Margin & Cost</span>
-            <span class="diagnostic-pill">Multi-Rail</span>
-            <span class="diagnostic-pill">Balance Sheet</span>
-            <span class="diagnostic-pill">Growth Engine</span>
-            <span class="diagnostic-pill">Governance</span>
-          </div>
-        </div>
-        <a href="/payments-portfolio-diagnostic/" class="btn-diagnostic">Run the diagnostic →</a>
-      </div>
     </div>
 
     <!-- Career -->
     <div class="section-block">
       <div class="section-label">Career Highlights</div>
       <div class="grid">
-        <div class="card">
+
+        <div class="card card-hover">
+          <div class="role">Payments Strategy Consultant</div>
+          <div class="meta">Independent · 2024 – Present</div>
+          <div class="card-tooltip">
+            <ul class="tooltip-list">
+              <li>Developed and published the Payments Portfolio Diagnostic — an operator-grade framework scoring commercial payments franchises across six structural pillars.</li>
+              <li>Advising on payments platform economics, pricing architecture, and monetization strategy.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card card-hover">
           <div class="role">Vice President – Payments &amp; Liquidity Portfolio</div>
-          <div class="meta">Mashreq Bank</div>
+          <div class="meta">Mashreq Bank · May 2022 – March 2024</div>
+          <div class="card-tooltip">
+            <ul class="tooltip-list">
+              <li>$50M+ P&L ownership — 8% revenue growth through commercial repositioning and monetization redesign.</li>
+              <li>$200M+ operating balances generated by integrating payment flows with balance sheet strategy.</li>
+              <li>Built portfolio economics discipline linking revenue architecture, margin structure, and operating model.</li>
+            </ul>
+          </div>
         </div>
-        <div class="card">
+
+        <div class="card card-hover">
           <div class="role">Vice President – Payments &amp; FX Portfolio Strategy</div>
-          <div class="meta">HSBC</div>
+          <div class="meta">HSBC · September 2018 – May 2022</div>
+          <div class="card-tooltip">
+            <ul class="tooltip-list">
+              <li>$200M+ P&L — 10% revenue growth across 140,000+ daily transactions spanning domestic and cross-border corridors.</li>
+              <li>Embedded FX monetization into payment flows, increasing revenue per transaction and deepening client retention.</li>
+              <li>+1.5% STP improvement (97.7% to 99.2%) through data standardization and validation controls.</li>
+            </ul>
+          </div>
         </div>
-        <div class="card">
-          <div class="role">Assistant Vice President – Global Pricing Strategy &amp; Analytics</div>
-          <div class="meta">Deutsche Bank</div>
+
+        <div class="card card-hover">
+          <div class="role">AVP – Pricing Market Manager</div>
+          <div class="meta">Deutsche Bank · July 2014 – September 2018</div>
+          <div class="card-tooltip">
+            <ul class="tooltip-list">
+              <li>$1.8M+ incremental revenue — built scenario-based pricing models identifying margin leakage and correcting pricing architecture.</li>
+              <li>Governed 500+ global client portfolios through structured annual margin and deal reviews.</li>
+              <li>Designed Reg W–compliant affiliate revenue structures across global entities.</li>
+            </ul>
+          </div>
         </div>
-        <div class="card">
-          <div class="role">Assistant Vice President – Pricing Analyst | Corporate Payments</div>
-          <div class="meta">Citi</div>
+
+        <div class="card card-hover">
+          <div class="role">AVP – Pricing Analyst, Corporate Payments</div>
+          <div class="meta">Citi · February 2006 – May 2014</div>
+          <div class="card-tooltip">
+            <ul class="tooltip-list">
+              <li>85% reduction in pricing cycle time through digitization of the annual pricing review process.</li>
+              <li>Evaluated 800+ pricing proposals, strengthening margin discipline across corporate payments portfolios.</li>
+              <li>Directed deal economics analysis across multi-product payment portfolios influencing structured pricing approvals.</li>
+            </ul>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -454,14 +468,4 @@
       <span>
         <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">LinkedIn</a>
         &nbsp;·&nbsp;
-        <a href="mailto:urena.m.carlos@gmail.com" style="color:inherit;text-decoration:none;">urena.m.carlos@gmail.com</a>
-      </span>
-    </footer>
-
-  </main>
-
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
+        <a href="/cdn-cgi/l/email-protection#a5d0d7c0cbc48bc88bc6c4d7c9cad6e5c2c8c4ccc98bc6cac8" style="color:inherit;text-decoration:none;"><span class="__cf_email__" data-cfemail="344146515a551a591a575546585b47745359555d581a57
