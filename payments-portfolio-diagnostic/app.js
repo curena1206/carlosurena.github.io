@@ -641,6 +641,7 @@
       state.lastResult = result;
       if (els.btnCopy) els.btnCopy.disabled = false;
       if (els.btnCopy2) els.btnCopy2.disabled = false;
+      const _sb = document.getElementById("btnShareLink"); if (_sb) _sb.disabled = false;
 
       renderResults(result);
       setTimeout(() => {
@@ -1091,10 +1092,75 @@
     els.btnCompute?.addEventListener("click", () => computeAndShow(false));
     els.btnCopy?.addEventListener("click", exportPDF);
 
+    // ── Share link ────────────────────────────────────────────────────────
+
+    const Q_ORDER = ["RA1","RA2","RA3","RA4","RA5","RA6","RA7",
+                     "GE1","GE2","GE3","GE4","GE5","GE6","GE7",
+                     "MC1","MC2","MC3","MC4","MC5","MC6","MC7",
+                     "MR1","MR2","MR3","MR4","MR5","MR6","MR7",
+                     "BL1","BL2","BL3","BL4","BL5","BL6","BL7",
+                     "GO1","GO2","GO3","GO4","GO5","GO6","GO7"];
+
+    function encodeAnswers(answers) {
+      const raw = Q_ORDER.map((id) => {
+        const v = answers[id];
+        return (v !== undefined && v !== null) ? String(Math.round(v)) : "-";
+      }).join("");
+      return btoa(raw).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+    }
+
+    function decodeAnswers(param) {
+      try {
+        const padded = param.replace(/-/g, "+").replace(/_/g, "/");
+        const pad = padded.length % 4 ? padded + "=".repeat(4 - padded.length % 4) : padded;
+        const raw = atob(pad);
+        if (raw.length !== 42) return null;
+        const answers = {};
+        Q_ORDER.forEach((id, i) => {
+          if (raw[i] !== "-") answers[id] = parseInt(raw[i], 10);
+        });
+        return answers;
+      } catch(e) { return null; }
+    }
+
+    function buildShareURL() {
+      const param = encodeAnswers(state.answers);
+      const url = window.location.origin + window.location.pathname + "?r=" + param + "#results";
+      return url;
+    }
+
+    const btnShare = document.getElementById("btnShareLink");
+    if (btnShare) {
+      btnShare.addEventListener("click", () => {
+        const url = buildShareURL();
+        navigator.clipboard.writeText(url).then(() => {
+          const orig = btnShare.textContent;
+          btnShare.textContent = "Link copied!";
+          setTimeout(() => { btnShare.textContent = orig; }, 2000);
+        }).catch(() => {
+          prompt("Copy this link:", url);
+        });
+      });
+    }
+
     // ── Init ──────────────────────────────────────────────────────────────
 
     renderScenarios();
     renderPillars();
+
+    // Auto-load from URL param
+    const urlParam = new URLSearchParams(window.location.search).get("r");
+    if (urlParam) {
+      const decoded = decodeAnswers(urlParam);
+      if (decoded) {
+        state.answers = decoded;
+        renderPillars();
+        updateProgress();
+        computeAndShow(false);
+        document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+
     return true;
   }
 
