@@ -1171,7 +1171,11 @@
         state.answers = decoded;
         renderPillars();
         updateProgress();
-        setTimeout(() => { computeAndShow(true); }, 300);
+        // Compute after DOM settles — try multiple delays as fallback
+        setTimeout(() => { computeAndShow(true); }, 500);
+        setTimeout(() => {
+          if (!state.lastResult) { computeAndShow(true); }
+        }, 1200);
       } catch(e) { console.warn("[PPD] Share URL decode failed", e); }
     })();
 
