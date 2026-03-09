@@ -1148,29 +1148,43 @@
     renderScenarios();
     renderPillars();
 
-    // Auto-load from URL param
-    const urlParam = new URLSearchParams(window.location.search).get("r");
-    if (urlParam) {
-      const decoded = decodeAnswers(urlParam);
-      if (decoded && Object.keys(decoded).length >= 10) {
-        state.answers = decoded;
-        renderPillars();
-        updateProgress();
-        setTimeout(() => {
-          computeAndShow(true);  // pass true to bypass the minimum answer alert
-          setTimeout(() => {
-            document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
-          }, 300);
-        }, 150);
-      }
-    }
-
     return true;
   }
 
   function boot(retries = 40) {
     const ok = initApp();
-    if (ok) return;
+    if (ok) {
+      // Auto-load from URL param — runs once after successful init
+      const urlParam = new URLSearchParams(window.location.search).get("r");
+      if (urlParam) {
+        const Q_ORDER_BOOT = ["RA1","RA2","RA3","RA4","RA5","RA6","RA7",
+                              "GE1","GE2","GE3","GE4","GE5","GE6","GE7",
+                              "MC1","MC2","MC3","MC4","MC5","MC6","MC7",
+                              "MR1","MR2","MR3","MR4","MR5","MR6","MR7",
+                              "BL1","BL2","BL3","BL4","BL5","BL6","BL7",
+                              "GO1","GO2","GO3","GO4","GO5","GO6","GO7"];
+        try {
+          const padded = urlParam.replace(/-/g, "+").replace(/_/g, "/");
+          const pad = padded.length % 4 ? padded + "=".repeat(4 - padded.length % 4) : padded;
+          const raw = atob(pad);
+          if (raw.length === 42) {
+            const decoded = {};
+            Q_ORDER_BOOT.forEach((id, i) => {
+              if (raw[i] !== "-") decoded[id] = parseInt(raw[i], 10);
+            });
+            if (Object.keys(decoded).length >= 10) {
+              state.answers = decoded;
+              renderPillars();
+              updateProgress();
+              setTimeout(() => {
+                computeAndShow(true);
+              }, 200);
+            }
+          }
+        } catch(e) { console.warn("[PPD] Share URL decode failed", e); }
+      }
+      return;
+    }
     if (retries <= 0) {
       console.error("[PPD] Failed to initialize after retries.");
       return;
