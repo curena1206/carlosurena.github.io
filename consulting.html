@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payments Franchise Consulting — Carlos Ureña</title>
+<style>
+  :root {
+    --navy:       #0f1f3d;
+    --navy-mid:   #1a3a6b;
+    --navy-lt:    #2a5a8a;
+    --gold:       #b7882c;
+    --gold-lt:    #fdf6e3;
+    --slate:      #4a5568;
+    --muted:      #6b7280;
+    --border:     #e2e8f0;
+    --soft:       #f7f9fc;
+    --white:      #ffffff;
+    --red:        #6b1a1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', serif;
+    color: var(--navy);
+    background: var(--white);
+    line-height: 1.6;
+  }
+
+  /* ── SITE NAV (matches existing site) ── */
+  nav {
+    background: var(--navy);
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--gold);
+  }
+  nav .logo {
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+  nav .logo span { color: var(--gold); }
+  nav a {
+    color: #b0bec5;
+    text-decoration: none;
+    font-family: Helvetica, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    margin-left: 28px;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--gold); }
+  nav a.active { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    padding: 80px 48px 64px;
+    border-bottom: 3px solid var(--gold);
+  }
+  .hero-inner { max-width: 860px; margin: 0 auto; }
+  .hero-label {
+    font-family: Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 10px;
+    font-weight: normal;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .hero-rule {
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    margin: 24px 0;
+  }
+  .hero-thesis {
+    font-size: 18px;
+    color: #b0bec5;
+    line-height: 1.7;
+    max-width: 680px;
+    font-style: italic;
+  }
+  .hero-thesis strong {
+    color: var(--white);
+    font-style: normal;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main { max-width: 900px; margin: 0 auto; padding: 0 48px 80px; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* ── PROBLEM SECTION ── */
+  .problem {
+    padding: 60px 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .problem h2 {
+    font-size: 28px;
+    font-weight: normal;
+    color: var(--navy);
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+  .problem p {
+    font-family: Helvetica, sans-serif;
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.75;
+    margin-bottom: 14px;
+  }
+
+  .three-problems {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    margin-top: 36px;
+    border: 1px solid var(--border);
+  }
+  .problem-card {
+    background: var(--white);
+    padding: 28px 24px;
+  }
+  .problem-card .num {
+    font-size: 32px;
+    color: var(--gold);
+    font-family: 'Georgia', serif;
+    line-height: 1;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+  .problem-card h3 {
+    font-size: 13px;
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+    color: var(--navy);
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .problem-card p {
+    font-family: Helvetica, sans-serif;
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* ── DIAGNOSTIC SECTION ── */
+  .diagnostic {
+    padding: 56px 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .diagnostic h2 {
+    font-size: 28px;
+    font-weight: normal;
+    color: var(--navy);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .diagnostic > p {
+    font-family: Helvetica, sans-serif;
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.75;
+    margin-bottom: 36px;
+    max-width: 700px;
+  }
+
+  /* ── OUTPUT PREVIEWS ── */
+  .outputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .output-card {
+    border: 1px solid var(--border);
+    background: var(--soft);
+  }
+  .output-card-header {
+    background: var(--navy);
+    padding: 14px 18px;
+    border-top: 2px solid var(--gold);
+  }
+  .output-card-header .out-num {
+    font-family: Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .output-card-header h4 {
+    font-size: 14px;
+    color: var(--white);
+    font-weight: normal;
+  }
+  .output-card-body { padding: 18px; }
+  .output-card-body p {
+    font-family: Helvetica, sans-serif;
+    font-size: 12.5px;
+    color: var(--slate);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  /* ── MINI CORRIDOR MAP ── */
+  .mini-map {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 10px;
+    font-family: Helvetica, sans-serif;
+    font-size: 10px;
+    position: relative;
+    height: 120px;
+    overflow: hidden;
+  }
+  .mini-map .quadrant-label {
+    position: absolute;
+    font-size: 8px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .mini-map .ql-core { top: 6px; right: 8px; color: var(--navy-lt); }
+  .mini-map .ql-opt  { top: 6px; left: 8px; color: var(--muted); }
+  .mini-map .ql-exp  { bottom: 6px; right: 8px; color: var(--navy-mid); }
+  .mini-map .ql-exit { bottom: 6px; left: 8px; color: var(--muted); }
+  .mini-map .divh {
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px; background: var(--border);
+  }
+  .mini-map .divv {
+    position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .dot {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  /* ── MINI SCORECARD ── */
+  .mini-scorecard { background: var(--white); border: 1px solid var(--border); }
+  .mini-score-row {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+  }
+  .mini-score-row:last-child { border-bottom: none; }
+  .mini-score-label {
+    font-family: Helvetica, sans-serif;
+    font-size: 9px;
+    color: var(--navy);
+    flex: 1;
+    font-weight: 500;
+  }
+  .mini-bar-wrap { display: flex; gap: 2px; }
+  .mini-bar-cell {
+    width: 9px; height: 7px; border-radius: 1px;
+  }
+  .filled-high { background: var(--red); }
+  .filled-med  { background: #7a5c00; }
+  .filled-crit { background: var(--red); }
+  .empty-cell  { background: #e8e8e8; }
+  .mini-risk {
+    font-family: Helvetica, sans-serif;
+    font-size: 8px;
+    font-weight: bold;
+    width: 36px;
+    text-align: right;
+  }
+  .risk-high { color: var(--red); }
+  .risk-med  { color: #7a5c00; }
+  .risk-crit { color: #7a0000; }
+
+  /* ── MINI COST STACK ── */
+  .mini-stack { background: var(--white); border: 1px solid var(--border); }
+  .mini-stack-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 10px;
+    border-bottom: 1px solid var(--border);
+    font-family: Helvetica, sans-serif;
+    font-size: 10px;
+  }
+  .mini-stack-row:last-child { border-bottom: none; }
+  .mini-stack-row.total {
+    background: var(--navy);
+    font-weight: bold;
+  }
+  .mini-stack-row.total .sl { color: var(--white); }
+  .mini-stack-row.total .sv { color: var(--gold); }
+  .mini-stack-row.cost .sv { color: var(--red); }
+  .mini-stack-row .sl { color: var(--slate); }
+  .mini-stack-row .sv { color: var(--navy); font-weight: 600; }
+
+  /* ── CALLOUT BOX ── */
+  .callout {
+    background: var(--gold-lt);
+    border-left: 3px solid var(--gold);
+    border: 1px solid var(--gold);
+    border-left-width: 3px;
+    padding: 18px 20px;
+    margin-top: 0;
+  }
+  .callout p {
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.65;
+    margin: 0;
+  }
+  .callout p strong { color: var(--navy); }
+
+  /* ── WHAT FOLLOWS ── */
+  .what-follows {
+    padding: 56px 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .what-follows h2 {
+    font-size: 28px;
+    font-weight: normal;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  .what-follows > p {
+    font-family: Helvetica, sans-serif;
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.75;
+    margin-bottom: 36px;
+    max-width: 700px;
+  }
+
+  .engagement-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .engagement-card {
+    background: var(--white);
+    padding: 28px 24px;
+  }
+  .engagement-card .phase {
+    font-family: Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .engagement-card h3 {
+    font-size: 17px;
+    font-weight: normal;
+    color: var(--navy);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .engagement-card p {
+    font-family: Helvetica, sans-serif;
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+  .engagement-card .delivers {
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    margin-top: 4px;
+  }
+  .engagement-card .delivers strong {
+    color: var(--navy);
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* ── WHO THIS IS FOR ── */
+  .who {
+    padding: 56px 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .who h2 {
+    font-size: 28px;
+    font-weight: normal;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  .who > p {
+    font-family: Helvetica, sans-serif;
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.75;
+    margin-bottom: 36px;
+    max-width: 700px;
+  }
+
+  .who-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .who-card {
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+  .who-card .who-role {
+    font-family: Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .who-card h4 {
+    font-size: 16px;
+    font-weight: normal;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .who-card p {
+    font-family: Helvetica, sans-serif;
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    padding: 64px 0 20px;
+  }
+  .cta-box {
+    background: var(--navy);
+    border-top: 3px solid var(--gold);
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: center;
+  }
+  .cta-box h2 {
+    font-size: 26px;
+    font-weight: normal;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+  .cta-box p {
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+    color: #b0bec5;
+    line-height: 1.65;
+    margin: 0;
+    max-width: 520px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 32px;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+  }
+  .cta-btn:hover {
+    background: #c99b3a;
+  }
+  .cta-note {
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 28px 48px;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+
+
+  .hero-byline {
+    font-family: Helvetica, sans-serif;
+    font-size: 13px;
+    color: #7a9bbf;
+    margin-bottom: 20px;
+    letter-spacing: 0.2px;
+  }
+
+  .pricing-section {
+    padding: 56px 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pricing-section h2 {
+    font-size: 28px;
+    font-weight: normal;
+    color: var(--navy);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .pricing-intro {
+    font-family: Helvetica, sans-serif;
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.75;
+    margin-bottom: 36px;
+    max-width: 700px;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .pricing-card {
+    background: var(--white);
+    padding: 28px 24px;
+  }
+  .pricing-card:first-child {
+    border-top: 3px solid var(--gold);
+  }
+  .pricing-tier {
+    font-family: Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .pricing-card h3 {
+    font-size: 17px;
+    font-weight: normal;
+    color: var(--navy);
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+  .pricing-amount {
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+    color: var(--slate);
+    margin-bottom: 4px;
+  }
+  .pricing-amount strong {
+    font-size: 22px;
+    color: var(--navy);
+  }
+  .pricing-meta {
+    font-family: Helvetica, sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pricing-card p {
+    font-family: Helvetica, sans-serif;
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.65;
+    margin: 0;
+  }
+  @media (max-width: 700px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    nav { padding: 14px 20px; }
+    .hero { padding: 48px 20px 40px; }
+    main { padding: 0 20px 60px; }
+    .hero h1 { font-size: 28px; }
+    .three-problems, .outputs-grid, .engagement-grid, .who-grid { grid-template-columns: 1fr; }
+    .cta-box { grid-template-columns: 1fr; padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Carlos Ureña &nbsp;<span>·</span>&nbsp; Payments Strategy</div>
+  <div>
+    <a href="/">Home</a>
+    <a href="/payments-portfolio-diagnostic/">Diagnostic</a>
+    <a href="/consulting.html" class="active">Consulting</a>
+    <a href="/payments-pricing-governance-playbook.pdf" target="_blank">Playbooks</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Payments Franchise Consulting</div>
+    <h1>Most payments businesses are managed<br>as collections of products.<br><em>The ones that outperform are managed<br>as economic portfolios.</em></h1>
+    <div class="hero-rule"></div>
+    <p class="hero-byline">Built from 20 years in payments across Citi, Deutsche Bank, HSBC, and Mashreq, including direct P&amp;L leadership in wire and cross-border businesses.</p>
+    <p class="hero-thesis">
+      <strong>The Payments Franchise Diagnostic</strong> identifies where margin leakage, corridor inefficiencies, and capital misallocation are occurring in your payments business — and delivers a prioritized roadmap to fix them within 90 days.
+    </p>
+  </div>
+</div>
+
+<main>
+
+  <!-- PROBLEM -->
+  <section class="problem">
+    <div class="section-label">The Problem</div>
+    <h2>Revenue grows. Margins erode. Nobody can explain why.</h2>
+    <p>Regional and Tier-2 banks typically run payments businesses with separate product owners for ACH, wires, FX, and cross-border. Each optimizes their own product. Nobody owns the economics of the franchise as a whole.</p>
+    <p>The same dynamics increasingly apply to networks and fintech platforms building cross-border and multi-rail businesses at scale.</p>
+    <p>The result is a payments business that can grow volume while margin quietly erodes — because pricing decisions happen transaction by transaction, corridor economics are invisible after full cost allocation, and infrastructure spending is disconnected from commercial return.</p>
+
+    <div class="three-problems">
+      <div class="problem-card">
+        <div class="num">01</div>
+        <h3>Pricing Leakage</h3>
+        <p>Override rates accumulate without review. Exceptions never expire. Pricing decisions are made at the relationship level with no visibility into true corridor margin. Revenue looks healthy. Net margin tells a different story.</p>
+      </div>
+      <div class="problem-card">
+        <div class="num">02</div>
+        <h3>Corridor Economics Are Invisible</h3>
+        <p>Banks track volumes and revenues. They rarely track correspondent costs, nostro funding, compliance overhead, and operational exceptions at the corridor level. Corridors that look profitable on revenue are often margin-negative once full costs are applied.</p>
+      </div>
+      <div class="problem-card">
+        <div class="num">03</div>
+        <h3>Infrastructure Disconnected From Economics</h3>
+        <p>Rail decisions are made historically — a client asked, a product team responded, an integration became a dependency. Nobody evaluated the routing economics. The result is a cost structure nobody chose and few can change.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIAGNOSTIC -->
+  <section class="diagnostic">
+    <div class="section-label">The Diagnostic</div>
+    <h2>What the Payments Franchise Diagnostic produces</h2>
+    <p>The diagnostic assesses the payments business across six structural pillars — pricing governance, corridor economics, client monetization, infrastructure strategy, operational efficiency, and portfolio management — and delivers three analytical outputs. Each one moves from analysis to decision — showing not just where the problems are, but what to do about them. The patterns identified are consistent across global banks and regional franchises.</p>
+
+    <div class="outputs-grid">
+
+      <!-- OUTPUT 1: Corridor Map -->
+      <div class="output-card">
+        <div class="output-card-header">
+          <div class="out-num">Output 1</div>
+          <h4>Corridor Profitability Map</h4>
+        </div>
+        <div class="output-card-body">
+          <p>Plots each corridor by volume and net margin after full cost-stack allocation. Shows immediately which corridors are building the franchise and which are diluting it.</p>
+          <div class="mini-map">
+            <div class="divh"></div>
+            <div class="divv"></div>
+            <div class="quadrant-label ql-core">Core</div>
+            <div class="quadrant-label ql-opt">Optimize</div>
+            <div class="quadrant-label ql-exp">Expansion</div>
+            <div class="quadrant-label ql-exit">Exit</div>
+            <!-- Core dots -->
+            <div class="dot" style="width:16px;height:16px;background:#0f1f3d;top:22px;right:22px;opacity:0.9;"></div>
+            <div class="dot" style="width:12px;height:12px;background:#2a5a8a;top:32px;right:50px;opacity:0.85;"></div>
+            <!-- Expansion dots -->
+            <div class="dot" style="width:14px;height:14px;background:#1a3a6b;bottom:20px;right:28px;opacity:0.7;"></div>
+            <div class="dot" style="width:11px;height:11px;background:#1a3a6b;bottom:30px;right:58px;opacity:0.65;"></div>
+            <!-- Optimize dots -->
+            <div class="dot" style="width:10px;height:10px;background:#2a5a8a;top:28px;left:28px;opacity:0.55;"></div>
+            <div class="dot" style="width:9px;height:9px;background:#2a5a8a;top:40px;left:52px;opacity:0.5;"></div>
+            <!-- Exit dots -->
+            <div class="dot" style="width:8px;height:8px;background:#b7882c;bottom:22px;left:22px;opacity:0.8;"></div>
+            <div class="dot" style="width:7px;height:7px;background:#b7882c;bottom:34px;left:42px;opacity:0.7;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTPUT 2: Scorecard -->
+      <div class="output-card">
+        <div class="output-card-header">
+          <div class="out-num">Output 2</div>
+          <h4>Payments Portfolio Scorecard</h4>
+        </div>
+        <div class="output-card-body">
+          <p>Scores each of the six structural pillars on a five-point scale. Identifies where structural problems are actively eroding margin. Produces a prioritized 90-day action roadmap.</p>
+          <div class="mini-scorecard">
+            <div class="mini-score-row">
+              <span class="mini-score-label">Pricing Governance</span>
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-cell filled-high"></div><div class="mini-bar-cell filled-high"></div>
+                <div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div>
+              </div>
+              <span class="mini-risk risk-high">High</span>
+            </div>
+            <div class="mini-score-row">
+              <span class="mini-score-label">Corridor Economics</span>
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-cell filled-med"></div><div class="mini-bar-cell filled-med"></div><div class="mini-bar-cell filled-med"></div>
+                <div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div>
+              </div>
+              <span class="mini-risk risk-med">Med</span>
+            </div>
+            <div class="mini-score-row">
+              <span class="mini-score-label">Client Monetization</span>
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-cell filled-high"></div><div class="mini-bar-cell filled-high"></div>
+                <div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div>
+              </div>
+              <span class="mini-risk risk-high">High</span>
+            </div>
+            <div class="mini-score-row">
+              <span class="mini-score-label">Infrastructure Strategy</span>
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-cell filled-high"></div><div class="mini-bar-cell filled-high"></div>
+                <div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div>
+              </div>
+              <span class="mini-risk risk-high">High</span>
+            </div>
+            <div class="mini-score-row">
+              <span class="mini-score-label">Portfolio Management</span>
+              <div class="mini-bar-wrap">
+                <div class="mini-bar-cell filled-crit"></div>
+                <div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div><div class="mini-bar-cell empty-cell"></div>
+              </div>
+              <span class="mini-risk risk-crit" style="font-size:7px;">Crit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTPUT 3: Cost Stack -->
+      <div class="output-card">
+        <div class="output-card-header">
+          <div class="out-num">Output 3</div>
+          <h4>Infrastructure Cost Stack</h4>
+        </div>
+        <div class="output-card-body">
+          <p>Breaks each corridor into its component cost and revenue layers. Makes the true net margin per payment visible. Most banks cannot see this full cost structure today — which is why margin leakage persists unnoticed.</p>
+          <div class="mini-stack">
+            <div class="mini-stack-row">
+              <span class="sl">Client Price</span><span class="sv">$28.00</span>
+            </div>
+            <div class="mini-stack-row">
+              <span class="sl">+ FX Spread</span><span class="sv">$11.00</span>
+            </div>
+            <div class="mini-stack-row" style="border-bottom:1px solid #b7882c;">
+              <span class="sl">= Gross Revenue</span><span class="sv" style="color:var(--navy-mid);font-weight:700;">$39.00</span>
+            </div>
+            <div class="mini-stack-row cost">
+              <span class="sl">− Correspondent Fee</span><span class="sv">$−8.50</span>
+            </div>
+            <div class="mini-stack-row cost">
+              <span class="sl">− Nostro Funding</span><span class="sv">$−2.80</span>
+            </div>
+            <div class="mini-stack-row cost">
+              <span class="sl">− Compliance Cost</span><span class="sv">$−1.60</span>
+            </div>
+            <div class="mini-stack-row cost" style="border-bottom:1px solid var(--border);">
+              <span class="sl">− Operations Cost</span><span class="sv">$−1.20</span>
+            </div>
+            <div class="mini-stack-row total">
+              <span class="sl">= Net Margin</span><span class="sv">$24.90</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout">
+      <p><strong>What the diagnostic produces within two to three weeks of engagement start:</strong> a corridor profitability map, a portfolio scorecard with pillar-level findings, and a prioritized 90-day action roadmap. <strong>Organizations that address the first two priorities typically recover material margin within 90 days — often without repricing a single client.</strong></p>
+    </div>
+  </section>
+
+  <!-- WHAT FOLLOWS -->
+  <section class="what-follows">
+    <div class="section-label">Engagement Structure</div>
+    <h2>The diagnostic is the entry point. What follows is implementation.</h2>
+    <p>Each of the three engagement types is designed to move from diagnosis to concrete economic improvement. The diagnostic can be a standalone engagement or the entry point to a deeper implementation partnership.</p>
+
+    <div class="engagement-grid">
+      <div class="engagement-card">
+        <div class="phase">Entry Point</div>
+        <h3>Payments Franchise Diagnostic</h3>
+        <p>Two to three week engagement. Assesses the franchise across six structural pillars, produces the corridor map, scorecard, and 90-day roadmap. Can be delivered as a standalone deliverable.</p>
+        <div class="delivers">
+          <strong>Deliverables</strong>
+          Corridor Profitability Map · Portfolio Scorecard · 90-Day Action Roadmap · Prioritized fix list with expected margin impact
+        </div>
+      </div>
+      <div class="engagement-card">
+        <div class="phase">Implementation</div>
+        <h3>Playbook Engagements</h3>
+        <p>Six to twelve week engagements implementing a specific pillar: pricing governance, corridor economics, client monetization, or infrastructure strategy. Built on the diagnostic findings.</p>
+        <div class="delivers">
+          <strong>Deliverables</strong>
+          Pillar-specific implementation plan · Governance frameworks · Pricing or corridor model · Operating procedures and review cadence
+        </div>
+      </div>
+      <div class="engagement-card">
+        <div class="phase">Ongoing</div>
+        <h3>Fractional Advisor</h3>
+        <p>Monthly retainer providing ongoing payments portfolio strategy support. Quarterly portfolio reviews, pricing governance oversight, and strategic advisory on infrastructure and corridor decisions.</p>
+        <div class="delivers">
+          <strong>Deliverables</strong>
+          Quarterly portfolio review · Corridor classification update · Pricing governance monitoring · Strategic advisory on major decisions
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO -->
+  <section class="who">
+    <div class="section-label">Who This Is For</div>
+    <h2>Regional and Tier-2 banks with a meaningful payments business and limited internal strategy capacity.</h2>
+    <p>The diagnostic is most valuable where payments revenue is between $20M and $100M, cross-border flows are a meaningful share of volume, and the organization does not have a dedicated payments portfolio strategy function.</p>
+
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-role">Primary Buyer</div>
+        <h4>Head of Payments · Head of Treasury Services</h4>
+        <p>Owns the payments P&L and feels the problem directly — volumes are growing, margins feel tight, but the data to prove where and why doesn't exist. The diagnostic gives them that visibility in two to three weeks.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-role">Secondary Buyer</div>
+        <h4>Head of Transaction Banking · Commercial Banking COO</h4>
+        <p>Sees symptoms at the franchise level — inconsistent pricing, fragmented infrastructure, unclear return on technology investment. Needs economic discipline installed at the portfolio level, not just within individual products.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-role">Ideal Client Profile</div>
+        <h4>$20M–$100M payments revenue</h4>
+        <p>Strong commercial banking franchise with cross-border flows. ACH, wires, and FX managed separately. No formal corridor economics model. Pricing governed by relationship rather than margin. Infrastructure evolved historically without a commercial lens.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-role">Why Now</div>
+        <h4>Fintech competition is compressing margins on every corridor</h4>
+        <p>Margin compression is already happening across most major corridors. The question is not whether it exists — it's whether you can see it clearly enough to act. The banks that retain payments revenue are the ones that understand their economics well enough to price correctly, invest in the right corridors, and exit the ones that destroy value.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing-section">
+    <div class="section-label">Engagement Economics</div>
+    <h2>Transparent pricing. Defined scope. No retainer before value is established.</h2>
+    <p class="pricing-intro">Payments franchises generating $20M–$100M in revenue typically find that even modest corridor or pricing improvements deliver multiples of the engagement cost. The diagnostic is designed to demonstrate that value clearly before any further commitment. For most clients, the diagnostic identifies opportunities worth multiple times the engagement cost — often within the first 90 days.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-tier">Entry Point</div>
+        <h3>Payments Franchise Diagnostic</h3>
+        <div class="pricing-amount">Starting from <strong>$15,000</strong></div>
+        <div class="pricing-meta">2–3 weeks · defined scope · fixed fee</div>
+        <p>Full assessment across six pillars. Corridor profitability map, portfolio scorecard, and 90-day action roadmap. Can be delivered as a standalone engagement with no further obligation.</p>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-tier">Implementation</div>
+        <h3>Playbook Engagements</h3>
+        <div class="pricing-amount">Starting from <strong>$25,000</strong></div>
+        <div class="pricing-meta">6–12 weeks · pillar-specific · fixed or milestone fee</div>
+        <p>Implements a specific pillar identified in the diagnostic: pricing governance, corridor economics, client monetization, or infrastructure strategy. Built on diagnostic findings.</p>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-tier">Ongoing</div>
+        <h3>Fractional Advisor</h3>
+        <div class="pricing-amount">Starting from <strong>$8,000/month</strong></div>
+        <div class="pricing-meta">Monthly retainer · quarterly reviews · strategic advisory</div>
+        <p>Ongoing payments portfolio strategy support. Light advisory from $8K/month (1–2 touchpoints). True fractional engagement from $12K–$18K/month with weekly involvement and quarterly portfolio reviews.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <div>
+        <h2>Start with a conversation about where your payments franchise is leaking margin.</h2>
+        <p>A 30-minute call is enough to understand whether the diagnostic is the right starting point. No pitch deck. No proposal before we've talked. Just a direct conversation about where you are and what the framework can do for you.</p>
+      </div>
+      <div style="text-align:center;">
+        <a class="cta-btn" href="https://calendly.com/carlosurena/payments-diagnostic" target="_blank">Book a Call</a>
+        <div class="cta-note" style="color:#6b7280;margin-top:10px;">30 minutes · No obligation</div>
+        <div class="cta-note" style="color:#6b7280;margin-top:6px;font-size:11px;">I work with a limited number of clients at a time<br>to ensure depth and speed of execution.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Carlos Ureña &nbsp;·&nbsp; Payments Strategy &amp; Commercialization &nbsp;·&nbsp; <a href="/">carlosurena.com</a>
+</footer>
+
+</body>
+</html>
