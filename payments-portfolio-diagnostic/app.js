@@ -1351,17 +1351,17 @@
       y = sectionLabel("THE PAYMENTS FRANCHISE INDEX FRAMEWORK", y);
 
       var hexCX = ML + CW / 2;
-      var hexCY = y + 52;
-      var hexR = 38; // radius center to pillar center
-      var pillarW = 42;
-      var pillarH = 24;
+      var hexCY = y + 62;  // more vertical space
+      var hexR = 52;       // larger radius so boxes don't overlap
+      var pillarW = 46;
+      var pillarH = 26;
 
-      // Draw connecting lines from center to each pillar first (behind everything)
-      var hexAngles = [-90, -30, 30, 90, 150, 210]; // top, top-right, bottom-right, bottom, bottom-left, top-left
+      // Connecting lines
+      var hexAngles = [-90, -30, 30, 90, 150, 210];
       hexAngles.forEach(function(ang) {
         var rad = ang * Math.PI / 180;
-        var px2 = hexCX + Math.cos(rad) * (hexR - 12);
-        var py2 = hexCY + Math.sin(rad) * (hexR - 12);
+        var px2 = hexCX + Math.cos(rad) * (hexR - 16);
+        var py2 = hexCY + Math.sin(rad) * (hexR - 16);
         doc.setDrawColor(183, 136, 44);
         doc.setLineWidth(0.3);
         doc.setLineDashPattern([1, 2], 0);
@@ -1369,59 +1369,61 @@
       });
       doc.setLineDashPattern([], 0);
 
-      // Center circle
+      // Center circle — PFI Score
       doc.setFillColor(...NAVY);
-      doc.circle(hexCX, hexCY, 14, "F");
+      doc.circle(hexCX, hexCY, 16, "F");
       doc.setDrawColor(...GOLD);
-      doc.setLineWidth(1);
-      doc.circle(hexCX, hexCY, 14, "S");
+      doc.setLineWidth(1.2);
+      doc.circle(hexCX, hexCY, 16, "S");
+      // "PFI" text — in jsPDF y is baseline, center circle at hexCY
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(7);
+      doc.setFontSize(8);
       doc.setTextColor(...GOLD);
-      doc.text("PFI", hexCX, hexCY - 2, { align: "center" });
+      doc.text("PFI", hexCX, hexCY - 1, { align: "center" });
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(5.5);
+      doc.setFontSize(6);
       doc.setTextColor(...WHITE);
-      doc.text("Score", hexCX, hexCY + 4, { align: "center" });
+      doc.text("Score: " + r.overall, hexCX, hexCY + 6, { align: "center" });
 
-      // Six pillar hexagons
+      // Six pillar boxes
       var pillars6 = [
-        { label: "Revenue", sub: "Architecture", ang: -90, w: 0.20 },
-        { label: "Growth", sub: "Engine", ang: -30, w: 0.10 },
-        { label: "Margin &", sub: "Cost", ang: 30, w: 0.20 },
-        { label: "Governance", sub: "& Operating", ang: 90, w: 0.15 },
-        { label: "Balance", sub: "Sheet", ang: 150, w: 0.20 },
-        { label: "Multi-Rail", sub: "Strategy", ang: 210, w: 0.15 }
+        { label: "Revenue", sub: "Architecture", pct: "20%", ang: -90  },
+        { label: "Growth", sub: "Engine",        pct: "10%", ang: -30  },
+        { label: "Margin &", sub: "Cost",        pct: "20%", ang:  30  },
+        { label: "Governance", sub: "& Operating", pct: "15%", ang: 90 },
+        { label: "Balance", sub: "Sheet",        pct: "20%", ang: 150  },
+        { label: "Multi-Rail", sub: "Strategy",  pct: "15%", ang: 210  }
       ];
 
       pillars6.forEach(function(p6) {
         var rad = p6.ang * Math.PI / 180;
         var px2 = hexCX + Math.cos(rad) * hexR;
         var py2 = hexCY + Math.sin(rad) * hexR;
-        var pw = pillarW;
-        var ph = pillarH;
 
-        // Pillar box
         doc.setFillColor(...NAVY);
-        doc.roundedRect(px2 - pw/2, py2 - ph/2, pw, ph, 2, 2, "F");
+        doc.roundedRect(px2 - pillarW/2, py2 - pillarH/2, pillarW, pillarH, 2, 2, "F");
         doc.setDrawColor(...GOLD);
-        doc.setLineWidth(0.6);
-        doc.roundedRect(px2 - pw/2, py2 - ph/2, pw, ph, 2, 2, "S");
+        doc.setLineWidth(0.7);
+        doc.roundedRect(px2 - pillarW/2, py2 - pillarH/2, pillarW, pillarH, 2, 2, "S");
 
+        // Label line 1
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(5.5);
+        doc.setFontSize(6);
         doc.setTextColor(...GOLD);
-        doc.text(p6.label, px2, py2 - 4, { align: "center" });
+        doc.text(p6.label, px2, py2 - 5, { align: "center" });
+        // Label line 2
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(5);
+        doc.setFontSize(6);
         doc.setTextColor(200, 210, 225);
-        doc.text(p6.sub, px2, py2 + 2, { align: "center" });
-        doc.setFontSize(4.5);
-        doc.setTextColor(150, 160, 175);
-        doc.text(Math.round(p6.w * 100) + "%", px2, py2 + 8, { align: "center" });
+        doc.text(p6.sub, px2, py2 + 1, { align: "center" });
+        // Percentage
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6);
+        doc.setTextColor(...GOLD);
+        doc.text(p6.pct, px2, py2 + 8, { align: "center" });
       });
 
-      y += 112;
+      y += 132;
 
       // Contact block
       y = sectionLabel("QUESTIONS ABOUT YOUR RESULTS", y);
