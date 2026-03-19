@@ -803,28 +803,39 @@
       const pillarModel = window.PPD_MODEL.pillars;
       const totalPages = 4;
 
-      function drawHeader() {
+      function drawHeader(isFirstPage) {
         doc.setFillColor(...NAVY);
         doc.rect(0, 0, PAGE_W, 20, "F");
         doc.setDrawColor(...GOLD);
         doc.setLineWidth(0.5);
         doc.line(0, 20, PAGE_W, 20);
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(10.5);
-        doc.setTextColor(...WHITE);
-        doc.text("Payments Franchise Index", ML, 8.5);
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(6.5);
-        doc.setTextColor(180, 190, 210);
-        doc.text("Operator-grade diagnostic  ·  carlosurena.com", ML, 15);
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(8.5);
-        doc.setTextColor(...WHITE);
-        doc.text("Carlos Urena", PAGE_W - MR, 8.5, { align: "right" });
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(6.5);
-        doc.setTextColor(180, 190, 210);
-        doc.text("Payments Strategy & Commercialization", PAGE_W - MR, 15, { align: "right" });
+        if (isFirstPage) {
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(10.5);
+          doc.setTextColor(...WHITE);
+          doc.text("Payments Franchise Index", ML, 8.5);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(6.5);
+          doc.setTextColor(180, 190, 210);
+          doc.text("Operator-grade diagnostic  ·  carlosurena.com", ML, 15);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(8.5);
+          doc.setTextColor(...WHITE);
+          doc.text("Carlos Urena", PAGE_W - MR, 8.5, { align: "right" });
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(6.5);
+          doc.setTextColor(180, 190, 210);
+          doc.text("Payments Strategy & Commercialization", PAGE_W - MR, 15, { align: "right" });
+        } else {
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(8);
+          doc.setTextColor(...WHITE);
+          doc.text("PFI Diagnostic Report", ML, 12);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(6.5);
+          doc.setTextColor(...WHITE);
+          doc.text("Carlos Urena  ·  carlosurena.com", PAGE_W - MR, 12, { align: "right" });
+        }
       }
 
       function drawFooter(pageNum) {
@@ -852,7 +863,7 @@
       }
 
       // ── PAGE 1: Executive Summary Dashboard ──────────────────────────────
-      drawHeader();
+      drawHeader(true);
       drawFooter(1);
       let y = 25;
 
@@ -957,6 +968,44 @@
       doc.text(insightLines, ML + 6, y + 9);
       y += insightH + 6;
 
+      // PFI Classification Scale
+      y = sectionLabel("PFI CLASSIFICATION SCALE", y);
+      var bands = [
+        { range: "0 – 25",   label: "Structural Failure",    ink: RED,       bg: RED_BG    },
+        { range: "26 – 50",  label: "Fragile Franchise",     ink: YELLOW,    bg: YELLOW_BG },
+        { range: "51 – 70",  label: "Operationally Stable",  ink: [12,74,110], bg: [224,242,254] },
+        { range: "71 – 85",  label: "Strategically Aligned", ink: GREEN,     bg: GREEN_BG  },
+        { range: "86 – 100", label: "Best-in-Class",         ink: [88,28,135], bg: [243,232,255] }
+      ];
+      var scaleRowH = 6;
+      var scaleColW = CW / 5;
+      bands.forEach(function(b, bi) {
+        var bx = ML + bi * scaleColW;
+        var isActive = pfiBand(r.overall).label === b.label.toUpperCase() ||
+          (b.label === "Structural Failure" && r.overall <= 25) ||
+          (b.label === "Fragile Franchise" && r.overall > 25 && r.overall <= 50) ||
+          (b.label === "Operationally Stable" && r.overall > 50 && r.overall <= 70) ||
+          (b.label === "Strategically Aligned" && r.overall > 70 && r.overall <= 85) ||
+          (b.label === "Best-in-Class" && r.overall > 85);
+        doc.setFillColor.apply(doc, b.bg);
+        doc.rect(bx, y, scaleColW, scaleRowH * 2, "F");
+        if (isActive) {
+          doc.setDrawColor.apply(doc, b.ink);
+          doc.setLineWidth(0.8);
+          doc.rect(bx, y, scaleColW, scaleRowH * 2, "S");
+        }
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(5.5);
+        doc.setTextColor.apply(doc, b.ink);
+        doc.text(b.range, bx + scaleColW / 2, y + 4.5, { align: "center" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(5);
+        doc.setTextColor.apply(doc, b.ink);
+        var labelLines = doc.splitTextToSize(b.label, scaleColW - 2);
+        doc.text(labelLines, bx + scaleColW / 2, y + 8, { align: "center" });
+      });
+      y += scaleRowH * 2 + 6;
+
       // Pillar heatmap with visual bars
       y = sectionLabel("PILLAR HEATMAP", y);
       const BAR_H = 8;
@@ -997,7 +1046,7 @@
         doc.setFont("helvetica", "bold");
         doc.setFontSize(6.5);
         doc.setTextColor.apply(doc, WHITE);
-        doc.text(s.toFixed(1) + "/5", ML + CW - 9, y + 5.5, { align: "center" });
+        var scoreLabel = s < 1 ? s.toFixed(1) : Math.round(s) + ""; doc.text(scoreLabel + "/5", ML + CW - 9, y + 5.5, { align: "center" });
 
         y += BAR_H + 1;
       });
@@ -1050,7 +1099,7 @@
 
       // ── PAGE 2: What Drove Your Score + Executive Diagnosis ──────────────
       doc.addPage();
-      drawHeader();
+      drawHeader(false);
       drawFooter(2);
       y = 26;
 
@@ -1130,7 +1179,7 @@
 
       // ── PAGE 3: 90-Day Priorities ─────────────────────────────────────────
       doc.addPage();
-      drawHeader();
+      drawHeader(false);
       drawFooter(3);
       y = 26;
 
@@ -1197,7 +1246,7 @@
 
       // ── PAGE 4: Strategic Takeaway + Contact ─────────────────────────────
       doc.addPage();
-      drawHeader();
+      drawHeader(false);
       drawFooter(4);
       y = 26;
 
