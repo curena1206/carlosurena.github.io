@@ -759,7 +759,7 @@
       const GREEN_BG   = [240, 253, 244];
       const YELLOW     = [146, 64,  14 ];
       const YELLOW_BG  = [255, 251, 235];
-      const RED        = [155, 28,  28 ];
+      const RED        = [120, 20,  40 ];
       const RED_BG     = [255, 245, 245];
       const GREY_BG    = [241, 245, 249];
 
@@ -981,30 +981,40 @@
       var scaleColW = CW / 5;
       bands.forEach(function(b, bi) {
         var bx = ML + bi * scaleColW;
-        var isActive = pfiBand(r.overall).label === b.label.toUpperCase() ||
-          (b.label === "Structural Failure" && r.overall <= 25) ||
+        var isActive = (b.label === "Structural Failure" && r.overall <= 25) ||
           (b.label === "Fragile Franchise" && r.overall > 25 && r.overall <= 50) ||
           (b.label === "Operationally Stable" && r.overall > 50 && r.overall <= 70) ||
           (b.label === "Strategically Aligned" && r.overall > 70 && r.overall <= 85) ||
           (b.label === "Best-in-Class" && r.overall > 85);
         doc.setFillColor.apply(doc, b.bg);
-        doc.rect(bx, y, scaleColW, scaleRowH * 2, "F");
+        doc.rect(bx, y, scaleColW, 13, "F");
+        doc.setDrawColor.apply(doc, b.ink);
+        doc.setLineWidth(isActive ? 1.2 : 0.3);
+        doc.rect(bx, y, scaleColW, 13, "S");
         if (isActive) {
-          doc.setDrawColor.apply(doc, b.ink);
-          doc.setLineWidth(0.8);
-          doc.rect(bx, y, scaleColW, scaleRowH * 2, "S");
+          doc.setFillColor.apply(doc, b.ink);
+          doc.rect(bx, y, scaleColW, 5, "F");
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(6);
+          doc.setTextColor(...WHITE);
+          doc.text(b.range, bx + scaleColW / 2, y + 3.8, { align: "center" });
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(5.5);
+          doc.setTextColor.apply(doc, b.ink);
+          var labelLines = doc.splitTextToSize(b.label, scaleColW - 2);
+          doc.text(labelLines, bx + scaleColW / 2, y + 9.5, { align: "center" });
+        } else {
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(6);
+          doc.setTextColor.apply(doc, b.ink);
+          doc.text(b.range, bx + scaleColW / 2, y + 4.5, { align: "center" });
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(5.5);
+          var labelLines = doc.splitTextToSize(b.label, scaleColW - 2);
+          doc.text(labelLines, bx + scaleColW / 2, y + 9.5, { align: "center" });
         }
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(5.5);
-        doc.setTextColor.apply(doc, b.ink);
-        doc.text(b.range, bx + scaleColW / 2, y + 4.5, { align: "center" });
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(5);
-        doc.setTextColor.apply(doc, b.ink);
-        var labelLines = doc.splitTextToSize(b.label, scaleColW - 2);
-        doc.text(labelLines, bx + scaleColW / 2, y + 8, { align: "center" });
       });
-      y += scaleRowH * 2 + 6;
+      y += 18;
 
       // Pillar heatmap with visual bars
       y = sectionLabel("PILLAR HEATMAP", y);
@@ -1046,7 +1056,7 @@
         doc.setFont("helvetica", "bold");
         doc.setFontSize(6.5);
         doc.setTextColor.apply(doc, WHITE);
-        var scoreLabel = s < 1 ? s.toFixed(1) : Math.round(s) + ""; doc.text(scoreLabel + "/5", ML + CW - 9, y + 5.5, { align: "center" });
+        var scoreLabel = s < 1 ? s.toFixed(1).replace("0.", ".") : Math.round(s) + ""; doc.text(scoreLabel + "/5", ML + CW - 9, y + 5.5, { align: "center" });
 
         y += BAR_H + 1;
       });
@@ -1141,7 +1151,7 @@
         y += ROW_H + 1;
       });
 
-      y += 5;
+      y += 3;
 
       // Executive Diagnosis
       y = sectionLabel("EXECUTIVE DIAGNOSIS", y);
@@ -1241,7 +1251,7 @@
         doc.setTextColor(140, 155, 170);
         doc.text(whyLines, ML + 18, iy);
 
-        y += ROW_H + 3;
+        y += ROW_H + 2;
       });
 
       // ── PAGE 4: Strategic Takeaway + Contact ─────────────────────────────
@@ -1269,7 +1279,7 @@
         var items = ph.ids.map(function(id) { return window.PPD_MODEL.recommendations[id]; }).filter(Boolean);
         var itemLines = [];
         items.forEach(function(r2) {
-          var lines = doc.splitTextToSize("• " + r2.title, colW - 4);
+          var lines = doc.splitTextToSize("- " + r2.title, colW - 4);
           itemLines = itemLines.concat(lines);
         });
         var colH = 10 + itemLines.length * 3.6 + 6;
@@ -1308,18 +1318,18 @@
         ? "The franchise is operationally functional but leaving margin on the table through pricing exceptions, corridor gaps, and unoptimized rail economics. Closing these gaps does not require structural change — it requires governance and measurement discipline."
         : "The franchise has strong economic foundations. The remaining opportunity is in corridor-level optimization, balance sheet linkage, and ensuring the operating model can sustain performance as volume and complexity grow.";
 
-      var takeLines = doc.splitTextToSize(takeaway, CW - 8);
+      var takeLines = doc.splitTextToSize(takeaway, CW - 10);
       var takeH = takeLines.length * 3.8 + 10;
+      var takeH2 = takeLines.length * 4.2 + 14;
       doc.setFillColor(...NAVY);
-      doc.rect(ML, y, CW, takeH, "F");
+      doc.rect(ML, y, CW, takeH2, "F");
       doc.setFillColor(...GOLD);
-      doc.rect(ML, y, 3, takeH, "F");
+      doc.rect(ML, y, 3, takeH2, "F");
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(...WHITE);
-      doc.text(takeLines, ML + 7, y + 7);
-      y += takeH + 10;
-
+      doc.text(takeLines, ML + 7, y + 8);
+      y += takeH2 + 10;
       // Contact block
       y = sectionLabel("QUESTIONS ABOUT YOUR RESULTS", y);
 
@@ -1346,7 +1356,7 @@
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7);
-      doc.setTextColor(...SLATE_2);
+      doc.setTextColor(...SLATE);
       var contactNote = "The Payments Franchise Diagnostic engagement expands this model into a structured review using your actual transaction data, pricing records, and corridor economics — producing a Corridor Profitability Map, Portfolio Scorecard, and Infrastructure Cost Stack.";
       var contactLines = doc.splitTextToSize(contactNote, CW / 2 - 4);
       doc.text(contactLines, ML + CW / 2 + 4, y + 6);
