@@ -1218,8 +1218,6 @@
       phases.forEach(function(ph, pi) {
         var px = phaseX[pi];
         var items = ph.ids.map(function(id) { return window.PPD_MODEL.recommendations[id]; }).filter(Boolean);
-        var allText = items.map(function(r2) { return "• " + r2.title; }).join("
-");
         var itemLines = [];
         items.forEach(function(r2) {
           var lines = doc.splitTextToSize("• " + r2.title, colW - 4);
