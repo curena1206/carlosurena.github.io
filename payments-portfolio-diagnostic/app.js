@@ -781,44 +781,63 @@
         exceptional: { bg: [243,232,255],    ink: [88,28,135]      }
       };
 
-      const activeScenario = SCENARIOS.find((s) => s.id === state.activeScenario);
+      // PFI Score band classification
+      function pfiBand(score) {
+        if (score <= 25) return { label: "STRUCTURAL FAILURE",   ink: RED,    bg: RED_BG    };
+        if (score <= 50) return { label: "FRAGILE FRANCHISE",    ink: YELLOW, bg: YELLOW_BG };
+        if (score <= 70) return { label: "OPERATIONALLY STABLE", ink: [12,74,110], bg: [224,242,254] };
+        if (score <= 85) return { label: "STRATEGICALLY ALIGNED",ink: GREEN,  bg: GREEN_BG  };
+        return                   { label: "BEST-IN-CLASS",        ink: [88,28,135], bg: [243,232,255] };
+      }
 
-      function drawHeader(pageNum) {
+      // Benchmark insight by band
+      function benchmarkInsight(score) {
+        if (score <= 25) return "At this level, payments franchises typically experience margin compression driven by repair costs, pricing leakage, and absent portfolio governance. Stabilization programs focus first on pricing discipline and operational control before growth initiatives can gain traction.";
+        if (score <= 50) return "The franchise generates revenue but the economics are fragile. Margin durability depends heavily on a single revenue lever or a small client set. Pricing governance and corridor-level visibility are the highest-leverage improvement areas.";
+        if (score <= 70) return "Core mechanics are functioning, but pricing discipline, corridor strategy, or rail economics are not yet fully aligned. The franchise is stable but leaving margin on the table through structural gaps that grow with volume.";
+        if (score <= 85) return "Governance and monetization discipline are strong. Remaining gains typically come from corridor optimization, rail strategy, and deepening balance sheet linkage across the client base.";
+        return "The franchise operates with strong economic discipline across pricing, infrastructure, and portfolio management. Focus shifts to defending margin integrity and extracting the final layer of portfolio optimization.";
+      }
+
+      const activeScenario = SCENARIOS.find((s) => s.id === state.activeScenario);
+      const pillarModel = window.PPD_MODEL.pillars;
+      const totalPages = 4;
+
+      function drawHeader() {
         doc.setFillColor(...NAVY);
-        doc.rect(0, 0, PAGE_W, 22, "F");
+        doc.rect(0, 0, PAGE_W, 20, "F");
         doc.setDrawColor(...GOLD);
-        doc.setLineWidth(0.6);
-        doc.line(0, 22, PAGE_W, 22);
+        doc.setLineWidth(0.5);
+        doc.line(0, 20, PAGE_W, 20);
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(11);
+        doc.setFontSize(10.5);
         doc.setTextColor(...WHITE);
-        doc.text("Payments Franchise Index (PFI)", ML, 9);
+        doc.text("Payments Franchise Index", ML, 8.5);
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(7);
+        doc.setFontSize(6.5);
         doc.setTextColor(180, 190, 210);
-        doc.text("Payments Franchise Index  ·  Operator-grade framework  ·  V1", ML, 16);
+        doc.text("Operator-grade diagnostic  ·  carlosurena.com", ML, 15);
         doc.setFont("helvetica", "bold");
         doc.setFontSize(8.5);
         doc.setTextColor(...WHITE);
-        doc.text("Carlos Urena", PAGE_W - MR, 9, { align: "right" });
+        doc.text("Carlos Urena", PAGE_W - MR, 8.5, { align: "right" });
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(7);
+        doc.setFontSize(6.5);
         doc.setTextColor(180, 190, 210);
-        doc.text("Citi  ·  Deutsche Bank  ·  HSBC  ·  Mashreq", PAGE_W - MR, 16, { align: "right" });
-
+        doc.text("Payments Strategy & Commercialization", PAGE_W - MR, 15, { align: "right" });
       }
 
       function drawFooter(pageNum) {
         doc.setFillColor(...NAVY);
-        doc.rect(0, PAGE_H - 11, PAGE_W, 11, "F");
+        doc.rect(0, PAGE_H - 10, PAGE_W, 10, "F");
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(6.5);
+        doc.setFontSize(6);
         doc.setTextColor(...WHITE);
-        doc.text("Carlos Urena  ·  linkedin.com/in/carlosurena", ML, PAGE_H - 4);
+        doc.text("Carlos Urena  ·  urena.m.carlos@gmail.com  ·  carlosurena.com", ML, PAGE_H - 3.5);
         doc.setTextColor(150, 165, 195);
-        doc.text("PFI V1  ·  Commercial banking payments  ·  No data stored", PAGE_W - MR, PAGE_H - 4, { align: "right" });
+        doc.text("No data stored  ·  Runs in browser", PAGE_W - MR, PAGE_H - 3.5, { align: "right" });
         doc.setTextColor(180, 195, 220);
-        doc.text("Page " + pageNum + " of 3", PAGE_W / 2, PAGE_H - 4, { align: "center" });
+        doc.text("Page " + pageNum + " of " + totalPages, PAGE_W / 2, PAGE_H - 3.5, { align: "center" });
       }
 
       function sectionLabel(label, y) {
@@ -828,69 +847,120 @@
         doc.text(label, ML, y);
         doc.setDrawColor(...LINE);
         doc.setLineWidth(0.2);
-        doc.line(ML + 32, y - 1, ML + CW, y - 1);
-        return y + 4;
+        doc.line(ML + 34, y - 1, ML + CW, y - 1);
+        return y + 5;
       }
 
-      // ── PAGE 1: Score · Heatmap · Diagnosis ──────────────────────────────
-      drawHeader(1);
-      let y = 28;
+      // ── PAGE 1: Executive Summary Dashboard ──────────────────────────────
+      drawHeader();
+      drawFooter(1);
+      let y = 25;
+
+      // Page title
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+      doc.setTextColor(...NAVY);
+      doc.text("Diagnostic Report", ML, y);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(...SLATE);
+      doc.text("Payments Franchise Index  ·  Executive Summary", ML, y + 6);
+      y += 13;
 
       // Scenario label
       if (activeScenario) {
         doc.setFillColor(...GOLD_LIGHT);
-        doc.rect(ML, y, CW, 8, "F");
+        doc.rect(ML, y, CW, 7, "F");
         doc.setFillColor(...GOLD);
-        doc.rect(ML, y, 2.5, 8, "F");
+        doc.rect(ML, y, 2.5, 7, "F");
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(6.5);
+        doc.setFontSize(6);
         doc.setTextColor(...GOLD);
-        doc.text("SCENARIO", ML + 5, y + 5.5);
+        doc.text("SCENARIO", ML + 5, y + 4.8);
         doc.setFont("helvetica", "normal");
         doc.setTextColor(80, 55, 10);
-        doc.text(activeScenario.label, ML + 28, y + 5.5);
-        y += 11;
+        doc.text(activeScenario.label, ML + 27, y + 4.8);
+        y += 10;
       }
 
-      // Score block
+      // Score + classification block
+      var band = pfiBand(r.overall);
       doc.setFillColor(...SOFT);
-      doc.rect(ML, y, CW, 23, "F");
+      doc.rect(ML, y, CW, 26, "F");
       doc.setFillColor(...GOLD);
-      doc.rect(ML, y, 3, 23, "F");
+      doc.rect(ML, y, 3, 26, "F");
 
+      // Big score
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(34);
+      doc.setFontSize(38);
       doc.setTextColor(...NAVY);
-      doc.text(String(r.overall), ML + 10, y + 17);
-
+      doc.text(String(r.overall), ML + 9, y + 19);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
       doc.setTextColor(...SLATE);
-      doc.text("/100", ML + 31, y + 17);
+      doc.text("/100", ML + 30, y + 19);
 
+      // Vertical divider
       doc.setDrawColor(...LINE);
       doc.setLineWidth(0.3);
-      doc.line(ML + 50, y + 4, ML + 50, y + 19);
+      doc.line(ML + 52, y + 3, ML + 52, y + 23);
 
+      // Classification badge
+      doc.setFillColor.apply(doc, band.bg);
+      doc.roundedRect(ML + 56, y + 3, 50, 7, 1.5, 1.5, "F");
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(10);
+      doc.setFontSize(7);
+      doc.setTextColor.apply(doc, band.ink);
+      doc.text(band.label, ML + 81, y + 8, { align: "center" });
+
+      // Sub-scores — clean 3-column layout
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7);
+      doc.setTextColor(...SLATE);
+      doc.text("Monetization", ML + 56, y + 16);
+      doc.setFont("helvetica", "bold");
       doc.setTextColor(...NAVY);
-      doc.text(maturityLabel(r.overall), ML + 54, y + 9);
+      doc.text(r.sub.monetization + "/100", ML + 56, y + 21);
 
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(7.5);
       doc.setTextColor(...SLATE);
-      doc.text("Monetization: " + r.sub.monetization + "/100", ML + 54, y + 15);
-      doc.text("Margin durability: " + r.sub.margin + "/100", ML + 54, y + 20);
-      doc.text("Strategic readiness: " + r.sub.readiness + "/100", ML + 126, y + 15);
-      y += 28;
+      doc.text("Margin durability", ML + 90, y + 16);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...NAVY);
+      doc.text(r.sub.margin + "/100", ML + 90, y + 21);
 
-      // Heatmap
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(...SLATE);
+      doc.text("Strategic readiness", ML + 128, y + 16);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...NAVY);
+      doc.text(r.sub.readiness + "/100", ML + 128, y + 21);
+
+      y += 30;
+
+      // Benchmark insight
+      doc.setFillColor(245, 248, 252);
+      doc.setDrawColor(...GOLD);
+      doc.setLineWidth(0.4);
+      var insight = benchmarkInsight(r.overall);
+      var insightLines = doc.splitTextToSize(insight, CW - 10);
+      var insightH = insightLines.length * 3.8 + 8;
+      doc.rect(ML, y, CW, insightH, "F");
+      doc.rect(ML, y, 3, insightH, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(6);
+      doc.setTextColor(...GOLD);
+      doc.text("BENCHMARK INSIGHT", ML + 6, y + 5);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7);
+      doc.setTextColor(...SLATE);
+      doc.text(insightLines, ML + 6, y + 9);
+      y += insightH + 6;
+
+      // Pillar heatmap with visual bars
       y = sectionLabel("PILLAR HEATMAP", y);
-
-      const pillarModel = window.PPD_MODEL.pillars;
-      const BAR_H = 9;
-      const BAR_GAP = 2;
+      const BAR_H = 8;
+      const MAX_BAR_W = 50;
 
       pillarModel.forEach(function(p) {
         var s = r.pillarScores[p.id].score5;
@@ -899,186 +969,343 @@
         else if (s >= 2.5) { bg = YELLOW_BG; ink = YELLOW; }
         else               { bg = RED_BG;    ink = RED;    }
 
+        // Row background
         doc.setFillColor.apply(doc, bg);
         doc.rect(ML, y, CW, BAR_H, "F");
 
+        // Pillar name
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(8);
+        doc.setFontSize(7.5);
         doc.setTextColor.apply(doc, NAVY);
-        doc.text(p.name, ML + 3, y + 6);
+        doc.text(p.name, ML + 3, y + 5.5);
 
-        doc.setFontSize(6.5);
+        // Weight
+        doc.setFontSize(6);
         doc.setTextColor.apply(doc, SLATE_2);
-        doc.text(Math.round(p.weight * 100) + "%", ML + 110, y + 6);
+        doc.text(Math.round(p.weight * 100) + "%", ML + 92, y + 5.5);
 
+        // Visual bar
+        var barW = (s / 5) * MAX_BAR_W;
+        doc.setFillColor(220, 225, 235);
+        doc.rect(ML + 100, y + 2, MAX_BAR_W, 4, "F");
         doc.setFillColor.apply(doc, ink);
-        doc.roundedRect(ML + CW - 24, y + 2, 24, 5, 1, 1, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(7);
-        doc.setTextColor.apply(doc, WHITE);
-        doc.text(s.toFixed(1) + " / 5.0", ML + CW - 12, y + 5.8, { align: "center" });
+        if (barW > 0) doc.rect(ML + 100, y + 2, barW, 4, "F");
 
-        y += BAR_H + BAR_GAP;
+        // Score badge
+        doc.setFillColor.apply(doc, ink);
+        doc.roundedRect(ML + CW - 18, y + 1.5, 18, 5, 1, 1, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6.5);
+        doc.setTextColor.apply(doc, WHITE);
+        doc.text(s.toFixed(1) + "/5", ML + CW - 9, y + 5.5, { align: "center" });
+
+        y += BAR_H + 1;
       });
 
-      // ── PAGE 2: What Drove Your Score · Diagnosis ───────────────────────
-      drawFooter(1);
-      doc.addPage();
-      drawHeader(2);
-      drawFooter(2);
-      y = 36;
+      y += 5;
 
-      // Narratives on page 2
+      // Key structural issues — top 2 diagnosis items
+      y = sectionLabel("KEY STRUCTURAL ISSUES", y);
+      r.rules.diag.slice(0, 2).forEach(function(d, i) {
+        var src = r.rules.diagSources ? r.rules.diagSources[i] : null;
+        var meta = src ? TIER_META[src.tier] : null;
+        var dlines = doc.splitTextToSize(d, CW - 8);
+        var blockH = dlines.length * 3.6 + 7;
+
+        doc.setFillColor(250, 251, 253);
+        doc.rect(ML, y, CW, blockH, "F");
+        if (meta) {
+          doc.setFillColor.apply(doc, meta.ink);
+          doc.rect(ML, y, 3, blockH, "F");
+        }
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(6.8);
+        doc.setTextColor(55, 65, 81);
+        doc.text(dlines, ML + 6, y + 5);
+        y += blockH + 2;
+      });
+
+      y += 4;
+
+      // Immediate focus CTA
+      doc.setFillColor(...NAVY);
+      doc.rect(ML, y, CW, 14, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(7);
+      doc.setTextColor(...GOLD);
+      doc.text("IMMEDIATE FOCUS", ML + 4, y + 5.5);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...WHITE);
+      var focusText = r.overall <= 25
+        ? "Restore pricing governance and operational discipline before pursuing growth. Growth amplifies margin leakage when the operating model is not ready."
+        : r.overall <= 50
+        ? "Stabilize margin through pricing governance and exception reduction. Monetization improvements depend on fixing structural cost and leakage first."
+        : r.overall <= 70
+        ? "Close the gap between revenue growth and volume growth. Pricing segmentation and corridor economics are the highest-leverage levers available."
+        : "Optimize corridor economics and deepen balance sheet linkage. The operating foundation is strong — focus on extracting the remaining portfolio value.";
+      var focusLines = doc.splitTextToSize(focusText, CW - 8);
+      doc.text(focusLines, ML + 4, y + 10.5);
+      y += 18;
+
+      // ── PAGE 2: What Drove Your Score + Executive Diagnosis ──────────────
+      doc.addPage();
+      drawHeader();
+      drawFooter(2);
+      y = 26;
+
       y = sectionLabel("WHAT DROVE YOUR SCORE", y);
 
       pillarModel.forEach(function(p) {
         var s = r.pillarScores[p.id].score5;
-        var band = s < 2.0 ? "critical" : s < 3.0 ? "weak" : s < 4.0 ? "developing" : s < 5.0 ? "strong" : "exceptional";
-        var narrative = PILLAR_NARRATIVES[p.id] && PILLAR_NARRATIVES[p.id][band];
+        var band2 = s < 2.0 ? "critical" : s < 3.0 ? "weak" : s < 4.0 ? "developing" : s < 5.0 ? "strong" : "exceptional";
+        var narrative = PILLAR_NARRATIVES[p.id] && PILLAR_NARRATIVES[p.id][band2];
         if (!narrative) return;
 
-        var bc = bandColorsPDF[band];
-        var narLines = doc.splitTextToSize(narrative, CW - 38);
-        var ROW_H = 6 + narLines.length * 3.8 + 4;
+        var bc = bandColorsPDF[band2];
+        var narLines = doc.splitTextToSize(narrative, CW - 36);
+        var ROW_H = 5 + narLines.length * 3.6 + 4;
 
         doc.setFillColor(250, 251, 252);
         doc.rect(ML, y, CW, ROW_H, "F");
         doc.setDrawColor(...LINE);
-        doc.setLineWidth(0.15);
+        doc.setLineWidth(0.12);
         doc.line(ML, y + ROW_H, ML + CW, y + ROW_H);
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(7.5);
         doc.setTextColor(...NAVY);
-        doc.text(p.name, ML + 2, y + 5.5);
+        doc.text(p.name, ML + 2, y + 5);
 
         doc.setFillColor.apply(doc, bc.bg);
-        doc.roundedRect(ML + CW - 28, y + 1.5, 28, 4.5, 1, 1, "F");
+        doc.roundedRect(ML + CW - 26, y + 1.5, 26, 4, 1, 1, "F");
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(5.5);
+        doc.setFontSize(5);
         doc.setTextColor.apply(doc, bc.ink);
-        doc.text(bandLabelsPDF[band], ML + CW - 14, y + 5, { align: "center" });
+        doc.text(bandLabelsPDF[band2], ML + CW - 13, y + 4.5, { align: "center" });
 
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(7);
+        doc.setFontSize(6.8);
         doc.setTextColor(55, 65, 81);
-        doc.text(narLines, ML + 2, y + 9);
+        doc.text(narLines, ML + 2, y + 8.5);
 
         y += ROW_H + 1;
       });
 
-      y += 6;
+      y += 5;
 
-      // Diagnosis on page 2
+      // Executive Diagnosis
       y = sectionLabel("EXECUTIVE DIAGNOSIS", y);
 
       r.rules.diag.forEach(function(d, i) {
         var src  = r.rules.diagSources ? r.rules.diagSources[i] : null;
         var meta = src ? TIER_META[src.tier] : null;
+        var dlines = doc.splitTextToSize((i + 1) + ".  " + d, CW - 6);
+        var diagH = dlines.length * 3.8 + (meta ? 12 : 6);
 
+        doc.setFillColor(250, 251, 252);
+        doc.rect(ML, y, CW, diagH, "F");
+        if (meta) {
+          doc.setFillColor.apply(doc, meta.ink);
+          doc.rect(ML, y, 3, diagH, "F");
+        }
+
+        var iy2 = y + 5;
         if (meta) {
           doc.setFillColor.apply(doc, meta.bg);
-          doc.roundedRect(ML, y, 34, 5, 1, 1, "F");
+          doc.roundedRect(ML + 6, y + 2, 32, 4.5, 1, 1, "F");
           doc.setFont("helvetica", "bold");
           doc.setFontSize(5.5);
           doc.setTextColor.apply(doc, meta.ink);
-          doc.text(meta.label, ML + 17, y + 3.5, { align: "center" });
-          y += 7;
+          doc.text(meta.label, ML + 22, y + 5.2, { align: "center" });
+          iy2 = y + 9;
         }
 
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(8);
+        doc.setFontSize(7.5);
         doc.setTextColor.apply(doc, NAVY);
-        var dlines = doc.splitTextToSize((i + 1) + ".  " + d, CW - 4);
-        doc.text(dlines, ML + 2, y);
-        y += dlines.length * 4.2 + 5;
+        doc.text(dlines, ML + 6, iy2);
+        y += diagH + 3;
       });
 
       // ── PAGE 3: 90-Day Priorities ─────────────────────────────────────────
-      drawFooter(2);
       doc.addPage();
-      drawHeader(3);
+      drawHeader();
       drawFooter(3);
-      y = 36;
+      y = 26;
 
       y = sectionLabel("90-DAY PRIORITIES", y);
-      y += 3;
 
       r.rules.recIds.forEach(function(id, idx) {
         var rec = window.PPD_MODEL.recommendations[id];
         if (!rec) return;
 
-        doc.setFontSize(9);
-        var titleLines = doc.splitTextToSize(rec.title, CW - 18);
-        doc.setFontSize(7.5);
-        var ownerLines = doc.splitTextToSize("Owner: " + rec.owner, CW - 18);
-        var kpiLines   = doc.splitTextToSize("KPI: " + rec.metric, CW - 18);
-        var whyLines   = doc.splitTextToSize("Why: " + rec.why, CW - 18);
+        doc.setFontSize(8.5);
+        var titleLines = doc.splitTextToSize(rec.title, CW - 20);
+        doc.setFontSize(7);
+        var ownerLines = doc.splitTextToSize("Owner: " + rec.owner, CW - 20);
+        var kpiLines   = doc.splitTextToSize("KPI: " + rec.metric, CW - 20);
+        var whyLines   = doc.splitTextToSize(rec.why, CW - 20);
 
-        var ROW_H = 8
-          + titleLines.length * 5.2
-          + ownerLines.length * 4.2
-          + kpiLines.length * 4.2
-          + whyLines.length * 4
-          + 8;
+        var ROW_H = 7
+          + titleLines.length * 4.8
+          + ownerLines.length * 3.8
+          + kpiLines.length * 3.8
+          + whyLines.length * 3.5
+          + 6;
 
-        // Row background
-        if (idx % 2 === 0) {
-          doc.setFillColor(247, 249, 252);
-        } else {
-          doc.setFillColor(255, 255, 255);
-        }
+        doc.setFillColor(idx % 2 === 0 ? 247 : 255, idx % 2 === 0 ? 249 : 255, idx % 2 === 0 ? 252 : 255);
         doc.rect(ML, y, CW, ROW_H, "F");
 
-        // Gold left accent
         doc.setFillColor.apply(doc, GOLD);
         doc.rect(ML, y, 3, ROW_H, "F");
 
-        // Number badge — centered vertically
-        var badgeY = y + ROW_H / 2 - 5;
+        // Number badge
+        var badgeY = y + 4;
         doc.setFillColor.apply(doc, GOLD_LIGHT);
-        doc.roundedRect(ML + 6, badgeY, 10, 10, 1.5, 1.5, "F");
+        doc.roundedRect(ML + 5, badgeY, 9, 9, 1.5, 1.5, "F");
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(9);
+        doc.setFontSize(8);
         doc.setTextColor.apply(doc, GOLD);
-        doc.text(String(idx + 1), ML + 11, badgeY + 7, { align: "center" });
+        doc.text(String(idx + 1), ML + 9.5, badgeY + 6.5, { align: "center" });
 
-        var iy = y + 7;
+        var iy = y + 6;
 
-        // Title
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(9);
+        doc.setFontSize(8.5);
         doc.setTextColor.apply(doc, NAVY);
-        doc.text(titleLines, ML + 20, iy);
-        iy += titleLines.length * 5.2 + 2;
+        doc.text(titleLines, ML + 18, iy);
+        iy += titleLines.length * 4.8 + 2;
 
-        // Owner
         doc.setFont("helvetica", "normal");
-        doc.setFontSize(7.5);
-        doc.setTextColor.apply(doc, SLATE);
-        doc.text(ownerLines, ML + 20, iy);
-        iy += ownerLines.length * 4.2 + 1;
-
-        // KPI
-        doc.setFontSize(7.5);
-        doc.setTextColor.apply(doc, SLATE_2);
-        doc.text(kpiLines, ML + 20, iy);
-        iy += kpiLines.length * 4.2 + 1;
-
-        // Why (italic)
-        doc.setFont("helvetica", "italic");
         doc.setFontSize(7);
-        doc.setTextColor(140, 155, 170);
-        doc.text(whyLines, ML + 20, iy);
+        doc.setTextColor.apply(doc, SLATE);
+        doc.text(ownerLines, ML + 18, iy);
+        iy += ownerLines.length * 3.8 + 1;
 
-        y += ROW_H + 4;
+        doc.setTextColor.apply(doc, SLATE_2);
+        doc.text(kpiLines, ML + 18, iy);
+        iy += kpiLines.length * 3.8 + 1;
+
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(6.5);
+        doc.setTextColor(140, 155, 170);
+        doc.text(whyLines, ML + 18, iy);
+
+        y += ROW_H + 3;
       });
 
+      // ── PAGE 4: Strategic Takeaway + Contact ─────────────────────────────
+      doc.addPage();
+      drawHeader();
+      drawFooter(4);
+      y = 26;
+
+      // 30/60/90 plan
+      y = sectionLabel("SUGGESTED 30 / 60 / 90-DAY EXECUTION PLAN", y);
+
+      var phases = [
+        { phase: "Days 1–30", title: "Stabilize & Measure", ids: r.rules.recIds.slice(0, 2) },
+        { phase: "Days 31–60", title: "Fix Leakage & Align Levers", ids: r.rules.recIds.slice(2, 4) },
+        { phase: "Days 61–90", title: "Scale the Winners", ids: r.rules.recIds.slice(4) }
+      ];
+
+      var colW = (CW - 8) / 3;
+      var phaseX = [ML, ML + colW + 4, ML + (colW + 4) * 2];
+      var phaseStartY = y;
+      var maxPhaseH = 0;
+
+      phases.forEach(function(ph, pi) {
+        var px = phaseX[pi];
+        var items = ph.ids.map(function(id) { return window.PPD_MODEL.recommendations[id]; }).filter(Boolean);
+        var allText = items.map(function(r2) { return "• " + r2.title; }).join("
+");
+        var itemLines = [];
+        items.forEach(function(r2) {
+          var lines = doc.splitTextToSize("• " + r2.title, colW - 4);
+          itemLines = itemLines.concat(lines);
+        });
+        var colH = 10 + itemLines.length * 3.6 + 6;
+        maxPhaseH = Math.max(maxPhaseH, colH);
+
+        doc.setFillColor(...NAVY);
+        doc.rect(px, phaseStartY, colW, 8, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6.5);
+        doc.setTextColor(...GOLD);
+        doc.text(ph.phase, px + 3, phaseStartY + 5.5);
+
+        doc.setFillColor(...SOFT);
+        doc.rect(px, phaseStartY + 8, colW, colH - 8, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6.5);
+        doc.setTextColor(...NAVY);
+        doc.text(ph.title, px + 3, phaseStartY + 14);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(6.5);
+        doc.setTextColor(...SLATE);
+        doc.text(itemLines, px + 3, phaseStartY + 19);
+      });
+
+      y = phaseStartY + maxPhaseH + 14;
+
+      // Strategic takeaway
+      y = sectionLabel("STRATEGIC TAKEAWAY", y);
+
+      var takeaway = r.overall <= 25
+        ? "The immediate priority is restoring pricing governance and operational discipline. Without these controls in place, growth will amplify margin leakage rather than strengthen the franchise. Stabilization must come before expansion."
+        : r.overall <= 50
+        ? "The franchise has the volume to be profitable, but the commercial infrastructure to monetize it is incomplete. The priority is building pricing governance, corridor visibility, and portfolio management discipline — the systems that turn volume into durable margin."
+        : r.overall <= 70
+        ? "The franchise is operationally functional but leaving margin on the table through pricing exceptions, corridor gaps, and unoptimized rail economics. Closing these gaps does not require structural change — it requires governance and measurement discipline."
+        : "The franchise has strong economic foundations. The remaining opportunity is in corridor-level optimization, balance sheet linkage, and ensuring the operating model can sustain performance as volume and complexity grow.";
+
+      var takeLines = doc.splitTextToSize(takeaway, CW - 8);
+      var takeH = takeLines.length * 3.8 + 10;
+      doc.setFillColor(...NAVY);
+      doc.rect(ML, y, CW, takeH, "F");
+      doc.setFillColor(...GOLD);
+      doc.rect(ML, y, 3, takeH, "F");
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...WHITE);
+      doc.text(takeLines, ML + 7, y + 7);
+      y += takeH + 10;
+
+      // Contact block
+      y = sectionLabel("QUESTIONS ABOUT YOUR RESULTS", y);
+
+      doc.setFillColor(...SOFT);
+      doc.rect(ML, y, CW, 28, "F");
+      doc.setFillColor(...GOLD);
+      doc.rect(ML, y, 3, 28, "F");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...NAVY);
+      doc.text("Carlos Urena", ML + 8, y + 8);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...SLATE);
+      doc.text("Payments Strategy & Commercialization", ML + 8, y + 14);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...GOLD);
+      doc.text("urena.m.carlos@gmail.com", ML + 8, y + 20);
+      doc.text("carlosurena.com", ML + 8, y + 25);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7);
+      doc.setTextColor(...SLATE_2);
+      var contactNote = "The Payments Franchise Diagnostic engagement expands this model into a structured review using your actual transaction data, pricing records, and corridor economics — producing a Corridor Profitability Map, Portfolio Scorecard, and Infrastructure Cost Stack.";
+      var contactLines = doc.splitTextToSize(contactNote, CW / 2 - 4);
+      doc.text(contactLines, ML + CW / 2 + 4, y + 6);
+
       // Save
-      var filename = activeScenario
-        ? "PFI_" + activeScenario.id + "_" + r.overall + ".pdf"
-        : "PFI_assessment_" + r.overall + ".pdf";
-      doc.save(filename);
+      doc.save("Payments-Franchise-Index-Diagnostic.pdf");
     }
 
     // ── Event listeners ───────────────────────────────────────────────────
