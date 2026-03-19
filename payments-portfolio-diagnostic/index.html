@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Payments Portfolio Self-Assessment — Carlos Urena</title>
+  <title>Payments Franchise Index — Carlos Urena</title>
   <meta name="description" content="A structured diagnostic for commercial payments franchises — scoring monetization depth, margin resilience, and operating model maturity. Built by Carlos Urena." />
   <link rel="stylesheet" href="styles.css?v=4" />
 </head>
@@ -12,7 +12,7 @@
   <!-- NAV -->
   <nav class="site-nav">
     <a href="/" class="site-nav-home">&#8592; Home</a>
-    <span class="site-nav-title">Payments Portfolio Self-Assessment</span>
+    <span class="site-nav-title">Payments Franchise Index</span>
     <div class="site-nav-links">
       <a href="#about">About</a>
       <a href="#pillars-explained">Framework</a>
@@ -28,7 +28,7 @@
       <div class="container hero-inner">
 
         <div class="hero-content">
-          <div class="hero-eyebrow">Payments Portfolio Self-Assessment &nbsp;·&nbsp; V1 &nbsp;·&nbsp; Free</div>
+          <div class="hero-eyebrow">Payments Franchise Index &nbsp;·&nbsp; PFI &nbsp;·&nbsp; V1 &nbsp;·&nbsp; Free</div>
 
           <h1 class="hero-headline">
             Evaluate a commercial payments franchise<br/>
@@ -37,10 +37,19 @@
 
           <p class="hero-lead">
             A 42-question operator-grade framework across six structural pillars —
-            producing a maturity score, pillar heatmap, executive diagnosis, and sequenced 90-day priorities.
+            producing a PFI Score, pillar heatmap, executive diagnosis, and sequenced 90-day priorities.
             Built to reflect how a franchise is actually run, not how it reports.
           </p>
 
+          <div class="hero-how">
+            <div class="how-label">How it works</div>
+            <div class="how-steps">
+              <div class="how-step"><span class="how-num">1</span><span>Answer 42 operator-level questions across six structural pillars</span></div>
+              <div class="how-step"><span class="how-num">2</span><span>The model calculates your PFI Score and pillar sub-scores</span></div>
+              <div class="how-step"><span class="how-num">3</span><span>Results produce an executive diagnosis and pillar heatmap</span></div>
+              <div class="how-step"><span class="how-num">4</span><span>The system generates prioritized 30/60/90-day actions</span></div>
+            </div>
+          </div>
           <div class="hero-actions">
             <button id="btnStart" class="btn btn-primary btn-lg">Start Diagnostic</button>
             <button id="btnReset" class="btn btn-ghost-light">Reset</button>
@@ -53,7 +62,7 @@
           <div class="hero-card">
             <div class="hero-card-eyebrow">What you'll get</div>
             <ul class="checklist">
-              <li><span class="check-icon">✓</span><span>Portfolio maturity score <strong>(0–100)</strong></span></li>
+              <li><span class="check-icon">✓</span><span>PFI Score <strong>(0–100)</strong></span></li>
               <li><span class="check-icon">✓</span><span>Monetization · Margin durability · Strategic readiness sub-scores</span></li>
               <li><span class="check-icon">✓</span><span>Pillar heatmap across all six dimensions</span></li>
               <li><span class="check-icon">✓</span><span>Executive diagnosis with tier classification</span></li>
@@ -129,13 +138,13 @@
 
         <div id="resultsEmpty" class="empty-state">
           <div class="empty-icon">◎</div>
-          <div class="empty-text">Run the diagnostic to see your results dashboard here.</div>
+          <div class="empty-text">Run the diagnostic to see your PFI results dashboard here.</div>
         </div>
 
         <div id="resultsContainer" class="results-grid hidden">
 
           <div class="card card-score">
-            <div class="card-eyebrow">Overall score</div>
+            <div class="card-eyebrow">PFI Score</div>
             <div class="score-row">
               <div class="score-main">
                 <div class="score-big" id="overallScore">—</div>
@@ -263,7 +272,7 @@
 
         <div class="framework-note">
           <span class="framework-note-label">Design principle</span>
-          <span class="framework-note-text">This framework is normative — it reflects practitioner judgment about what a well-run commercial payments franchise looks like, not statistical benchmarks. Use it to start a conversation, not end one.</span>
+          <span class="framework-note-text">This framework reflects operator judgment about how a well-run payments franchise behaves. It is designed to start leadership conversations — not produce false precision.</span>
         </div>
       </div>
     </section>
@@ -271,7 +280,7 @@
     <!-- FOOTER -->
     <footer class="footer">
       <div class="container footer-inner">
-        <span>Payments Portfolio Self-Assessment &nbsp;&middot;&nbsp; V1 &nbsp;&middot;&nbsp; Free &nbsp;&middot;&nbsp; No data stored</span>
+        <span>Payments Franchise Index &nbsp;&middot;&nbsp; PFI V1 &nbsp;&middot;&nbsp; Free &nbsp;&middot;&nbsp; No data stored</span>
         <a href="/" class="footer-home">&#8592; carlosurena.com</a>
       </div>
     </footer>
@@ -283,6 +292,14 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="model.js?v=6"></script>
-  <script src="app.js?v=23"></script>
+  <script src="app.js?v=24"></script>
+<style>
+    .hero-authority { font-family: Helvetica, sans-serif; font-size: 13px; color: #6b7280; margin: 0 0 16px; }
+    .hero-how { background: #f7f9fc; border: 1px solid #e2e8f0; border-left: 3px solid #b7882c; padding: 16px 18px; margin: 16px 0 20px; }
+    .how-label { font-family: Helvetica, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b7882c; margin-bottom: 10px; }
+    .how-steps { display: flex; flex-direction: column; gap: 8px; }
+    .how-step { display: flex; align-items: flex-start; gap: 10px; font-family: Helvetica, sans-serif; font-size: 13px; color: #4a5568; line-height: 1.5; }
+    .how-num { width: 20px; height: 20px; border-radius: 50%; background: #0f1f3d; color: #b7882c; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  </style>
 </body>
 </html>

@@ -694,11 +694,11 @@
         : [];
 
       return [
-        `Payments Portfolio Diagnostic — Executive Summary`,
-        `Built by Carlos Urena · linkedin.com/in/carlosurena`,
+        `Payments Franchise Index (PFI) — Executive Summary`,
+        `Built by Carlos Urena · linkedin.com/in/carlosurena · Built from 20 years of payments portfolio management across global banks`,
         ...scenarioNote,
         ``,
-        `Overall score: ${r.overall}/100 (${maturityLabel(r.overall)})`,
+        `PFI Score: ${r.overall}/100 (${maturityLabel(r.overall)})`,
         `Monetization: ${r.sub.monetization}/100 · Margin durability: ${r.sub.margin}/100 · Strategic readiness: ${r.sub.readiness}/100`,
         ...floorNote,
         ``,
@@ -711,7 +711,7 @@
         `Recommended 90-day priorities:`,
         ...priorities.map((p, i) => `${i + 1}. ${p}`),
         ``,
-        `Framework: V1 · Commercial banking payments`,
+        `Payments Franchise Index (PFI) — V1 · Commercial banking payments`,
         `USD clearing · Wires · ACH · Cross-border · FX-enabled flows · RTP/FedNow · Liquidity overlays`,
         ``,
         `This is a structured decision aid designed to surface likely constraints — not a definitive assessment.`,
@@ -792,11 +792,11 @@
         doc.setFont("helvetica", "bold");
         doc.setFontSize(11);
         doc.setTextColor(...WHITE);
-        doc.text("Payments Portfolio Diagnostic", ML, 9);
+        doc.text("Payments Franchise Index (PFI)", ML, 9);
         doc.setFont("helvetica", "normal");
         doc.setFontSize(7);
         doc.setTextColor(180, 190, 210);
-        doc.text("Commercial banking  ·  Operator-grade framework  ·  V1", ML, 16);
+        doc.text("Payments Franchise Index  ·  Operator-grade framework  ·  V1", ML, 16);
         doc.setFont("helvetica", "bold");
         doc.setFontSize(8.5);
         doc.setTextColor(...WHITE);
@@ -816,7 +816,7 @@
         doc.setTextColor(...WHITE);
         doc.text("Carlos Urena  ·  linkedin.com/in/carlosurena", ML, PAGE_H - 4);
         doc.setTextColor(150, 165, 195);
-        doc.text("V1  ·  Commercial banking payments  ·  No data stored", PAGE_W - MR, PAGE_H - 4, { align: "right" });
+        doc.text("PFI V1  ·  Commercial banking payments  ·  No data stored", PAGE_W - MR, PAGE_H - 4, { align: "right" });
         doc.setTextColor(180, 195, 220);
         doc.text("Page " + pageNum + " of 3", PAGE_W / 2, PAGE_H - 4, { align: "center" });
       }
@@ -1076,8 +1076,8 @@
 
       // Save
       var filename = activeScenario
-        ? "PPD_" + activeScenario.id + "_" + r.overall + ".pdf"
-        : "PPD_assessment_" + r.overall + ".pdf";
+        ? "PFI_" + activeScenario.id + "_" + r.overall + ".pdf"
+        : "PFI_assessment_" + r.overall + ".pdf";
       doc.save(filename);
     }
 
