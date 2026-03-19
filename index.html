@@ -49,7 +49,6 @@
       justify-content: space-between;
       height: 48px;
     }
-
     .site-nav-name {
       font-family: Georgia, serif;
       font-size: 14px;
@@ -57,12 +56,7 @@
       color: #fff;
       letter-spacing: 0.01em;
     }
-
-    .site-nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
+    .site-nav-links { display: flex; gap: 24px; }
     .site-nav-links a {
       font-size: 13px;
       color: rgba(255,255,255,0.75);
@@ -70,7 +64,6 @@
       letter-spacing: 0.02em;
       transition: color 0.15s;
     }
-
     .site-nav-links a:hover { color: var(--gold); }
     .site-nav-links a.active { color: var(--gold); }
 
@@ -87,7 +80,6 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 48px;
     }
-
     .hero-eyebrow {
       font-size: 11px;
       font-weight: 600;
@@ -96,7 +88,6 @@
       color: var(--gold);
       margin-bottom: 12px;
     }
-
     h1 {
       font-family: Georgia, serif;
       font-size: 38px;
@@ -106,7 +97,13 @@
       letter-spacing: -0.01em;
       line-height: 1.2;
     }
-
+    .hero-sub {
+      font-size: 16px;
+      color: var(--slate);
+      max-width: 680px;
+      line-height: 1.65;
+      margin: 0 0 16px;
+    }
     .hero-hook {
       font-size: 16px;
       color: var(--slate);
@@ -114,24 +111,13 @@
       max-width: 680px;
       line-height: 1.65;
       margin: 0 0 16px;
-      font-style: normal;
     }
-
-    .hero-sub {
-      font-size: 16px;
-      color: var(--slate);
-      max-width: 680px;
-      line-height: 1.65;
-      margin: 0 0 22px;
-    }
-
     .pillrow {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 24px;
     }
-
     .pill {
       border: 1px solid var(--border);
       background: var(--soft);
@@ -140,13 +126,7 @@
       font-size: 12.5px;
       color: var(--slate);
     }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
+    .links { display: flex; flex-wrap: wrap; gap: 16px; }
     .links a {
       font-size: 13.5px;
       color: var(--navy);
@@ -155,14 +135,104 @@
       padding-bottom: 1px;
       transition: color 0.15s;
     }
-
     .links a:hover { color: var(--gold); }
 
-    /* ── Section label ───────────────────────────────────── */
-    .section-block {
-      margin-bottom: 48px;
+    /* ── Focus bullets ───────────────────────────────────── */
+    .focus-bullets {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 32px;
+      margin: 0 0 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .focus-bullets li {
+      font-size: 13.5px;
+      color: var(--slate);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .focus-bullets li:last-child { border-bottom: none; }
+    .focus-bullets li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
     }
 
+    /* ── OS Diagram ──────────────────────────────────────── */
+    .os-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      margin: 20px 0 8px;
+      max-width: 560px;
+    }
+    .os-step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+    }
+    .os-step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .os-step-content {
+      flex: 1;
+      border: 1px solid var(--border);
+      background: var(--soft);
+      padding: 10px 14px;
+      border-radius: 4px;
+    }
+    .os-step-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .os-step-link {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .os-step-link a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .os-step-link a:hover { text-decoration: underline; }
+    .os-arrow {
+      width: 28px;
+      text-align: center;
+      color: var(--gold);
+      font-size: 14px;
+      line-height: 1;
+      padding: 3px 0;
+      flex-shrink: 0;
+    }
+    .os-connector {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+    }
+
+    /* ── Section label ───────────────────────────────────── */
+    .section-block { margin-bottom: 48px; }
     .section-label {
       font-size: 10.5px;
       font-weight: 700;
@@ -174,14 +244,12 @@
       align-items: center;
       gap: 10px;
     }
-
     .section-label::after {
       content: '';
       flex: 1;
       height: 1px;
       background: var(--border);
     }
-
     h2 {
       font-family: Georgia, serif;
       font-size: 22px;
@@ -189,44 +257,22 @@
       color: var(--navy);
       margin: 0 0 14px;
     }
-
     p { margin: 0 0 12px; color: var(--slate); }
     p:last-child { margin-bottom: 0; }
 
-
     /* ── Career grid ─────────────────────────────────────── */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
+    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
     .card {
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 16px 18px;
       background: #fff;
     }
-
-    .role {
-      font-weight: 600;
-      font-size: 14px;
-      color: var(--navy);
-    }
-
-    .meta {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
+    .role { font-weight: 600; font-size: 14px; color: var(--navy); }
+    .meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
     /* ── Focus list ──────────────────────────────────────── */
-    ul {
-      margin: 0;
-      padding-left: 0;
-      list-style: none;
-    }
-
+    ul { margin: 0; padding-left: 0; list-style: none; }
     li {
       padding: 9px 0;
       border-bottom: 1px solid var(--border);
@@ -236,9 +282,7 @@
       align-items: center;
       gap: 10px;
     }
-
     li:last-child { border-bottom: none; }
-
     li::before {
       content: '';
       width: 5px;
@@ -272,12 +316,10 @@
       cursor: default;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-
     .card-hover:hover {
       border-color: var(--gold);
       box-shadow: 0 4px 16px rgba(15,31,61,0.10);
     }
-
     .card-tooltip {
       display: none;
       position: absolute;
@@ -291,21 +333,9 @@
       z-index: 50;
       box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     }
-
     .card-hover:hover .card-tooltip { display: block; }
-
-    /* Keep tooltip on screen for right-column cards */
-    .card-hover:nth-child(even) .card-tooltip {
-      left: auto;
-      right: 0;
-    }
-
-    .tooltip-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
+    .card-hover:nth-child(even) .card-tooltip { left: auto; right: 0; }
+    .tooltip-list { margin: 0; padding: 0; list-style: none; }
     .tooltip-list li {
       font-size: 12.5px;
       color: rgba(255,255,255,0.85);
@@ -314,12 +344,10 @@
       border-bottom: 1px solid rgba(255,255,255,0.08);
       display: block;
     }
-
     .tooltip-list li::before { display: none; }
     .tooltip-list li:last-child { border-bottom: none; padding-bottom: 0; }
-
     @media (max-width: 639px) {
-      .card-tooltip { 
+      .card-tooltip {
         width: 100%;
         position: static;
         display: block;
@@ -328,6 +356,8 @@
         border-color: var(--border);
       }
       .tooltip-list li { color: var(--slate); }
+      .focus-bullets { grid-template-columns: 1fr; }
+      .os-diagram { max-width: 100%; }
     }
   </style>
 
@@ -360,18 +390,17 @@
 
   <main class="wrap">
 
-    <!-- Hero -->
+    <!-- 1. HERO -->
     <div class="hero">
       <div class="hero-eyebrow">Payments Commercialization &amp; Strategy · $200M+ in managed payment flows · Multi-Rail</div>
       <h1>Carlos Ureña</h1>
-      <p class="hero-sub">
-        I build the commercial layer that turns payment infrastructure into revenue.
-      </p>
+      <p class="hero-sub">I build the commercial layer that turns payment infrastructure into a disciplined revenue engine.</p>
       <p class="hero-hook">
         Most payments businesses generate plenty of revenue. Very few know which corridors, clients, and rails actually produce the margin. That gap between volume and economics is where most payment franchises quietly leak value.
       </p>
       <p class="hero-sub">
-        Twenty years in payments, with P&amp;L leadership across wire and cross-border businesses. Designing pricing models and leading go-to-market strategy across ACH, wires, RTP, cross-border, and FX-enabled flows at global banks and increasingly where banks and payment networks are redefining cross-border and real-time money movement.
+        Twenty years in payments, with P&amp;L leadership across wire and cross-border businesses. Designing pricing models and leading go-to-market strategy across ACH, wires, RTP, cross-border, and FX-enabled flows at global banks and increasingly where banks and payment networks are building the next generation of cross-border and real-time money movement infrastructure.
+      </p>
       <div class="pillrow" aria-label="Focus areas">
         <span class="pill">Product Economics</span>
         <span class="pill">Pricing Strategy</span>
@@ -386,24 +415,127 @@
       </div>
     </div>
 
-    <!-- Overview -->
+    <!-- 2. WHAT I FOCUS ON -->
     <div class="section-block">
-      <div class="section-label">Overview</div>
-      <p>
-        Payments franchises often mistake volume growth for economic health. By the time the margin erosion is visible, it has been compressing for years. Pricing is leaking, the operating model isn&#39;t built to capture the value already flowing through the pipes, and nobody has connected the pieces into a single portfolio view.
-      </p>
-      <p>
-        I&#39;ve spent twenty years fixing that. At Citi, Deutsche Bank, HSBC, and Mashreq, I built pricing governance frameworks for wire and cross-border products: corridor pricing models, exception governance, and portfolio margin monitoring. That work built the commercial structures that turn payment infrastructure into a disciplined, monetized franchise. The work has always been the same &#8212; find where value is being left on the table, build the system to capture it, and make sure it holds.
-      </p>
-      <p>
-        I specialize in payments franchise economics: the pricing, corridor strategy, balance sheet linkage, and governance structures that determine whether a payments business produces durable margin. Across global banks operating large-scale payment franchises, I&#39;ve seen the same structural gaps appear at every institution that manages payments as a collection of products rather than an economic portfolio.
-      </p>
-      <p>
-        I work with banks, fintechs, and payment networks. In a full-time role, I run the payments P&amp;L. As an advisor, I come in when an organization has payment volume but hasn&#39;t built the commercial infrastructure to monetize it properly.
+      <div class="section-label">What I Focus On</div>
+      <ul class="focus-bullets">
+        <li>Pricing governance and revenue architecture</li>
+        <li>Corridor economics and cross-border strategy</li>
+        <li>Multi-rail payments commercialization</li>
+        <li>Portfolio-level payments P&amp;L management</li>
+      </ul>
+    </div>
+
+    <!-- 3. THE PAYMENTS FRANCHISE OPERATING SYSTEM -->
+    <div class="section-block">
+      <div class="section-label">The Framework</div>
+      <h2>The Payments Franchise Operating System</h2>
+      <p>A six-step framework for diagnosing and managing payments businesses as economic portfolios rather than collections of products. In many banks, fewer than 25% of payment corridors generate the majority of margin. The rest dilute it through pricing exceptions, routing inefficiencies, and operational cost structures that are invisible at the product level. This system makes those economics visible — and actionable.</p>
+
+      <div class="os-diagram">
+
+        <div class="os-step">
+          <div class="os-step-num">1</div>
+          <div class="os-step-content">
+            <div class="os-step-title">Diagnose the Franchise</div>
+            <div class="os-step-link"><a href="/payments-portfolio-diagnostic/">Payments Portfolio Self-Assessment ↗</a></div>
+          </div>
+        </div>
+
+        <div class="os-connector">
+          <div class="os-arrow">↓</div>
+          <div style="flex:1;"></div>
+        </div>
+
+        <div class="os-step">
+          <div class="os-step-num">2</div>
+          <div class="os-step-content">
+            <div class="os-step-title">Restore Pricing Discipline</div>
+            <div class="os-step-link"><a href="/payments-pricing-governance-playbook.pdf" target="_blank">Payments Pricing Governance Playbook ↗</a></div>
+          </div>
+        </div>
+
+        <div class="os-connector">
+          <div class="os-arrow">↓</div>
+          <div style="flex:1;"></div>
+        </div>
+
+        <div class="os-step">
+          <div class="os-step-num">3</div>
+          <div class="os-step-content">
+            <div class="os-step-title">Build the Commercial Layer</div>
+            <div class="os-step-link"><a href="/payments-franchise-commercialization-guide.pdf" target="_blank">Payments Franchise Commercialization Guide ↗</a></div>
+          </div>
+        </div>
+
+        <div class="os-connector">
+          <div class="os-arrow">↓</div>
+          <div style="flex:1;"></div>
+        </div>
+
+        <div class="os-step">
+          <div class="os-step-num">4</div>
+          <div class="os-step-content">
+            <div class="os-step-title">Optimize Cross-Border Corridors</div>
+            <div class="os-step-link"><a href="/payments-corridor-strategy-framework.pdf" target="_blank">Payments Corridor Strategy Framework ↗</a></div>
+          </div>
+        </div>
+
+        <div class="os-connector">
+          <div class="os-arrow">↓</div>
+          <div style="flex:1;"></div>
+        </div>
+
+        <div class="os-step">
+          <div class="os-step-num">5</div>
+          <div class="os-step-content">
+            <div class="os-step-title">Build the Infrastructure</div>
+            <div class="os-step-link"><a href="/payments-infrastructure-strategy.pdf" target="_blank">Payments Infrastructure Strategy ↗</a></div>
+          </div>
+        </div>
+
+        <div class="os-connector">
+          <div class="os-arrow">↓</div>
+          <div style="flex:1;"></div>
+        </div>
+
+        <div class="os-step">
+          <div class="os-step-num">6</div>
+          <div class="os-step-content">
+            <div class="os-step-title">Manage the Portfolio</div>
+            <div class="os-step-link"><a href="/payments-franchise-portfolio-management.pdf" target="_blank">Payments Franchise Portfolio Management ↗</a></div>
+          </div>
+        </div>
+
+      </div>
+
+      <p style="margin-top:16px;font-size:13.5px;">
+        <a href="/payments-portfolio-diagnostic/" style="color:var(--gold);text-decoration:none;">Payments Portfolio Self-Assessment ↗</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://models.carlosurena.com" style="color:var(--gold);text-decoration:none;">Analytics Framework ↗</a>
       </p>
     </div>
 
-    <!-- Career -->
+    <!-- 4. OVERVIEW (condensed) -->
+    <div class="section-block">
+      <div class="section-label">Overview</div>
+      <p>
+        Payments franchises often mistake volume growth for economic health. By the time the margin erosion is visible, it has been compressing for years. At Citi, Deutsche Bank, HSBC, and Mashreq, I built pricing governance frameworks for wire and cross-border products: corridor pricing models, exception governance, and portfolio margin monitoring. The work has always been the same — find where value is being left on the table, build the system to capture it, and make sure it holds.
+      </p>
+      <p>
+        I specialize in payments franchise economics: the pricing, corridor strategy, balance sheet linkage, and governance structures that determine whether a payments business produces durable margin. I work with banks, fintechs, and payment networks. In a full-time role, I run the payments P&amp;L. As an advisor, I come in when an organization has payment volume but hasn&#39;t built the commercial infrastructure to monetize it properly.
+      </p>
+    </div>
+
+    <!-- 5. HOW I THINK -->
+    <div class="section-block">
+      <h2>How I Think About Payments P&amp;L</h2>
+      <p>Most payments franchises are flying blind on their own P&amp;L. Revenue is coming in, volume is growing, and leadership assumes the business is healthy. It usually isn&#39;t. Pricing leakage, operational drag, exception costs, and governance gaps are quietly compressing margin — and nobody is looking.</p>
+      <p>When I walk into an underperforming franchise, I don&#39;t start with the sales pipeline. I go straight to the operating model: pricing structure, governance framework, KPI discipline, cost-to-serve visibility. That&#39;s where the real problem always is. And that&#39;s where the fastest leverage is.</p>
+      <p>The <strong>Payments Strategy Analytics Framework</strong> provides the quantitative layer: a six-model system that transforms payment data into layered strategic intelligence, from transaction-level P&amp;L diagnosis through client behavioral signals to board-level portfolio scenario modelling. <a href="https://models.carlosurena.com" target="_blank" style="color:var(--gold);text-decoration:none;">Explore the models ↗</a></p>
+    </div>
+
+    <!-- 6. CAREER -->
     <div class="section-block">
       <div class="section-label">Career Highlights</div>
       <div class="grid">
@@ -413,7 +545,7 @@
           <div class="meta">Independent · 2024 – Present</div>
           <div class="card-tooltip">
             <ul class="tooltip-list">
-              <li>Developed and published the Payments Portfolio Diagnostic — an operator-grade framework scoring commercial payments franchises across six structural pillars.</li>
+              <li>Developed and published the Payments Portfolio Self-Assessment — an operator-grade framework scoring commercial payments franchises across six structural pillars.</li>
               <li>Advising on payments platform economics, pricing architecture, and monetization strategy.</li>
             </ul>
           </div>
@@ -470,26 +602,8 @@
       </div>
     </div>
 
-    <!-- Focus -->
+    <!-- 7. FOCUS AREAS -->
     <div class="section-block">
-      
-      <h2>How I Think About Payments P&amp;L</h2>
-      <p>Most payments franchises are flying blind on their own P&amp;L. Revenue is coming in, volume is growing, and leadership assumes the business is healthy. It usually isn&#39;t. Pricing leakage, operational drag, exception costs, and governance gaps are quietly compressing margin &#8212; and nobody is looking.</p>
-      <p>When I walk into an underperforming franchise, I don&#39;t start with the sales pipeline. I go straight to the operating model: pricing structure, governance framework, KPI discipline, cost-to-serve visibility. That&#39;s where the real problem always is. And that&#39;s where the fastest leverage is.</p>
-
-      <h2>Frameworks &amp; Tools</h2>
-      <p>To demonstrate how I approach payments strategy in practice, I&#39;ve built two working analytical frameworks &#8212; not slide decks, but functional tools.</p>
-      <p>The <strong>Payments Portfolio Self-Assessment</strong> is a free 42-question operator-grade assessment that scores a commercial payments franchise across six structural pillars: revenue architecture, growth quality, margin structure, multi-rail strategy, balance sheet, and governance. It produces a maturity score, pillar heatmap, and sequenced 90-day priorities.</p>
-      <p>The <strong>Payments Strategy Analytics Framework</strong> is a six-model system that transforms payment data into layered strategic intelligence, from transaction-level P&amp;L diagnosis through client behavioral signals to board-level portfolio scenario modelling.</p>
-      <p><strong>The Payments Franchise Operating System</strong> is a six-step framework for diagnosing and transforming the commercial performance of payments businesses.<br><br>
-<strong>Step 1 — Diagnose the Franchise.</strong> The <a href="/payments-portfolio-diagnostic/">Payments Portfolio Self-Assessment</a> scores six structural pillars and identifies where to focus first.<br><br>
-<strong>Step 2 — Restore Pricing Discipline.</strong> The <a href="/payments-pricing-governance-playbook.pdf" target="_blank">Payments Pricing Governance Playbook</a> addresses the four sources of silent margin leakage and builds the operating system that stops them.<br><br>
-<strong>Step 3 — Build the Commercial Layer.</strong> The <a href="/payments-franchise-commercialization-guide.pdf" target="_blank">Payments Franchise Commercialization Guide</a> connects payments infrastructure to relationship economics: fees, FX spread, and balance value managed together.<br><br>
-<strong>Step 4 — Optimize Cross-Border Corridors.</strong> The <a href="/payments-corridor-strategy-framework.pdf" target="_blank">Payments Corridor Strategy Framework</a> treats corridors as economic units, not volume businesses, and builds the pricing architecture that reflects true corridor economics.<br><br>
-<strong>Step 5 — Build the Infrastructure.</strong> The <a href="/payments-infrastructure-strategy.pdf" target="_blank">Payments Infrastructure Strategy</a> playbook treats infrastructure as a commercial strategy decision: choosing the rails that determine cost structure, routing flexibility, and pricing power for the next decade.<br><br>
-<strong>Step 6 — Manage the Portfolio.</strong> The <a href="/payments-franchise-portfolio-management.pdf" target="_blank">Payments Franchise Portfolio Management</a> playbook sits above the other four, connecting pricing, commercialization, and corridor economics into a single portfolio view and giving leadership the tools to allocate capital and measure franchise performance.<br><br>
-The <a href="https://models.carlosurena.com" target="_blank">Payments Strategy Analytics Framework</a> provides the quantitative layer: six analytical models that measure performance across pricing, corridors, client behavior, and portfolio strategy. <a href="https://carlosurena.com/payments-portfolio-diagnostic/">Payments Portfolio Self-Assessment &#8599;</a> &nbsp;&middot;&nbsp; <a href="https://models.carlosurena.com">Analytics Framework &#8599;</a></p>
-      <br>
       <div class="section-label">Focus Areas</div>
       <p>My focus is payments commercialization in the broadest sense. That means pricing strategy and revenue architecture, margin and cost structure discipline, multi-rail product strategy across ACH, wires, RTP, cross-border, and FX-enabled flows, and the governance frameworks that keep it all from drifting. On the network side, I focus on how real-time push payment platforms like Visa Direct and Mastercard Move build commercial advantage through corridor economics, use case adoption, and GTM execution.</p>
     </div>
@@ -499,4 +613,24 @@ The <a href="https://models.carlosurena.com" target="_blank">Payments Strategy A
       <span>
         <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">LinkedIn</a>
         &nbsp;·&nbsp;
-        <a href="/cdn-cgi/l/email-protection#a5d0d7c0cbc48bc88bc6c4d7c9cad6e5c2c8c4ccc98bc6cac8" style="color:inherit;text-decoration:none;"><span class="__cf_email__" data-cfemail="344146515a551a591a575546585b47745359555d581a57
+        <a href="/cdn-cgi/l/email-protection#a5d0d7c0cbc48bc88bc6c4d7c9cad6e5c2c8c4ccc98bc6cac8" style="color:inherit;text-decoration:none;">Email</a>
+      </span>
+    </footer>
+
+  </main>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Carlos Ureña",
+    "alternateName": "Carlos Urena",
+    "jobTitle": "Payments Strategy and Commercialization Leader",
+    "url": "https://carlosurena.com/",
+    "sameAs": ["https://www.linkedin.com/in/carlosurena/"]
+  }
+  </script>
+
+</body>
+</html>
