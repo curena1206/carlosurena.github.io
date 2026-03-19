@@ -1018,7 +1018,7 @@
 
       // Pillar heatmap with visual bars
       y = sectionLabel("PILLAR HEATMAP", y);
-      const BAR_H = 8;
+      const BAR_H = 10;
       const MAX_BAR_W = 50;
 
       pillarModel.forEach(function(p) {
@@ -1058,10 +1058,10 @@
         doc.setTextColor.apply(doc, WHITE);
         var scoreLabel = s < 1 ? s.toFixed(1).replace("0.", ".") : Math.round(s) + ""; doc.text(scoreLabel + "/5", ML + CW - 9, y + 5.5, { align: "center" });
 
-        y += BAR_H + 1;
+        y += BAR_H + 2;
       });
 
-      y += 5;
+      y += 8;
 
       // Key structural issues — top 2 diagnosis items
       y = sectionLabel("KEY STRUCTURAL ISSUES", y);
@@ -1069,7 +1069,7 @@
         var src = r.rules.diagSources ? r.rules.diagSources[i] : null;
         var meta = src ? TIER_META[src.tier] : null;
         var dlines = doc.splitTextToSize(d, CW - 8);
-        var blockH = dlines.length * 3.6 + 7;
+        var blockH = dlines.length * 4.5 + 10;
 
         doc.setFillColor(250, 251, 253);
         doc.rect(ML, y, CW, blockH, "F");
@@ -1080,8 +1080,8 @@
         doc.setFont("helvetica", "normal");
         doc.setFontSize(6.8);
         doc.setTextColor(55, 65, 81);
-        doc.text(dlines, ML + 6, y + 5);
-        y += blockH + 2;
+        doc.text(dlines, ML + 6, y + 6);
+        y += blockH + 4;
       });
 
       y += 4;
@@ -1124,7 +1124,7 @@
 
         var bc = bandColorsPDF[band2];
         var narLines = doc.splitTextToSize(narrative, CW - 36);
-        var ROW_H = 5 + narLines.length * 3.6 + 4;
+        var ROW_H = 8 + narLines.length * 4.2 + 6;
 
         doc.setFillColor(250, 251, 252);
         doc.rect(ML, y, CW, ROW_H, "F");
@@ -1147,12 +1147,12 @@
         doc.setFont("helvetica", "normal");
         doc.setFontSize(6.8);
         doc.setTextColor(55, 65, 81);
-        doc.text(narLines, ML + 2, y + 8.5);
+        doc.text(narLines, ML + 2, y + 10);
 
-        y += ROW_H + 1;
+        y += ROW_H + 2;
       });
 
-      y += 3;
+      y += 6;
 
       // Executive Diagnosis
       y = sectionLabel("EXECUTIVE DIAGNOSIS", y);
@@ -1161,7 +1161,7 @@
         var src  = r.rules.diagSources ? r.rules.diagSources[i] : null;
         var meta = src ? TIER_META[src.tier] : null;
         var dlines = doc.splitTextToSize((i + 1) + ".  " + d, CW - 6);
-        var dlines = doc.splitTextToSize((i + 1) + ".  " + d, CW - 6); var diagH = dlines.length * 3.8 + (meta ? 14 : 8);
+        var dlines = doc.splitTextToSize((i + 1) + ".  " + d, CW - 6); var diagH = dlines.length * 4.5 + (meta ? 18 : 12);
 
         doc.setFillColor(250, 251, 252);
         doc.rect(ML, y, CW, diagH, "F");
@@ -1191,7 +1191,7 @@
         if (diagWrapped.length > 1) {
           doc.text(diagWrapped.slice(1), ML + 6 + diagIndent, iy2 + 4.2);
         }
-        y += diagH + 3;
+        y += diagH + 6;
       });
 
       // ── PAGE 3: 90-Day Priorities ─────────────────────────────────────────
@@ -1235,30 +1235,30 @@
         doc.setTextColor.apply(doc, GOLD);
         doc.text(String(idx + 1), ML + 9.5, badgeY + 6.5, { align: "center" });
 
-        var iy = y + 6;
+        var iy = y + 8;
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(8.5);
         doc.setTextColor.apply(doc, NAVY);
         doc.text(titleLines, ML + 18, iy);
-        iy += titleLines.length * 4.8 + 2;
+        iy += titleLines.length * 5.5 + 3;
 
         doc.setFont("helvetica", "normal");
         doc.setFontSize(7);
         doc.setTextColor.apply(doc, SLATE);
         doc.text(ownerLines, ML + 18, iy);
-        iy += ownerLines.length * 3.8 + 1;
+        iy += ownerLines.length * 4.5 + 2;
 
         doc.setTextColor.apply(doc, SLATE_2);
         doc.text(kpiLines, ML + 18, iy);
-        iy += kpiLines.length * 3.8 + 1;
+        iy += kpiLines.length * 4.5 + 2;
 
         doc.setFont("helvetica", "italic");
         doc.setFontSize(6.5);
         doc.setTextColor(140, 155, 170);
         doc.text(whyLines, ML + 18, iy);
 
-        y += ROW_H + 2;
+        y += ROW_H + 6;
       });
 
       // ── PAGE 4: Strategic Takeaway + Contact ─────────────────────────────
