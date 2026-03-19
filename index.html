@@ -3,33 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
   <title>Carlos Ureña | Payments Strategy, Product Economics & Commercialization</title>
-  <meta name="description" content="Carlos Ureña (Carlos Urena) is a payments product economics and commercialization leader driving pricing strategy, portfolio performance, and revenue growth across global banks and multi-rail payment platforms." />
+  <meta name="description" content="Carlos Ureña is a payments franchise architect specializing in pricing governance, corridor economics, and commercialization across multi-rail payment platforms and global banks." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://carlosurena.com/" />
-
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Carlos Ureña | Payments Strategy, Product Economics & Commercialization" />
-  <meta property="og:description" content="Senior payments leader specializing in product economics, pricing strategy, commercialization, and portfolio performance across multi-rail payment platforms and global ecosystems." />
+  <meta property="og:description" content="Payments franchise architect specializing in pricing governance, corridor economics, and commercialization across multi-rail payment platforms." />
   <meta property="og:url" content="https://carlosurena.com/" />
 
   <style>
     :root {
-      --navy:      #0f1f3d;
-      --gold:      #b7882c;
-      --gold-light:#f5ead7;
-      --ink:       #1a2332;
-      --slate:     #4a5568;
-      --muted:     #6b7280;
-      --border:    #e2e8f0;
-      --bg:        #ffffff;
-      --soft:      #f7f9fc;
+      --navy:   #0f1f3d;
+      --gold:   #b7882c;
+      --ink:    #1a2332;
+      --slate:  #4a5568;
+      --muted:  #6b7280;
+      --border: #e2e8f0;
+      --bg:     #ffffff;
+      --soft:   #f7f9fc;
       color-scheme: light;
     }
-
     *, *::before, *::after { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -39,7 +34,7 @@
       background: var(--bg);
     }
 
-    /* ── Top nav bar ─────────────────────────────────────── */
+    /* NAV */
     .site-nav {
       background: var(--navy);
       border-bottom: 2px solid var(--gold);
@@ -64,175 +59,13 @@
       letter-spacing: 0.02em;
       transition: color 0.15s;
     }
-    .site-nav-links a:hover { color: var(--gold); }
-    .site-nav-links a.active { color: var(--gold); }
+    .site-nav-links a:hover, .site-nav-links a.active { color: var(--gold); }
 
-    /* ── Layout ──────────────────────────────────────────── */
-    .wrap {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 56px 24px 72px;
-    }
+    /* LAYOUT */
+    .wrap { max-width: 860px; margin: 0 auto; padding: 56px 24px 72px; }
 
-    /* ── Hero ────────────────────────────────────────────── */
-    .hero {
-      padding-bottom: 40px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 48px;
-    }
-    .hero-eyebrow {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 12px;
-    }
-    h1 {
-      font-family: Georgia, serif;
-      font-size: 38px;
-      font-weight: normal;
-      color: var(--navy);
-      margin: 0 0 16px;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-    }
-    .hero-sub {
-      font-size: 16px;
-      color: var(--slate);
-      max-width: 680px;
-      line-height: 1.65;
-      margin: 0 0 16px;
-    }
-    .hero-hook {
-      font-size: 16px;
-      color: var(--slate);
-      font-weight: normal;
-      max-width: 680px;
-      line-height: 1.65;
-      margin: 0 0 16px;
-    }
-    .pillrow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-    .pill {
-      border: 1px solid var(--border);
-      background: var(--soft);
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 12.5px;
-      color: var(--slate);
-    }
-    .links { display: flex; flex-wrap: wrap; gap: 16px; }
-    .links a {
-      font-size: 13.5px;
-      color: var(--navy);
-      text-decoration: none;
-      border-bottom: 1px solid var(--gold);
-      padding-bottom: 1px;
-      transition: color 0.15s;
-    }
-    .links a:hover { color: var(--gold); }
-
-    /* ── Focus bullets ───────────────────────────────────── */
-    .focus-bullets {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px 32px;
-      margin: 0 0 0 0;
-      padding: 0;
-      list-style: none;
-    }
-    .focus-bullets li {
-      font-size: 13.5px;
-      color: var(--slate);
-      padding: 6px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .focus-bullets li:last-child { border-bottom: none; }
-    .focus-bullets li::before {
-      content: '';
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* ── OS Diagram ──────────────────────────────────────── */
-    .os-diagram {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0;
-      margin: 20px 0 8px;
-      max-width: 560px;
-    }
-    .os-step {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-    }
-    .os-step-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--navy);
-      color: var(--gold);
-      font-size: 11px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .os-step-content {
-      flex: 1;
-      border: 1px solid var(--border);
-      background: var(--soft);
-      padding: 10px 14px;
-      border-radius: 4px;
-    }
-    .os-step-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--navy);
-    }
-    .os-step-link {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-    .os-step-link a {
-      color: var(--gold);
-      text-decoration: none;
-    }
-    .os-step-link a:hover { text-decoration: underline; }
-    .os-arrow {
-      width: 28px;
-      text-align: center;
-      color: var(--gold);
-      font-size: 14px;
-      line-height: 1;
-      padding: 3px 0;
-      flex-shrink: 0;
-    }
-    .os-connector {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-    }
-
-    /* ── Section label ───────────────────────────────────── */
-    .section-block { margin-bottom: 48px; }
+    /* SECTION BLOCKS */
+    .section-block { margin-bottom: 52px; }
     .section-label {
       font-size: 10.5px;
       font-weight: 700;
@@ -250,6 +83,17 @@
       height: 1px;
       background: var(--border);
     }
+
+    /* TYPOGRAPHY */
+    h1 {
+      font-family: Georgia, serif;
+      font-size: 38px;
+      font-weight: normal;
+      color: var(--navy);
+      margin: 0 0 6px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
     h2 {
       font-family: Georgia, serif;
       font-size: 22px;
@@ -260,7 +104,254 @@
     p { margin: 0 0 12px; color: var(--slate); }
     p:last-child { margin-bottom: 0; }
 
-    /* ── Career grid ─────────────────────────────────────── */
+    /* HERO */
+    .hero {
+      padding-bottom: 44px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .hero-subtitle {
+      font-family: Georgia, serif;
+      font-size: 17px;
+      color: var(--muted);
+      font-style: normal;
+      margin: 0 0 20px;
+      letter-spacing: 0.01em;
+    }
+    .hero-lead {
+      font-size: 16px;
+      color: var(--slate);
+      max-width: 680px;
+      line-height: 1.65;
+      margin: 0 0 14px;
+    }
+    .hero-hook {
+      font-size: 16px;
+      color: var(--navy);
+      font-weight: normal;
+      max-width: 640px;
+      line-height: 1.6;
+      margin: 0 0 6px;
+    }
+    .hero-hook-bridge {
+      font-size: 15px;
+      color: var(--slate);
+      max-width: 640px;
+      line-height: 1.65;
+      margin: 0 0 20px;
+      font-style: italic;
+    }
+    .hero-exp {
+      font-size: 15px;
+      color: var(--slate);
+      max-width: 680px;
+      line-height: 1.65;
+      margin: 0 0 24px;
+    }
+    .links { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 0; }
+    .links a {
+      font-size: 13.5px;
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 1px;
+      transition: color 0.15s;
+    }
+    .links a:hover { color: var(--gold); }
+
+    /* FOCUS BULLETS */
+    .focus-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 32px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .focus-grid li {
+      font-size: 14px;
+      color: var(--slate);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .focus-grid li:last-child,
+    .focus-grid li:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+    .focus-grid li::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* OS DIAGRAM */
+    .os-intro { margin-bottom: 20px; }
+    .os-insight {
+      background: var(--soft);
+      border-left: 3px solid var(--gold);
+      padding: 12px 16px;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      color: var(--slate);
+      line-height: 1.65;
+    }
+    .os-diagram {
+      display: flex;
+      flex-direction: column;
+      max-width: 520px;
+    }
+    .os-step {
+      display: flex;
+      align-items: stretch;
+      gap: 16px;
+    }
+    .os-step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 32px;
+      flex-shrink: 0;
+    }
+    .os-step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .os-step-line {
+      width: 2px;
+      flex: 1;
+      background: var(--border);
+      margin: 4px 0;
+    }
+    .os-step-content {
+      flex: 1;
+      border: 1px solid var(--border);
+      background: var(--soft);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    .os-step-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .os-step-link {
+      font-size: 12px;
+      margin-top: 3px;
+    }
+    .os-step-link a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .os-step-link a:hover { text-decoration: underline; }
+    .os-footer {
+      margin-top: 20px;
+      font-size: 13.5px;
+    }
+    .os-footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .os-footer a:hover { text-decoration: underline; }
+
+    /* ECONOMICS SECTION */
+    .economics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .economics-item {
+      background: var(--soft);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 12px 14px;
+      font-size: 13.5px;
+      color: var(--slate);
+      line-height: 1.5;
+    }
+
+    /* OPERATOR PROOF */
+    .proof-bullets {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0;
+    }
+    .proof-bullets li {
+      font-size: 14px;
+      color: var(--slate);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .proof-bullets li:last-child { border-bottom: none; }
+    .proof-bullets li::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .proof-coda {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--soft);
+      border-left: 3px solid var(--gold);
+      font-size: 14px;
+      color: var(--slate);
+      line-height: 1.7;
+    }
+
+    /* HOW I THINK */
+    .think-bullets {
+      list-style: none;
+      margin: 12px 0 12px;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 32px;
+    }
+    .think-bullets li {
+      font-size: 14px;
+      color: var(--slate);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .think-bullets li:last-child,
+    .think-bullets li:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+    .think-bullets li::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* CAREER */
     .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
     .card {
       border: 1px solid var(--border);
@@ -270,47 +361,6 @@
     }
     .role { font-weight: 600; font-size: 14px; color: var(--navy); }
     .meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
-
-    /* ── Focus list ──────────────────────────────────────── */
-    ul { margin: 0; padding-left: 0; list-style: none; }
-    li {
-      padding: 9px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-      color: var(--slate);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    li:last-child { border-bottom: none; }
-    li::before {
-      content: '';
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* ── Footer ──────────────────────────────────────────── */
-    footer {
-      margin-top: 56px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-      font-size: 12.5px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    @media (min-width: 640px) {
-      .grid { grid-template-columns: 1fr 1fr; }
-      h1 { font-size: 44px; }
-    }
-
-    /* ── Card hover tooltip ──────────────────────────────── */
     .card-hover {
       position: relative;
       cursor: default;
@@ -346,6 +396,25 @@
     }
     .tooltip-list li::before { display: none; }
     .tooltip-list li:last-child { border-bottom: none; padding-bottom: 0; }
+
+    /* FOOTER */
+    footer {
+      margin-top: 56px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* RESPONSIVE */
+    @media (min-width: 640px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      h1 { font-size: 44px; }
+    }
     @media (max-width: 639px) {
       .card-tooltip {
         width: 100%;
@@ -356,8 +425,13 @@
         border-color: var(--border);
       }
       .tooltip-list li { color: var(--slate); }
-      .focus-bullets { grid-template-columns: 1fr; }
-      .os-diagram { max-width: 100%; }
+      .focus-grid { grid-template-columns: 1fr; }
+      .focus-grid li:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--border); }
+      .focus-grid li:last-child { border-bottom: none; }
+      .economics-grid { grid-template-columns: 1fr; }
+      .think-bullets { grid-template-columns: 1fr; }
+      .think-bullets li:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--border); }
+      .think-bullets li:last-child { border-bottom: none; }
     }
   </style>
 
@@ -367,7 +441,7 @@
     "@type": "Person",
     "name": "Carlos Ureña",
     "alternateName": "Carlos Urena",
-    "jobTitle": "Payments Strategy and Commercialization Leader",
+    "jobTitle": "Payments Franchise Architect",
     "url": "https://carlosurena.com/",
     "sameAs": ["https://www.linkedin.com/in/carlosurena/"]
   }
@@ -376,7 +450,7 @@
 
 <body>
 
-  <!-- Nav -->
+  <!-- NAV -->
   <nav class="site-nav">
     <span class="site-nav-name">Carlos Ureña</span>
     <div class="site-nav-links">
@@ -392,33 +466,22 @@
 
     <!-- 1. HERO -->
     <div class="hero">
-      <div class="hero-eyebrow">Payments Commercialization &amp; Strategy · $200M+ in managed payment flows · Multi-Rail</div>
+      <div class="hero-eyebrow">Payments Commercialization &amp; Strategy &nbsp;·&nbsp; $200M+ in managed payment flows &nbsp;·&nbsp; Multi-Rail</div>
       <h1>Carlos Ureña</h1>
-      <p class="hero-sub">I build the commercial layer that turns payment infrastructure into a disciplined revenue engine.</p>
-      <p class="hero-hook">
-        Most payments businesses generate plenty of revenue. Very few know which corridors, clients, and rails actually produce the margin. That gap between volume and economics is where most payment franchises quietly leak value.
-      </p>
-      <p class="hero-sub">
-        Twenty years in payments, with P&amp;L leadership across wire and cross-border businesses. Designing pricing models and leading go-to-market strategy across ACH, wires, RTP, cross-border, and FX-enabled flows at global banks and increasingly where banks and payment networks are building the next generation of cross-border and real-time money movement infrastructure.
-      </p>
-      <div class="pillrow" aria-label="Focus areas">
-        <span class="pill">Product Economics</span>
-        <span class="pill">Pricing Strategy</span>
-        <span class="pill">Portfolio Performance</span>
-        <span class="pill">Commercialization</span>
-        <span class="pill">Multi-Rail Payments</span>
-        <span class="pill">GTM Strategy</span>
-      </div>
+      <p class="hero-lead">I build the commercial layer that turns payment infrastructure into a disciplined revenue engine.</p>
+      <p class="hero-hook">Most payments businesses generate plenty of revenue. Very few know which corridors, clients, and rails actually produce the margin.</p>
+      <p class="hero-hook-bridge">That gap between transaction volume and economic performance is where payment franchises quietly leak value.</p>
+      <p class="hero-exp">Over twenty years in payments, I've led pricing strategy, corridor economics, and commercialization initiatives across ACH, wires, RTP, cross-border, and FX-enabled flows at global banks — and increasingly where banks and payment networks are building the next generation of cross-border and real-time money movement infrastructure.</p>
       <div class="links">
         <a href="https://www.linkedin.com/in/carlosurena/" rel="me noopener" target="_blank">LinkedIn ↗</a>
-        <a href="/cdn-cgi/l/email-protection#512423343f307f3c7f3230233d3e2211363c30383d7f323e3c">Email</a>
+        <a href="mailto:urena.m.carlos@gmail.com">Email</a>
       </div>
     </div>
 
     <!-- 2. WHAT I FOCUS ON -->
     <div class="section-block">
       <div class="section-label">What I Focus On</div>
-      <ul class="focus-bullets">
+      <ul class="focus-grid">
         <li>Pricing governance and revenue architecture</li>
         <li>Corridor economics and cross-border strategy</li>
         <li>Multi-rail payments commercialization</li>
@@ -430,77 +493,74 @@
     <div class="section-block">
       <div class="section-label">The Framework</div>
       <h2>The Payments Franchise Operating System</h2>
-      <p>A six-step framework for diagnosing and managing payments businesses as economic portfolios rather than collections of products. In many banks, fewer than 25% of payment corridors generate the majority of margin. The rest dilute it through pricing exceptions, routing inefficiencies, and operational cost structures that are invisible at the product level. This system makes those economics visible — and actionable.</p>
+      <div class="os-intro">
+        <p>A six-step framework for diagnosing and managing payments businesses as economic portfolios rather than collections of products.</p>
+      </div>
+      <div class="os-insight">
+        In many banks, fewer than 25% of payment corridors generate the majority of margin. The rest dilute it through pricing exceptions, routing inefficiencies, and operational cost structures that remain invisible at the product level. This operating system makes those economics visible — and actionable.
+      </div>
 
       <div class="os-diagram">
 
         <div class="os-step">
-          <div class="os-step-num">1</div>
+          <div class="os-step-left">
+            <div class="os-step-num">1</div>
+            <div class="os-step-line"></div>
+          </div>
           <div class="os-step-content">
             <div class="os-step-title">Diagnose the Franchise</div>
             <div class="os-step-link"><a href="/payments-portfolio-diagnostic/">Payments Portfolio Self-Assessment ↗</a></div>
           </div>
         </div>
 
-        <div class="os-connector">
-          <div class="os-arrow">↓</div>
-          <div style="flex:1;"></div>
-        </div>
-
         <div class="os-step">
-          <div class="os-step-num">2</div>
+          <div class="os-step-left">
+            <div class="os-step-num">2</div>
+            <div class="os-step-line"></div>
+          </div>
           <div class="os-step-content">
             <div class="os-step-title">Restore Pricing Discipline</div>
             <div class="os-step-link"><a href="/payments-pricing-governance-playbook.pdf" target="_blank">Payments Pricing Governance Playbook ↗</a></div>
           </div>
         </div>
 
-        <div class="os-connector">
-          <div class="os-arrow">↓</div>
-          <div style="flex:1;"></div>
-        </div>
-
         <div class="os-step">
-          <div class="os-step-num">3</div>
+          <div class="os-step-left">
+            <div class="os-step-num">3</div>
+            <div class="os-step-line"></div>
+          </div>
           <div class="os-step-content">
             <div class="os-step-title">Build the Commercial Layer</div>
             <div class="os-step-link"><a href="/payments-franchise-commercialization-guide.pdf" target="_blank">Payments Franchise Commercialization Guide ↗</a></div>
           </div>
         </div>
 
-        <div class="os-connector">
-          <div class="os-arrow">↓</div>
-          <div style="flex:1;"></div>
-        </div>
-
         <div class="os-step">
-          <div class="os-step-num">4</div>
+          <div class="os-step-left">
+            <div class="os-step-num">4</div>
+            <div class="os-step-line"></div>
+          </div>
           <div class="os-step-content">
             <div class="os-step-title">Optimize Cross-Border Corridors</div>
             <div class="os-step-link"><a href="/payments-corridor-strategy-framework.pdf" target="_blank">Payments Corridor Strategy Framework ↗</a></div>
           </div>
         </div>
 
-        <div class="os-connector">
-          <div class="os-arrow">↓</div>
-          <div style="flex:1;"></div>
-        </div>
-
         <div class="os-step">
-          <div class="os-step-num">5</div>
+          <div class="os-step-left">
+            <div class="os-step-num">5</div>
+            <div class="os-step-line"></div>
+          </div>
           <div class="os-step-content">
             <div class="os-step-title">Build the Infrastructure</div>
             <div class="os-step-link"><a href="/payments-infrastructure-strategy.pdf" target="_blank">Payments Infrastructure Strategy ↗</a></div>
           </div>
         </div>
 
-        <div class="os-connector">
-          <div class="os-arrow">↓</div>
-          <div style="flex:1;"></div>
-        </div>
-
         <div class="os-step">
-          <div class="os-step-num">6</div>
+          <div class="os-step-left">
+            <div class="os-step-num">6</div>
+          </div>
           <div class="os-step-content">
             <div class="os-step-title">Manage the Portfolio</div>
             <div class="os-step-link"><a href="/payments-franchise-portfolio-management.pdf" target="_blank">Payments Franchise Portfolio Management ↗</a></div>
@@ -509,33 +569,57 @@
 
       </div>
 
-      <p style="margin-top:16px;font-size:13.5px;">
-        <a href="/payments-portfolio-diagnostic/" style="color:var(--gold);text-decoration:none;">Payments Portfolio Self-Assessment ↗</a>
+      <div class="os-footer">
+        <a href="/payments-portfolio-diagnostic/">Payments Portfolio Self-Assessment ↗</a>
         &nbsp;&middot;&nbsp;
-        <a href="https://models.carlosurena.com" style="color:var(--gold);text-decoration:none;">Analytics Framework ↗</a>
-      </p>
+        <a href="https://models.carlosurena.com" target="_blank">Analytics Framework ↗</a>
+      </div>
     </div>
 
-    <!-- 4. OVERVIEW (condensed) -->
+    <!-- 4. PAYMENTS FRANCHISE ECONOMICS -->
     <div class="section-block">
-      <div class="section-label">Overview</div>
-      <p>
-        Payments franchises often mistake volume growth for economic health. By the time the margin erosion is visible, it has been compressing for years. At Citi, Deutsche Bank, HSBC, and Mashreq, I built pricing governance frameworks for wire and cross-border products: corridor pricing models, exception governance, and portfolio margin monitoring. The work has always been the same — find where value is being left on the table, build the system to capture it, and make sure it holds.
-      </p>
-      <p>
-        I specialize in payments franchise economics: the pricing, corridor strategy, balance sheet linkage, and governance structures that determine whether a payments business produces durable margin. I work with banks, fintechs, and payment networks. In a full-time role, I run the payments P&amp;L. As an advisor, I come in when an organization has payment volume but hasn&#39;t built the commercial infrastructure to monetize it properly.
-      </p>
+      <div class="section-label">Payments Franchise Economics</div>
+      <p>Most payments organizations manage products. Strong payments franchises manage economics. The difference typically appears in four places:</p>
+      <div class="economics-grid">
+        <div class="economics-item">Pricing architecture and exception governance</div>
+        <div class="economics-item">Corridor-level profitability visibility</div>
+        <div class="economics-item">Infrastructure decisions tied to commercial return</div>
+        <div class="economics-item">Portfolio-level capital allocation</div>
+      </div>
+      <p style="margin-top:16px;">When those systems align, payments stops behaving like a utility and starts behaving like a franchise business.</p>
     </div>
 
-    <!-- 5. HOW I THINK -->
+    <!-- 5. OPERATOR PROOF -->
     <div class="section-block">
-      <h2>How I Think About Payments P&amp;L</h2>
-      <p>Most payments franchises are flying blind on their own P&amp;L. Revenue is coming in, volume is growing, and leadership assumes the business is healthy. It usually isn&#39;t. Pricing leakage, operational drag, exception costs, and governance gaps are quietly compressing margin — and nobody is looking.</p>
-      <p>When I walk into an underperforming franchise, I don&#39;t start with the sales pipeline. I go straight to the operating model: pricing structure, governance framework, KPI discipline, cost-to-serve visibility. That&#39;s where the real problem always is. And that&#39;s where the fastest leverage is.</p>
+      <div class="section-label">Operator Proof</div>
+      <p>At Citi, Deutsche Bank, HSBC, and Mashreq, I built pricing governance and commercialization frameworks for wire and cross-border products. This included:</p>
+      <ul class="proof-bullets">
+        <li>Corridor pricing models and exception governance</li>
+        <li>Portfolio margin monitoring across multi-rail platforms</li>
+        <li>Commercialization strategies connecting payment flows to balance sheet value</li>
+        <li>Go-to-market frameworks for ACH, wires, RTP, and cross-border products</li>
+      </ul>
+      <div class="proof-coda">
+        The work is straightforward in principle: find where value is being left on the table, build the system to capture it, and make sure it holds.
+      </div>
+    </div>
+
+    <!-- 6. HOW I THINK -->
+    <div class="section-block">
+      <div class="section-label">How I Think About Payments P&amp;L</div>
+      <p>Most payments franchises are flying blind on their own economics. Revenue is growing, transaction volume is rising, and leadership assumes the business is healthy. It usually isn't. Pricing leakage, operational drag, exception costs, and governance gaps quietly compress margin — often for years before anyone notices.</p>
+      <p>When I walk into an underperforming payments franchise, I don't start with the sales pipeline. I start with the operating model:</p>
+      <ul class="think-bullets">
+        <li>Pricing structure</li>
+        <li>Governance framework</li>
+        <li>KPI discipline</li>
+        <li>Cost-to-serve visibility</li>
+      </ul>
+      <p>That's where the real leverage is.</p>
       <p>The <strong>Payments Strategy Analytics Framework</strong> provides the quantitative layer: a six-model system that transforms payment data into layered strategic intelligence, from transaction-level P&amp;L diagnosis through client behavioral signals to board-level portfolio scenario modelling. <a href="https://models.carlosurena.com" target="_blank" style="color:var(--gold);text-decoration:none;">Explore the models ↗</a></p>
     </div>
 
-    <!-- 6. CAREER -->
+    <!-- 7. CAREER -->
     <div class="section-block">
       <div class="section-label">Career Highlights</div>
       <div class="grid">
@@ -602,10 +686,11 @@
       </div>
     </div>
 
-    <!-- 7. FOCUS AREAS -->
+    <!-- 8. FOCUS AREAS -->
     <div class="section-block">
       <div class="section-label">Focus Areas</div>
-      <p>My focus is payments commercialization in the broadest sense. That means pricing strategy and revenue architecture, margin and cost structure discipline, multi-rail product strategy across ACH, wires, RTP, cross-border, and FX-enabled flows, and the governance frameworks that keep it all from drifting. On the network side, I focus on how real-time push payment platforms like Visa Direct and Mastercard Move build commercial advantage through corridor economics, use case adoption, and GTM execution.</p>
+      <p>My work focuses on payments commercialization in the broadest sense: pricing architecture, margin discipline, corridor strategy, multi-rail product economics, and the governance frameworks that determine whether a payments franchise produces durable margin.</p>
+      <p>On the network side, I focus on how real-time push payment platforms such as Visa Direct and Mastercard Move build commercial advantage through corridor economics, use-case adoption, and go-to-market execution.</p>
     </div>
 
     <footer>
@@ -613,24 +698,13 @@
       <span>
         <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">LinkedIn</a>
         &nbsp;·&nbsp;
-        <a href="/cdn-cgi/l/email-protection#a5d0d7c0cbc48bc88bc6c4d7c9cad6e5c2c8c4ccc98bc6cac8" style="color:inherit;text-decoration:none;">Email</a>
+        <a href="mailto:urena.m.carlos@gmail.com" style="color:inherit;text-decoration:none;">Email</a>
       </span>
     </footer>
 
   </main>
 
   <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Carlos Ureña",
-    "alternateName": "Carlos Urena",
-    "jobTitle": "Payments Strategy and Commercialization Leader",
-    "url": "https://carlosurena.com/",
-    "sameAs": ["https://www.linkedin.com/in/carlosurena/"]
-  }
-  </script>
 
 </body>
 </html>
