@@ -821,7 +821,7 @@
           doc.setFont("helvetica", "bold");
           doc.setFontSize(8.5);
           doc.setTextColor(...WHITE);
-          doc.text("Carlos Urena", PAGE_W - MR, 8.5, { align: "right" });
+          doc.text("Carlos Urena\u00f1a", PAGE_W - MR, 8.5, { align: "right" });
           doc.setFont("helvetica", "normal");
           doc.setFontSize(6.5);
           doc.setTextColor(180, 190, 210);
@@ -1092,9 +1092,9 @@
       doc.setFont("helvetica", "bold");
       doc.setFontSize(7);
       doc.setTextColor(...GOLD);
-      doc.text("IMMEDIATE FOCUS", ML + 4, y + 5.5);
+      doc.text("IMMEDIATE FOCUS", ML + 4, y + 6);
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(7.5);
+      doc.setFontSize(7);
       doc.setTextColor(...WHITE);
       var focusText = r.overall <= 25
         ? "Restore pricing governance and operational discipline before pursuing growth. Growth amplifies margin leakage when the operating model is not ready."
@@ -1103,9 +1103,10 @@
         : r.overall <= 70
         ? "Close the gap between revenue growth and volume growth. Pricing segmentation and corridor economics are the highest-leverage levers available."
         : "Optimize corridor economics and deepen balance sheet linkage. The operating foundation is strong — focus on extracting the remaining portfolio value.";
-      var focusLines = doc.splitTextToSize(focusText, CW - 8);
-      doc.text(focusLines, ML + 4, y + 10.5);
-      y += 18;
+      var focusLines = doc.splitTextToSize(focusText, CW - 10);
+      var focusBoxH = focusLines.length * 4 + 16;
+      doc.text(focusLines, ML + 4, y + 12);
+      y += focusBoxH + 6;
 
       // ── PAGE 2: What Drove Your Score + Executive Diagnosis ──────────────
       doc.addPage();
@@ -1160,7 +1161,7 @@
         var src  = r.rules.diagSources ? r.rules.diagSources[i] : null;
         var meta = src ? TIER_META[src.tier] : null;
         var dlines = doc.splitTextToSize((i + 1) + ".  " + d, CW - 6);
-        var diagH = dlines.length * 3.8 + (meta ? 12 : 6);
+        var dlines = doc.splitTextToSize((i + 1) + ".  " + d, CW - 6); var diagH = dlines.length * 3.8 + (meta ? 14 : 8);
 
         doc.setFillColor(250, 251, 252);
         doc.rect(ML, y, CW, diagH, "F");
@@ -1183,7 +1184,13 @@
         doc.setFont("helvetica", "normal");
         doc.setFontSize(7.5);
         doc.setTextColor.apply(doc, NAVY);
-        doc.text(dlines, ML + 6, iy2);
+        var diagPrefix = (i + 1) + ".  ";
+        var diagIndent = diagPrefix.length * 3.2;
+        var diagWrapped = doc.splitTextToSize(d, CW - 6 - diagIndent);
+        doc.text(diagPrefix + diagWrapped[0], ML + 6, iy2);
+        if (diagWrapped.length > 1) {
+          doc.text(diagWrapped.slice(1), ML + 6 + diagIndent, iy2 + 4.2);
+        }
         y += diagH + 3;
       });
 
@@ -1279,7 +1286,7 @@
         var items = ph.ids.map(function(id) { return window.PPD_MODEL.recommendations[id]; }).filter(Boolean);
         var itemLines = [];
         items.forEach(function(r2) {
-          var lines = doc.splitTextToSize("- " + r2.title, colW - 4);
+          var lines = doc.splitTextToSize(r2.title, colW - 8);
           itemLines = itemLines.concat(lines);
         });
         var colH = 10 + itemLines.length * 3.6 + 6;
@@ -1302,7 +1309,17 @@
         doc.setFont("helvetica", "normal");
         doc.setFontSize(6.5);
         doc.setTextColor(...SLATE);
-        doc.text(itemLines, px + 3, phaseStartY + 19);
+        var lineY = phaseStartY + 19;
+        var allItems = ph.ids.map(function(id2) { return window.PPD_MODEL.recommendations[id2]; }).filter(Boolean);
+        allItems.forEach(function(rec2) {
+          var rlines = doc.splitTextToSize(rec2.title, colW - 10);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(6.5);
+          doc.setTextColor(...SLATE);
+          doc.text("-", px + 3, lineY);
+          doc.text(rlines, px + 8, lineY);
+          lineY += rlines.length * 3.6 + 2;
+        });
       });
 
       y = phaseStartY + maxPhaseH + 14;
@@ -1330,6 +1347,82 @@
       doc.setTextColor(...WHITE);
       doc.text(takeLines, ML + 7, y + 8);
       y += takeH2 + 10;
+      // PFI Hexagon diagram
+      y = sectionLabel("THE PAYMENTS FRANCHISE INDEX FRAMEWORK", y);
+
+      var hexCX = ML + CW / 2;
+      var hexCY = y + 52;
+      var hexR = 38; // radius center to pillar center
+      var pillarW = 42;
+      var pillarH = 24;
+
+      // Draw connecting lines from center to each pillar first (behind everything)
+      var hexAngles = [-90, -30, 30, 90, 150, 210]; // top, top-right, bottom-right, bottom, bottom-left, top-left
+      hexAngles.forEach(function(ang) {
+        var rad = ang * Math.PI / 180;
+        var px2 = hexCX + Math.cos(rad) * (hexR - 12);
+        var py2 = hexCY + Math.sin(rad) * (hexR - 12);
+        doc.setDrawColor(183, 136, 44);
+        doc.setLineWidth(0.3);
+        doc.setLineDashPattern([1, 2], 0);
+        doc.line(hexCX, hexCY, px2, py2);
+      });
+      doc.setLineDashPattern([], 0);
+
+      // Center circle
+      doc.setFillColor(...NAVY);
+      doc.circle(hexCX, hexCY, 14, "F");
+      doc.setDrawColor(...GOLD);
+      doc.setLineWidth(1);
+      doc.circle(hexCX, hexCY, 14, "S");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(7);
+      doc.setTextColor(...GOLD);
+      doc.text("PFI", hexCX, hexCY - 2, { align: "center" });
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(5.5);
+      doc.setTextColor(...WHITE);
+      doc.text("Score", hexCX, hexCY + 4, { align: "center" });
+
+      // Six pillar hexagons
+      var pillars6 = [
+        { label: "Revenue", sub: "Architecture", ang: -90, w: 0.20 },
+        { label: "Growth", sub: "Engine", ang: -30, w: 0.10 },
+        { label: "Margin &", sub: "Cost", ang: 30, w: 0.20 },
+        { label: "Governance", sub: "& Operating", ang: 90, w: 0.15 },
+        { label: "Balance", sub: "Sheet", ang: 150, w: 0.20 },
+        { label: "Multi-Rail", sub: "Strategy", ang: 210, w: 0.15 }
+      ];
+
+      pillars6.forEach(function(p6) {
+        var rad = p6.ang * Math.PI / 180;
+        var px2 = hexCX + Math.cos(rad) * hexR;
+        var py2 = hexCY + Math.sin(rad) * hexR;
+        var pw = pillarW;
+        var ph = pillarH;
+
+        // Pillar box
+        doc.setFillColor(...NAVY);
+        doc.roundedRect(px2 - pw/2, py2 - ph/2, pw, ph, 2, 2, "F");
+        doc.setDrawColor(...GOLD);
+        doc.setLineWidth(0.6);
+        doc.roundedRect(px2 - pw/2, py2 - ph/2, pw, ph, 2, 2, "S");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(5.5);
+        doc.setTextColor(...GOLD);
+        doc.text(p6.label, px2, py2 - 4, { align: "center" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(5);
+        doc.setTextColor(200, 210, 225);
+        doc.text(p6.sub, px2, py2 + 2, { align: "center" });
+        doc.setFontSize(4.5);
+        doc.setTextColor(150, 160, 175);
+        doc.text(Math.round(p6.w * 100) + "%", px2, py2 + 8, { align: "center" });
+      });
+
+      y += 112;
+
       // Contact block
       y = sectionLabel("QUESTIONS ABOUT YOUR RESULTS", y);
 
@@ -1341,7 +1434,7 @@
       doc.setFont("helvetica", "bold");
       doc.setFontSize(10);
       doc.setTextColor(...NAVY);
-      doc.text("Carlos Urena", ML + 8, y + 8);
+      doc.text("Carlos Urena\u00f1a", ML + 8, y + 8);
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
