@@ -1553,9 +1553,9 @@ function exportPDF() {
     doc.text(band.lo + " \u2013 " + band.hi, ML + 38, y + 4);
     // YOUR SCORE badge
     if (isActive) {
-      fillRect(ML + 52, y + 0.5, 20, 4, BURGUNDY, 1.5);
+      fillRect(ML + 52, y + 0.5, 26, 4, BURGUNDY, 1.5);
       setFont("bold", 5.5, WHITE);
-      doc.text("\u25c4 YOUR SCORE", ML + 62, y + 3.5, { align: "center" });
+      doc.text("YOUR SCORE", ML + 65, y + 3.5, { align: "center" });
     }
     y += scaleRowH;
   });
@@ -1724,7 +1724,7 @@ function exportPDF() {
   var labelW   = CW - badgeW - 4;
   var LABELCOL = 12;            // fixed label column width (OWNER / KPI / WHY)
   var VALCOL_X = labelX + LABELCOL + 3; // value column always starts here
-  var valW     = labelW - LABELCOL - 3;
+  var valW     = labelW - LABELCOL - 3 - 4;  // 4mm right margin so text never bleeds to card edge
 
   sc.priorities.forEach(function(pri, idx) {
     // Card
