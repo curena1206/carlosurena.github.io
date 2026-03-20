@@ -387,7 +387,6 @@
           const { score5, answered } = pillarScores[p.id];
           if (answered >= 3 && score5 < threshold) totalPenalty += penalty;
         });
-        // Cap total penalty at 30 — prevents catastrophic scores zeroing out
         composite -= Math.min(totalPenalty, 30);
       }
       return clamp(composite, 8, 100);
@@ -735,730 +734,1157 @@
       }
     }
 
-    function exportPDF() {
-      if (!state.lastResult) return;
-      const r = state.lastResult;
-      if (!window.jspdf) { alert("PDF library not loaded. Please refresh and try again."); return; }
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
-
-      const PAGE_W  = 215.9;
-      const PAGE_H  = 279.4;
-      const ML = 16, MR = 16;
-      const CW = PAGE_W - ML - MR;
-
-      const NAVY       = [15,  31,  61 ];
-      const GOLD       = [183, 136, 44 ];
-      const GOLD_LIGHT = [245, 236, 215];
-      const SLATE      = [74,  85,  104];
-      const SLATE_2    = [113, 128, 150];
-      const WHITE      = [255, 255, 255];
-      const SOFT       = [247, 249, 252];
-      const LINE       = [226, 232, 240];
-      const GREEN      = [22,  101, 52 ];
-      const GREEN_BG   = [240, 253, 244];
-      const YELLOW     = [146, 64,  14 ];
-      const YELLOW_BG  = [255, 251, 235];
-      const RED        = [120, 20,  40 ];
-      const RED_BG     = [255, 245, 245];
-      const GREY_BG    = [241, 245, 249];
-
-      const TIER_META = {
-        1: { label: "STRUCTURAL FAILURE", bg: RED_BG,    ink: RED    },
-        2: { label: "MONETIZATION GAP",   bg: YELLOW_BG, ink: YELLOW },
-        3: { label: "PORTFOLIO RISK",      bg: GREY_BG,   ink: SLATE  },
-      };
-
-      const bandLabelsPDF = {
-        critical: "CRITICAL", weak: "DEVELOPING", developing: "PROGRESSING",
-        strong: "STRONG", exceptional: "OPTIMIZED"
-      };
-      const bandColorsPDF = {
-        critical:    { bg: RED_BG,          ink: RED              },
-        weak:        { bg: YELLOW_BG,        ink: YELLOW           },
-        developing:  { bg: [224,242,254],    ink: [12,74,110]      },
-        strong:      { bg: GREEN_BG,         ink: GREEN            },
-        exceptional: { bg: [243,232,255],    ink: [88,28,135]      }
-      };
-
-      // PFI Score band classification
-      function pfiBand(score) {
-        if (score <= 25) return { label: "STRUCTURAL FAILURE",   ink: RED,    bg: RED_BG    };
-        if (score <= 50) return { label: "FRAGILE FRANCHISE",    ink: YELLOW, bg: YELLOW_BG };
-        if (score <= 70) return { label: "OPERATIONALLY STABLE", ink: [12,74,110], bg: [224,242,254] };
-        if (score <= 85) return { label: "STRATEGICALLY ALIGNED",ink: GREEN,  bg: GREEN_BG  };
-        return                   { label: "BEST-IN-CLASS",        ink: [88,28,135], bg: [243,232,255] };
-      }
-
-      // Benchmark insight by band
-      function benchmarkInsight(score) {
-        if (score <= 25) return "At this level, payments franchises typically experience margin compression driven by repair costs, pricing leakage, and absent portfolio governance. Stabilization programs focus first on pricing discipline and operational control before growth initiatives can gain traction.";
-        if (score <= 50) return "The franchise generates revenue but the economics are fragile. Margin durability depends heavily on a single revenue lever or a small client set. Pricing governance and corridor-level visibility are the highest-leverage improvement areas.";
-        if (score <= 70) return "Core mechanics are functioning, but pricing discipline, corridor strategy, or rail economics are not yet fully aligned. The franchise is stable but leaving margin on the table through structural gaps that grow with volume.";
-        if (score <= 85) return "Governance and monetization discipline are strong. Remaining gains typically come from corridor optimization, rail strategy, and deepening balance sheet linkage across the client base.";
-        return "The franchise operates with strong economic discipline across pricing, infrastructure, and portfolio management. Focus shifts to defending margin integrity and extracting the final layer of portfolio optimization.";
-      }
-
-      const activeScenario = SCENARIOS.find((s) => s.id === state.activeScenario);
-      const pillarModel = window.PPD_MODEL.pillars;
-      const totalPages = 4;
-
-      function drawHeader(isFirstPage) {
-        doc.setFillColor(...NAVY);
-        doc.rect(0, 0, PAGE_W, 20, "F");
-        doc.setDrawColor(...GOLD);
-        doc.setLineWidth(0.5);
-        doc.line(0, 20, PAGE_W, 20);
-        if (isFirstPage) {
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(10.5);
-          doc.setTextColor(...WHITE);
-          doc.text("Payments Franchise Index", ML, 8.5);
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(6.5);
-          doc.setTextColor(180, 190, 210);
-          doc.text("Operator-grade diagnostic  ·  carlosurena.com", ML, 15);
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(8.5);
-          doc.setTextColor(...WHITE);
-          doc.text("Carlos Urena\u00f1a", PAGE_W - MR, 8.5, { align: "right" });
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(6.5);
-          doc.setTextColor(180, 190, 210);
-          doc.text("Payments Strategy & Commercialization", PAGE_W - MR, 15, { align: "right" });
-        } else {
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(8);
-          doc.setTextColor(...WHITE);
-          doc.text("PFI Diagnostic Report", ML, 12);
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(6.5);
-          doc.setTextColor(...WHITE);
-          doc.text("Carlos Urena  ·  carlosurena.com", PAGE_W - MR, 12, { align: "right" });
-        }
-      }
-
-      function drawFooter(pageNum) {
-        doc.setFillColor(...NAVY);
-        doc.rect(0, PAGE_H - 10, PAGE_W, 10, "F");
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(6);
-        doc.setTextColor(...WHITE);
-        doc.text("Carlos Urena  ·  urena.m.carlos@gmail.com  ·  carlosurena.com", ML, PAGE_H - 3.5);
-        doc.setTextColor(150, 165, 195);
-        doc.text("No data stored  ·  Runs in browser", PAGE_W - MR, PAGE_H - 3.5, { align: "right" });
-        doc.setTextColor(180, 195, 220);
-        doc.text("Page " + pageNum + " of " + totalPages, PAGE_W / 2, PAGE_H - 3.5, { align: "center" });
-      }
-
-      function sectionLabel(label, y) {
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(6.5);
-        doc.setTextColor(...GOLD);
-        doc.text(label, ML, y);
-        doc.setDrawColor(...LINE);
-        doc.setLineWidth(0.2);
-        doc.line(ML + 34, y - 1, ML + CW, y - 1);
-        return y + 5;
-      }
-
-      // ── PAGE 1: Executive Summary Dashboard ──────────────────────────────
-      drawHeader(true);
-      drawFooter(1);
-      let y = 25;
-
-      // Page title
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(13);
-      doc.setTextColor(...NAVY);
-      doc.text("Diagnostic Report", ML, y);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(8);
-      doc.setTextColor(...SLATE);
-      doc.text("Payments Franchise Index  ·  Executive Summary", ML, y + 6);
-      y += 13;
-
-      // Scenario label
-      if (activeScenario) {
-        doc.setFillColor(...GOLD_LIGHT);
-        doc.rect(ML, y, CW, 7, "F");
-        doc.setFillColor(...GOLD);
-        doc.rect(ML, y, 2.5, 7, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(6);
-        doc.setTextColor(...GOLD);
-        doc.text("SCENARIO", ML + 5, y + 4.8);
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(80, 55, 10);
-        doc.text(activeScenario.label, ML + 27, y + 4.8);
-        y += 10;
-      }
-
-      // Score + classification block
-      var band = pfiBand(r.overall);
-      doc.setFillColor(...SOFT);
-      doc.rect(ML, y, CW, 26, "F");
-      doc.setFillColor(...GOLD);
-      doc.rect(ML, y, 3, 26, "F");
-
-      // Big score
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(38);
-      doc.setTextColor(...NAVY);
-      doc.text(String(r.overall), ML + 9, y + 19);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(11);
-      doc.setTextColor(...SLATE);
-      doc.text("/100", ML + 30, y + 19);
-
-      // Vertical divider
-      doc.setDrawColor(...LINE);
-      doc.setLineWidth(0.3);
-      doc.line(ML + 52, y + 3, ML + 52, y + 23);
-
-      // Classification badge
-      doc.setFillColor.apply(doc, band.bg);
-      doc.roundedRect(ML + 56, y + 3, 50, 7, 1.5, 1.5, "F");
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(7);
-      doc.setTextColor.apply(doc, band.ink);
-      doc.text(band.label, ML + 81, y + 8, { align: "center" });
-
-      // Sub-scores — clean 3-column layout
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7);
-      doc.setTextColor(...SLATE);
-      doc.text("Monetization", ML + 56, y + 16);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(...NAVY);
-      doc.text(r.sub.monetization + "/100", ML + 56, y + 21);
-
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(...SLATE);
-      doc.text("Margin durability", ML + 90, y + 16);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(...NAVY);
-      doc.text(r.sub.margin + "/100", ML + 90, y + 21);
-
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(...SLATE);
-      doc.text("Strategic readiness", ML + 128, y + 16);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(...NAVY);
-      doc.text(r.sub.readiness + "/100", ML + 128, y + 21);
-
-      y += 30;
-
-      // Benchmark insight
-      doc.setFillColor(245, 248, 252);
-      doc.setDrawColor(...GOLD);
-      doc.setLineWidth(0.4);
-      var insight = benchmarkInsight(r.overall);
-      var insightLines = doc.splitTextToSize(insight, CW - 10);
-      var insightH = insightLines.length * 3.8 + 8;
-      doc.rect(ML, y, CW, insightH, "F");
-      doc.rect(ML, y, 3, insightH, "F");
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(6);
-      doc.setTextColor(...GOLD);
-      doc.text("BENCHMARK INSIGHT", ML + 6, y + 5);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7);
-      doc.setTextColor(...SLATE);
-      doc.text(insightLines, ML + 6, y + 9);
-      y += insightH + 6;
-
-      // PFI Classification Scale
-      y = sectionLabel("PFI CLASSIFICATION SCALE", y);
-      var bands = [
-        { range: "0 – 25",   label: "Structural Failure",    ink: RED,       bg: RED_BG    },
-        { range: "26 – 50",  label: "Fragile Franchise",     ink: YELLOW,    bg: YELLOW_BG },
-        { range: "51 – 70",  label: "Operationally Stable",  ink: [12,74,110], bg: [224,242,254] },
-        { range: "71 – 85",  label: "Strategically Aligned", ink: GREEN,     bg: GREEN_BG  },
-        { range: "86 – 100", label: "Best-in-Class",         ink: [88,28,135], bg: [243,232,255] }
-      ];
-      var scaleRowH = 6;
-      var scaleColW = CW / 5;
-      bands.forEach(function(b, bi) {
-        var bx = ML + bi * scaleColW;
-        var isActive = (b.label === "Structural Failure" && r.overall <= 25) ||
-          (b.label === "Fragile Franchise" && r.overall > 25 && r.overall <= 50) ||
-          (b.label === "Operationally Stable" && r.overall > 50 && r.overall <= 70) ||
-          (b.label === "Strategically Aligned" && r.overall > 70 && r.overall <= 85) ||
-          (b.label === "Best-in-Class" && r.overall > 85);
-        doc.setFillColor.apply(doc, b.bg);
-        doc.rect(bx, y, scaleColW, 13, "F");
-        doc.setDrawColor.apply(doc, b.ink);
-        doc.setLineWidth(isActive ? 1.2 : 0.3);
-        doc.rect(bx, y, scaleColW, 13, "S");
-        if (isActive) {
-          doc.setFillColor.apply(doc, b.ink);
-          doc.rect(bx, y, scaleColW, 5, "F");
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(6);
-          doc.setTextColor(...WHITE);
-          doc.text(b.range, bx + scaleColW / 2, y + 3.8, { align: "center" });
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(5.5);
-          doc.setTextColor.apply(doc, b.ink);
-          var labelLines = doc.splitTextToSize(b.label, scaleColW - 2);
-          doc.text(labelLines, bx + scaleColW / 2, y + 9.5, { align: "center" });
-        } else {
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(6);
-          doc.setTextColor.apply(doc, b.ink);
-          doc.text(b.range, bx + scaleColW / 2, y + 4.5, { align: "center" });
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(5.5);
-          var labelLines = doc.splitTextToSize(b.label, scaleColW - 2);
-          doc.text(labelLines, bx + scaleColW / 2, y + 9.5, { align: "center" });
-        }
-      });
-      y += 18;
-
-      // Pillar heatmap with visual bars
-      y = sectionLabel("PILLAR HEATMAP", y);
-      const BAR_H = 10;
-      const MAX_BAR_W = 50;
-
-      pillarModel.forEach(function(p) {
-        var s = r.pillarScores[p.id].score5;
-        var bg, ink;
-        if (s >= 4.0)      { bg = GREEN_BG;  ink = GREEN;  }
-        else if (s >= 2.5) { bg = YELLOW_BG; ink = YELLOW; }
-        else               { bg = RED_BG;    ink = RED;    }
-
-        // Row background
-        doc.setFillColor.apply(doc, bg);
-        doc.rect(ML, y, CW, BAR_H, "F");
-
-        // Pillar name
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(7.5);
-        doc.setTextColor.apply(doc, NAVY);
-        doc.text(p.name, ML + 3, y + 5.5);
-
-        // Weight
-        doc.setFontSize(6);
-        doc.setTextColor.apply(doc, SLATE_2);
-        doc.text(Math.round(p.weight * 100) + "%", ML + 92, y + 5.5);
-
-        // Visual bar
-        var barW = (s / 5) * MAX_BAR_W;
-        doc.setFillColor(220, 225, 235);
-        doc.rect(ML + 100, y + 2, MAX_BAR_W, 4, "F");
-        doc.setFillColor.apply(doc, ink);
-        if (barW > 0) doc.rect(ML + 100, y + 2, barW, 4, "F");
-
-        // Score badge
-        doc.setFillColor.apply(doc, ink);
-        doc.roundedRect(ML + CW - 18, y + 1.5, 18, 5, 1, 1, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(6.5);
-        doc.setTextColor.apply(doc, WHITE);
-        var scoreLabel = s < 1 ? s.toFixed(1).replace("0.", ".") : Math.round(s) + ""; doc.text(scoreLabel + "/5", ML + CW - 9, y + 5.5, { align: "center" });
-
-        y += BAR_H + 2;
-      });
-
-      y += 8;
-
-      // Key structural issues — top 2 diagnosis items
-      y = sectionLabel("KEY STRUCTURAL ISSUES", y);
-      r.rules.diag.slice(0, 2).forEach(function(d, i) {
-        var src = r.rules.diagSources ? r.rules.diagSources[i] : null;
-        var meta = src ? TIER_META[src.tier] : null;
-        var dlines = doc.splitTextToSize(d, CW - 8);
-        var blockH = dlines.length * 4.5 + 10;
-
-        doc.setFillColor(250, 251, 253);
-        doc.rect(ML, y, CW, blockH, "F");
-        if (meta) {
-          doc.setFillColor.apply(doc, meta.ink);
-          doc.rect(ML, y, 3, blockH, "F");
-        }
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(6.8);
-        doc.setTextColor(55, 65, 81);
-        doc.text(dlines, ML + 6, y + 6);
-        y += blockH + 4;
-      });
-
-      y += 4;
-
-      // Immediate focus CTA
-      doc.setFillColor(...NAVY);
-      doc.rect(ML, y, CW, 14, "F");
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(7);
-      doc.setTextColor(...GOLD);
-      doc.text("IMMEDIATE FOCUS", ML + 4, y + 6);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7);
-      doc.setTextColor(...WHITE);
-      var focusText = r.overall <= 25
-        ? "Restore pricing governance and operational discipline before pursuing growth. Growth amplifies margin leakage when the operating model is not ready."
-        : r.overall <= 50
-        ? "Stabilize margin through pricing governance and exception reduction. Monetization improvements depend on fixing structural cost and leakage first."
-        : r.overall <= 70
-        ? "Close the gap between revenue growth and volume growth. Pricing segmentation and corridor economics are the highest-leverage levers available."
-        : "Optimize corridor economics and deepen balance sheet linkage. The operating foundation is strong — focus on extracting the remaining portfolio value.";
-      var focusLines = doc.splitTextToSize(focusText, CW - 10);
-      var focusBoxH = focusLines.length * 4 + 16;
-      doc.text(focusLines, ML + 4, y + 12);
-      y += focusBoxH + 6;
-
-      // ── PAGE 2: What Drove Your Score + Executive Diagnosis ──────────────
-      doc.addPage();
-      drawHeader(false);
-      drawFooter(2);
-      y = 26;
-
-      y = sectionLabel("WHAT DROVE YOUR SCORE", y);
-
-      pillarModel.forEach(function(p) {
-        var s = r.pillarScores[p.id].score5;
-        var band2 = s < 2.0 ? "critical" : s < 3.0 ? "weak" : s < 4.0 ? "developing" : s < 5.0 ? "strong" : "exceptional";
-        var narrative = PILLAR_NARRATIVES[p.id] && PILLAR_NARRATIVES[p.id][band2];
-        if (!narrative) return;
-
-        var bc = bandColorsPDF[band2];
-        var narLines = doc.splitTextToSize(narrative, CW - 36);
-        var ROW_H = 8 + narLines.length * 4.2 + 6;
-
-        doc.setFillColor(250, 251, 252);
-        doc.rect(ML, y, CW, ROW_H, "F");
-        doc.setDrawColor(...LINE);
-        doc.setLineWidth(0.12);
-        doc.line(ML, y + ROW_H, ML + CW, y + ROW_H);
-
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(7.5);
-        doc.setTextColor(...NAVY);
-        doc.text(p.name, ML + 2, y + 5);
-
-        doc.setFillColor.apply(doc, bc.bg);
-        doc.roundedRect(ML + CW - 26, y + 1.5, 26, 4, 1, 1, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(5);
-        doc.setTextColor.apply(doc, bc.ink);
-        doc.text(bandLabelsPDF[band2], ML + CW - 13, y + 4.5, { align: "center" });
-
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(6.8);
-        doc.setTextColor(55, 65, 81);
-        doc.text(narLines, ML + 2, y + 10);
-
-        y += ROW_H + 2;
-      });
-
-      y += 6;
-
-      // Executive Diagnosis
-      y = sectionLabel("EXECUTIVE DIAGNOSIS", y);
-
-      r.rules.diag.forEach(function(d, i) {
-        var src  = r.rules.diagSources ? r.rules.diagSources[i] : null;
-        var meta = src ? TIER_META[src.tier] : null;
-        var dlines = doc.splitTextToSize((i + 1) + ".  " + d, CW - 6);
-        var dlines = doc.splitTextToSize((i + 1) + ".  " + d, CW - 6); var diagH = dlines.length * 4.5 + (meta ? 18 : 12);
-
-        doc.setFillColor(250, 251, 252);
-        doc.rect(ML, y, CW, diagH, "F");
-        if (meta) {
-          doc.setFillColor.apply(doc, meta.ink);
-          doc.rect(ML, y, 3, diagH, "F");
-        }
-
-        var iy2 = y + 5;
-        if (meta) {
-          doc.setFillColor.apply(doc, meta.bg);
-          doc.roundedRect(ML + 6, y + 2, 32, 4.5, 1, 1, "F");
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(5.5);
-          doc.setTextColor.apply(doc, meta.ink);
-          doc.text(meta.label, ML + 22, y + 5.2, { align: "center" });
-          iy2 = y + 9;
-        }
-
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(7.5);
-        doc.setTextColor.apply(doc, NAVY);
-        var diagPrefix = (i + 1) + ".  ";
-        var diagIndent = diagPrefix.length * 3.2;
-        var diagWrapped = doc.splitTextToSize(d, CW - 6 - diagIndent);
-        doc.text(diagPrefix + diagWrapped[0], ML + 6, iy2);
-        if (diagWrapped.length > 1) {
-          doc.text(diagWrapped.slice(1), ML + 6 + diagIndent, iy2 + 4.2);
-        }
-        y += diagH + 6;
-      });
-
-      // ── PAGE 3: 90-Day Priorities ─────────────────────────────────────────
-      doc.addPage();
-      drawHeader(false);
-      drawFooter(3);
-      y = 26;
-
-      y = sectionLabel("90-DAY PRIORITIES", y);
-
-      r.rules.recIds.forEach(function(id, idx) {
-        var rec = window.PPD_MODEL.recommendations[id];
-        if (!rec) return;
-
-        doc.setFontSize(8.5);
-        var titleLines = doc.splitTextToSize(rec.title, CW - 20);
-        doc.setFontSize(7);
-        var ownerLines = doc.splitTextToSize("Owner: " + rec.owner, CW - 20);
-        var kpiLines   = doc.splitTextToSize("KPI: " + rec.metric, CW - 20);
-        var whyLines   = doc.splitTextToSize(rec.why, CW - 20);
-
-        var ROW_H = 7
-          + titleLines.length * 4.8
-          + ownerLines.length * 3.8
-          + kpiLines.length * 3.8
-          + whyLines.length * 3.5
-          + 6;
-
-        doc.setFillColor(idx % 2 === 0 ? 247 : 255, idx % 2 === 0 ? 249 : 255, idx % 2 === 0 ? 252 : 255);
-        doc.rect(ML, y, CW, ROW_H, "F");
-
-        doc.setFillColor.apply(doc, GOLD);
-        doc.rect(ML, y, 3, ROW_H, "F");
-
-        // Number badge
-        var badgeY = y + 4;
-        doc.setFillColor.apply(doc, GOLD_LIGHT);
-        doc.roundedRect(ML + 5, badgeY, 9, 9, 1.5, 1.5, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(8);
-        doc.setTextColor.apply(doc, GOLD);
-        doc.text(String(idx + 1), ML + 9.5, badgeY + 6.5, { align: "center" });
-
-        var iy = y + 8;
-
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(8.5);
-        doc.setTextColor.apply(doc, NAVY);
-        doc.text(titleLines, ML + 18, iy);
-        iy += titleLines.length * 5.5 + 3;
-
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(7);
-        doc.setTextColor.apply(doc, SLATE);
-        doc.text(ownerLines, ML + 18, iy);
-        iy += ownerLines.length * 4.5 + 2;
-
-        doc.setTextColor.apply(doc, SLATE_2);
-        doc.text(kpiLines, ML + 18, iy);
-        iy += kpiLines.length * 4.5 + 2;
-
-        doc.setFont("helvetica", "italic");
-        doc.setFontSize(6.5);
-        doc.setTextColor(140, 155, 170);
-        doc.text(whyLines, ML + 18, iy);
-
-        y += ROW_H + 6;
-      });
-
-      // ── PAGE 4: Strategic Takeaway + Contact ─────────────────────────────
-      doc.addPage();
-      drawHeader(false);
-      drawFooter(4);
-      y = 26;
-
-      // 30/60/90 plan
-      y = sectionLabel("SUGGESTED 30 / 60 / 90-DAY EXECUTION PLAN", y);
-
-      var phases = [
-        { phase: "Days 1–30", title: "Stabilize & Measure", ids: r.rules.recIds.slice(0, 2) },
-        { phase: "Days 31–60", title: "Fix Leakage & Align Levers", ids: r.rules.recIds.slice(2, 4) },
-        { phase: "Days 61–90", title: "Scale the Winners", ids: r.rules.recIds.slice(4) }
-      ];
-
-      var colW = (CW - 8) / 3;
-      var phaseX = [ML, ML + colW + 4, ML + (colW + 4) * 2];
-      var phaseStartY = y;
-      var maxPhaseH = 0;
-
-      phases.forEach(function(ph, pi) {
-        var px = phaseX[pi];
-        var items = ph.ids.map(function(id) { return window.PPD_MODEL.recommendations[id]; }).filter(Boolean);
-        var itemLines = [];
-        items.forEach(function(r2) {
-          var lines = doc.splitTextToSize(r2.title, colW - 8);
-          itemLines = itemLines.concat(lines);
-        });
-        var colH = 10 + itemLines.length * 3.6 + 6;
-        maxPhaseH = Math.max(maxPhaseH, colH);
-
-        doc.setFillColor(...NAVY);
-        doc.rect(px, phaseStartY, colW, 8, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(6.5);
-        doc.setTextColor(...GOLD);
-        doc.text(ph.phase, px + 3, phaseStartY + 5.5);
-
-        doc.setFillColor(...SOFT);
-        doc.rect(px, phaseStartY + 8, colW, colH - 8, "F");
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(6.5);
-        doc.setTextColor(...NAVY);
-        doc.text(ph.title, px + 3, phaseStartY + 14);
-
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(6.5);
-        doc.setTextColor(...SLATE);
-        var lineY = phaseStartY + 19;
-        var allItems = ph.ids.map(function(id2) { return window.PPD_MODEL.recommendations[id2]; }).filter(Boolean);
-        allItems.forEach(function(rec2) {
-          var rlines = doc.splitTextToSize(rec2.title, colW - 10);
-          doc.setFont("helvetica", "normal");
-          doc.setFontSize(6.5);
-          doc.setTextColor(...SLATE);
-          doc.text("-", px + 3, lineY);
-          doc.text(rlines, px + 8, lineY);
-          lineY += rlines.length * 3.6 + 2;
-        });
-      });
-
-      y = phaseStartY + maxPhaseH + 14;
-
-      // Strategic takeaway
-      y = sectionLabel("STRATEGIC TAKEAWAY", y);
-
-      var takeaway = r.overall <= 25
-        ? "The immediate priority is restoring pricing governance and operational discipline. Without these controls in place, growth will amplify margin leakage rather than strengthen the franchise. Stabilization must come before expansion."
-        : r.overall <= 50
-        ? "The franchise has the volume to be profitable, but the commercial infrastructure to monetize it is incomplete. The priority is building pricing governance, corridor visibility, and portfolio management discipline — the systems that turn volume into durable margin."
-        : r.overall <= 70
-        ? "The franchise is operationally functional but leaving margin on the table through pricing exceptions, corridor gaps, and unoptimized rail economics. Closing these gaps does not require structural change — it requires governance and measurement discipline."
-        : "The franchise has strong economic foundations. The remaining opportunity is in corridor-level optimization, balance sheet linkage, and ensuring the operating model can sustain performance as volume and complexity grow.";
-
-      var takeLines = doc.splitTextToSize(takeaway, CW - 10);
-      var takeH = takeLines.length * 3.8 + 10;
-      var takeH2 = takeLines.length * 4.2 + 14;
-      doc.setFillColor(...NAVY);
-      doc.rect(ML, y, CW, takeH2, "F");
-      doc.setFillColor(...GOLD);
-      doc.rect(ML, y, 3, takeH2, "F");
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7.5);
-      doc.setTextColor(...WHITE);
-      doc.text(takeLines, ML + 7, y + 8);
-      y += takeH2 + 10;
-      // PFI Hexagon diagram
-      y = sectionLabel("THE PAYMENTS FRANCHISE INDEX FRAMEWORK", y);
-
-      var hexCX = ML + CW / 2;
-      var hexCY = y + 62;  // more vertical space
-      var hexR = 52;       // larger radius so boxes don't overlap
-      var pillarW = 46;
-      var pillarH = 26;
-
-      // Connecting lines
-      var hexAngles = [-90, -30, 30, 90, 150, 210];
-      hexAngles.forEach(function(ang) {
-        var rad = ang * Math.PI / 180;
-        var px2 = hexCX + Math.cos(rad) * (hexR - 16);
-        var py2 = hexCY + Math.sin(rad) * (hexR - 16);
-        doc.setDrawColor(183, 136, 44);
-        doc.setLineWidth(0.3);
-        doc.setLineDashPattern([1, 2], 0);
-        doc.line(hexCX, hexCY, px2, py2);
-      });
-      doc.setLineDashPattern([], 0);
-
-      // Center circle — PFI Score
-      doc.setFillColor(...NAVY);
-      doc.circle(hexCX, hexCY, 16, "F");
-      doc.setDrawColor(...GOLD);
-      doc.setLineWidth(1.2);
-      doc.circle(hexCX, hexCY, 16, "S");
-      // "PFI" text — in jsPDF y is baseline, center circle at hexCY
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(8);
-      doc.setTextColor(...GOLD);
-      doc.text("PFI", hexCX, hexCY - 1, { align: "center" });
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(6);
-      doc.setTextColor(...WHITE);
-      doc.text("Score: " + r.overall, hexCX, hexCY + 6, { align: "center" });
-
-      // Six pillar boxes
-      var pillars6 = [
-        { label: "Revenue", sub: "Architecture", pct: "20%", ang: -90  },
-        { label: "Growth", sub: "Engine",        pct: "10%", ang: -30  },
-        { label: "Margin &", sub: "Cost",        pct: "20%", ang:  30  },
-        { label: "Governance", sub: "& Operating", pct: "15%", ang: 90 },
-        { label: "Balance", sub: "Sheet",        pct: "20%", ang: 150  },
-        { label: "Multi-Rail", sub: "Strategy",  pct: "15%", ang: 210  }
-      ];
-
-      pillars6.forEach(function(p6) {
-        var rad = p6.ang * Math.PI / 180;
-        var px2 = hexCX + Math.cos(rad) * hexR;
-        var py2 = hexCY + Math.sin(rad) * hexR;
-
-        doc.setFillColor(...NAVY);
-        doc.roundedRect(px2 - pillarW/2, py2 - pillarH/2, pillarW, pillarH, 2, 2, "F");
-        doc.setDrawColor(...GOLD);
-        doc.setLineWidth(0.7);
-        doc.roundedRect(px2 - pillarW/2, py2 - pillarH/2, pillarW, pillarH, 2, 2, "S");
-
-        // Label line 1
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(6);
-        doc.setTextColor(...GOLD);
-        doc.text(p6.label, px2, py2 - 5, { align: "center" });
-        // Label line 2
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(6);
-        doc.setTextColor(200, 210, 225);
-        doc.text(p6.sub, px2, py2 + 1, { align: "center" });
-        // Percentage
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(6);
-        doc.setTextColor(...GOLD);
-        doc.text(p6.pct, px2, py2 + 8, { align: "center" });
-      });
-
-      y += 132;
-
-      // Contact block
-      y = sectionLabel("QUESTIONS ABOUT YOUR RESULTS", y);
-
-      doc.setFillColor(...SOFT);
-      doc.rect(ML, y, CW, 28, "F");
-      doc.setFillColor(...GOLD);
-      doc.rect(ML, y, 3, 28, "F");
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(10);
-      doc.setTextColor(...NAVY);
-      doc.text("Carlos Urena\u00f1a", ML + 8, y + 8);
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7.5);
-      doc.setTextColor(...SLATE);
-      doc.text("Payments Strategy & Commercialization", ML + 8, y + 14);
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7.5);
-      doc.setTextColor(...GOLD);
-      doc.text("urena.m.carlos@gmail.com", ML + 8, y + 20);
-      doc.text("carlosurena.com", ML + 8, y + 25);
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7);
-      doc.setTextColor(...SLATE);
-      var contactNote = "The Payments Franchise Diagnostic engagement expands this model into a structured review using your actual transaction data, pricing records, and corridor economics — producing a Corridor Profitability Map, Portfolio Scorecard, and Infrastructure Cost Stack.";
-      var contactLines = doc.splitTextToSize(contactNote, CW / 2 - 4);
-      doc.text(contactLines, ML + CW / 2 + 4, y + 6);
-
-      // Save
-      doc.save("Payments-Franchise-Index-Diagnostic.pdf");
+// ─────────────────────────────────────────────────────────────────────────────
+// PFI_EXPORT.js  —  Drop-in replacement for exportPDF() in app.js
+//
+// HOW TO INTEGRATE:
+//   1. Delete the existing exportPDF() function from app.js (search "function exportPDF")
+//   2. Paste this entire file's content in its place
+//   3. The function signature is identical — it reads state.lastResult and state.activeScenario
+//      from the existing app.js closure, so no other changes are needed.
+//
+// DEPENDENCIES: jsPDF (already loaded via CDN in index.html)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── SCENARIO DATA ─────────────────────────────────────────────────────────────
+// All language is keyed by score band. Pillar scores still come from the
+// 42-question computation — only the narrative language is band-driven.
+
+const PFI_SCENARIOS = [
+  {
+    range: [0, 25],
+    label: "STRUCTURAL FAILURE",
+    scenario_name: "Day 1 \u2014 Inherited Underperforming Franchise",
+    benchmark_insight:
+      "At this level, payments franchises typically experience margin compression driven by repair costs, " +
+      "pricing leakage, and weak or absent portfolio governance. Stabilization programs focus first on pricing " +
+      "discipline and operational control before growth initiatives gain traction.",
+    pillar_commentary: {
+      revenue_arch:
+        "Revenue depends on a single economic lever. Pricing, mix, and rail economics are not managed as a " +
+        "system. Fee schedules are not segmented by client value or corridor profitability.",
+      growth_engine:
+        "Growth is relationship-driven with no repeatable acquisition engine. Workflow embed is low and the " +
+        "pipeline is dominated by price-driven deals that compress margin at entry.",
+      margin_cost:
+        "Margin is under severe pressure. Exception rates are high, repair costs are not systematically " +
+        "tracked, and pricing leakage is occurring without visibility. Unit economics by rail are unknown.",
+      multi_rail:
+        "Rail strategy is absent. Real-time send capability is limited, routing is static, and data quality " +
+        "is creating repair and rejection risk across corridors.",
+      balance_liquidity:
+        "Balance contribution is invisible. Payments-to-balance linkage is absent, pricing ignores NII, " +
+        "and rate-cycle exposure is unquantified. Float economics are not captured.",
+      governance:
+        "The franchise lacks a functioning operating model. P&L ownership is diffuse, pricing is " +
+        "sales-driven, and KPIs are undefined or unused. Cross-functional governance forums are absent.",
+    },
+    exec_diagnosis:
+      "The franchise lacks a functioning payments operating model. Pricing governance, margin visibility, " +
+      "and portfolio management mechanisms are absent or ineffective. All six pillars score at or near " +
+      "minimum \u2014 this is a stabilization mandate, not an optimization exercise.",
+    structural_issues: [
+      "Exception and repair costs are compressing margin at a rate that threatens the P&L. " +
+        "Manual intervention requires a dedicated program with named ownership and a repair rate target.",
+      "The franchise is operating without a functioning management system. KPIs are undefined or unused " +
+        "and cross-functional governance forums are absent. Strategy cannot execute in this environment.",
+      "Pricing governance has broken down. Sales-driven discounting, absent override controls, and poor " +
+        "cost visibility are creating systematic margin leakage invisible to leadership.",
+    ],
+    key_issues: [
+      "Repair costs compressing margin at a rate that threatens the P&L",
+      "Pricing governance broken down \u2014 sales-driven discounting, absent override controls",
+      "No portfolio performance operating rhythm \u2014 KPIs undefined or unused",
+    ],
+    immediate_focus:
+      "Restore pricing governance and operational discipline before pursuing growth. Without a functioning " +
+      "operating model, growth amplifies margin leakage rather than strengthening the franchise.",
+    priorities: [
+      {
+        title: "Launch Exception Reduction Program",
+        owner: "Ops + Product + Tech",
+        kpi:   "Repair rate, STP %, cost per repair, trend vs. target",
+        why:   "Repairs are often the largest untracked driver of margin compression in commercial payments. " +
+               "A dedicated program with named ownership and cadenced review creates accountability that normal ops cannot.",
+      },
+      {
+        title: "Implement Monthly Portfolio Performance Review",
+        owner: "Portfolio Owner",
+        kpi:   "Pillar KPIs trending, actions opened and closed per cycle",
+        why:   "Creates the operating rhythm needed to continuously improve franchise performance. " +
+               "Without a recurring management forum, structural issues remain invisible until they become crises.",
+      },
+      {
+        title: "Establish Pricing Council with Documented Authority Tiers",
+        owner: "Exec Sponsor + Pricing Lead",
+        kpi:   "Override rate, approval cycle time, margin integrity trend",
+        why:   "Governance is often the fastest first fix for systematic pricing leakage. A council with clear " +
+               "authority tiers stops ad-hoc discounting and creates an auditable pricing record.",
+      },
+      {
+        title: "Establish Rail-Level Price Floors and Enforce Override Controls",
+        owner: "Pricing + Sales Leadership",
+        kpi:   "Override rate, margin leakage by deal, governance cycle time",
+        why:   "Stops silent margin erosion from inconsistent deal-by-deal discounting. Price floors anchored " +
+               "to unit cost data remove subjectivity from sales negotiation.",
+      },
+      {
+        title: "Build Unit Cost Model by Rail and Segment",
+        owner: "Finance + Product",
+        kpi:   "Unit cost by rail, segment price floors, contribution margin",
+        why:   "Provides the cost anchor needed for disciplined pricing and roadmap tradeoff decisions. " +
+               "Without this, pricing governance has no economic foundation.",
+      },
+    ],
+    execution: [
+      {
+        period: "Days 1\u201330",
+        title:  "Stabilize & Measure",
+        items:  [
+          "Launch Exception Reduction Program with repair KPI ownership and cadence",
+          "Implement monthly Portfolio Performance Review across rails, segments, and repairs",
+        ],
+      },
+      {
+        period: "Days 31\u201360",
+        title:  "Fix Leakage & Align Levers",
+        items:  [
+          "Establish Pricing Council with documented authority tiers and cadence",
+          "Establish rail-level price floors and enforce override controls",
+        ],
+      },
+      {
+        period: "Days 61\u201390",
+        title:  "Scale & Institutionalize",
+        items:  [
+          "Build unit cost model by rail and segment \u2014 embed in pricing governance",
+          "Publish portfolio scorecard and make franchise KPIs visible to leadership",
+        ],
+      },
+    ],
+    strategic_takeaway:
+      "Without pricing governance and operational discipline, growth will amplify margin leakage rather " +
+      "than strengthen the payments franchise. Stabilization must come before expansion.",
+  },
+
+  // ── SCENARIO 2: FRAGILE FRANCHISE ─────────────────────────────────────────
+  {
+    range: [26, 50],
+    label: "FRAGILE FRANCHISE",
+    scenario_name: "Fragile but Functioning \u2014 Governance Gaps Present",
+    benchmark_insight:
+      "At this level, the payments franchise has basic operating capability but lacks the governance " +
+      "structures and margin discipline to sustain performance. Revenue is generated but leaks through " +
+      "inconsistent pricing and underperforming corridors. The risk is institutionalizing weak practices " +
+      "rather than achieving structural improvement.",
+    pillar_commentary: {
+      revenue_arch:
+        "Revenue architecture exists but is not optimized. Pricing is partially segmented, but rail mix " +
+        "management and corridor economics are inconsistently applied.",
+      growth_engine:
+        "Growth relies heavily on relationship coverage. Workflow embedding is low and deal quality is " +
+        "inconsistent \u2014 some margin-accretive, many margin-dilutive.",
+      margin_cost:
+        "Exception rates are elevated and repair costs are partially tracked but not actively managed. " +
+        "Pricing overrides occur without systematic governance.",
+      multi_rail:
+        "Multi-rail capability exists but routing logic is not optimized. Real-time rails are available " +
+        "but underutilized. Data quality issues persist.",
+      balance_liquidity:
+        "Balance linkage to payments is tracked but not priced. NII contribution is acknowledged but not " +
+        "integrated into deal economics.",
+      governance:
+        "Management cadence is irregular. KPIs exist but are not consistently reviewed. Pricing authority " +
+        "tiers are informal and inconsistently applied.",
+    },
+    exec_diagnosis:
+      "The payments franchise is generating revenue but has not built the operating infrastructure to " +
+      "protect and grow margin systematically. Governance gaps are creating gradual but compounding " +
+      "margin erosion that compounds over time without visible trigger events.",
+    structural_issues: [
+      "Pricing override culture is established and normalized. Without formal governance, discounting " +
+        "behavior is self-reinforcing and margin erosion continues at pace.",
+      "Portfolio management is reactive rather than proactive. The absence of a structured review " +
+        "cadence means underperforming corridors and rails persist unaddressed.",
+      "Balance sheet contribution remains disconnected from payments pricing. The franchise is leaving " +
+        "NII value on the table in every rate-sensitive deal.",
+    ],
+    key_issues: [
+      "Pricing override culture normalized \u2014 margin erosion is systematic and self-reinforcing",
+      "Portfolio management is reactive \u2014 no structured review cadence in place",
+      "Balance sheet contribution disconnected from payments pricing decisions",
+    ],
+    immediate_focus:
+      "Formalize pricing governance and launch a portfolio review cadence. The payments franchise is " +
+      "generating revenue but losing margin systematically. Governance is the fix.",
+    priorities: [
+      {
+        title: "Formalize Pricing Governance with Override Controls",
+        owner: "Exec Sponsor + Pricing Lead",
+        kpi:   "Override rate, approval cycle time, margin integrity trend",
+        why:   "The most urgent lever. Formalizing pricing authority and creating an audit trail stops the " +
+               "silent erosion of margin that is already underway.",
+      },
+      {
+        title: "Launch Portfolio Performance Review Cadence",
+        owner: "Portfolio Owner",
+        kpi:   "Pillar KPIs trending, actions opened and closed per cycle",
+        why:   "Without a regular management forum, underperforming assets go unaddressed. A monthly cadence " +
+               "creates the feedback loop needed for structural improvement.",
+      },
+      {
+        title: "Build Rail Routing Optimization Program",
+        owner: "Product + Tech",
+        kpi:   "STP rate by rail, cost per transaction, real-time utilization %",
+        why:   "Multi-rail capability is available but underused. Routing optimization directly reduces unit " +
+               "cost and positions the franchise for volume growth.",
+      },
+      {
+        title: "Integrate NII into Deal Pricing Model",
+        owner: "Finance + Relationship Management",
+        kpi:   "NII contribution per deal, balance linkage rate",
+        why:   "Balance economics are being excluded from pricing decisions. Integrating NII creates a fuller " +
+               "picture of deal profitability and improves pricing discipline.",
+      },
+      {
+        title: "Establish Corridor Profitability Scorecard",
+        owner: "Finance + Product",
+        kpi:   "Corridor margin, volume trend, cost stack by corridor",
+        why:   "Without corridor-level visibility, resource allocation and pricing decisions lack an economic " +
+               "anchor. The scorecard becomes the basis for all portfolio decisions.",
+      },
+    ],
+    execution: [
+      {
+        period: "Days 1\u201330",
+        title:  "Stabilize Pricing Controls",
+        items:  [
+          "Implement pricing override approval process",
+          "Launch portfolio performance review cadence",
+        ],
+      },
+      {
+        period: "Days 31\u201360",
+        title:  "Optimize Operations",
+        items:  [
+          "Begin rail routing optimization program",
+          "Integrate NII into deal pricing model",
+        ],
+      },
+      {
+        period: "Days 61\u201390",
+        title:  "Build Portfolio Intelligence",
+        items:  [
+          "Launch corridor profitability scorecard",
+          "Link scorecard to resource allocation and pricing decisions",
+        ],
+      },
+    ],
+    strategic_takeaway:
+      "A fragile payments franchise can sustain itself for longer than it should \u2014 which is the danger. " +
+      "The margin erosion is slow and invisible until it is not. The window to correct governance gaps " +
+      "is now, before the P&L absorbs the full cost.",
+  },
+
+  // ── SCENARIO 3: OPERATIONALLY STABLE ──────────────────────────────────────
+  {
+    range: [51, 70],
+    label: "OPERATIONALLY STABLE",
+    scenario_name: "Stable Platform \u2014 Ready for Commercial Acceleration",
+    benchmark_insight:
+      "At this level, the payments franchise has functioning operational controls and a credible revenue " +
+      "base. The platform is stable but not yet optimized for growth. The opportunity is to convert " +
+      "operational stability into sustained commercial momentum through improved pricing discipline, " +
+      "corridor expansion, and balance sheet integration.",
+    pillar_commentary: {
+      revenue_arch:
+        "Revenue architecture is functional. Pricing is segmented at a basic level, but mix management " +
+        "and corridor economics could be more precisely calibrated to margin targets.",
+      growth_engine:
+        "Growth engine is active but relies on existing relationships. Workflow embed is improving but " +
+        "has not yet created durable switching cost. Pipeline quality is mixed.",
+      margin_cost:
+        "Margins are stable and repair costs are tracked. Exception rates are under control. Pricing " +
+        "overrides occur but are monitored. Unit economics are partially understood.",
+      multi_rail:
+        "Multi-rail capability is deployed. Routing is functional but not dynamically optimized. " +
+        "Real-time rails are live and utilization is growing.",
+      balance_liquidity:
+        "Balance linkage to payments is operational. NII contribution is tracked and included in some " +
+        "pricing models. Float optimization is an emerging capability.",
+      governance:
+        "Governance structures are in place. Management cadence is regular. KPIs are defined and " +
+        "reviewed. Pricing authority is documented but enforcement is inconsistent.",
+    },
+    exec_diagnosis:
+      "The payments franchise is operationally sound and commercially active. The next phase requires " +
+      "converting operational stability into a differentiated, high-margin payments franchise. " +
+      "The priority shifts from repair to acceleration.",
+    structural_issues: [
+      "Pricing precision remains an opportunity. Basic segmentation exists but corridor-level and " +
+        "client-level price optimization has not been systematically pursued.",
+      "Workflow embedding is growing but has not yet created switching cost at scale. Deeper product " +
+        "integration is the next source of durable revenue.",
+      "Balance sheet economics are tracked but not fully leveraged. More aggressive NII integration " +
+        "into relationship pricing would improve total returns.",
+    ],
+    key_issues: [
+      "Pricing precision not yet optimized at corridor and client level",
+      "Workflow embedding growing but switching cost not yet established at scale",
+      "Balance sheet economics tracked but not fully integrated into relationship pricing",
+    ],
+    immediate_focus:
+      "Shift from operational management to commercial acceleration. The platform is ready. " +
+      "The priority now is corridor optimization, client deepening, and margin improvement.",
+    priorities: [
+      {
+        title: "Launch Corridor Profitability Optimization Program",
+        owner: "Product + Finance",
+        kpi:   "Margin by corridor, pricing realization rate, volume mix shift",
+        why:   "Stable operations create the platform for targeted corridor optimization. Systematic analysis " +
+               "of corridor economics will reveal pricing and volume opportunities invisible at the aggregate level.",
+      },
+      {
+        title: "Deepen Workflow Integration Across Top-20 Clients",
+        owner: "Relationship Management + Product",
+        kpi:   "Workflow embed rate, product depth per client, churn rate",
+        why:   "Workflow integration is the most durable source of revenue protection. Deepening it across the " +
+               "top client base creates switching cost and improves revenue predictability.",
+      },
+      {
+        title: "Implement Dynamic Rail Routing",
+        owner: "Tech + Product",
+        kpi:   "Cost per transaction by rail, STP rate, routing decision time",
+        why:   "Dynamic routing reduces unit cost and improves client experience simultaneously. At this stage " +
+               "of scale, routing optimization has measurable P&L impact.",
+      },
+      {
+        title: "Build Client-Level Profitability Model",
+        owner: "Finance + Relationship Management",
+        kpi:   "Client margin, NII contribution, total relationship return",
+        why:   "Client-level economics inform pricing, coverage, and investment decisions. Without it, the " +
+               "franchise cannot allocate resources to the relationships with the highest total return.",
+      },
+      {
+        title: "Formalize Growth Playbook for New Corridor Entry",
+        owner: "Strategy + Product",
+        kpi:   "Corridor pipeline, time-to-revenue, cost of entry",
+        why:   "Stable franchises that do not systematically pursue corridor expansion cede ground to more " +
+               "aggressive competitors. A repeatable entry playbook reduces the cost and risk of growth.",
+      },
+    ],
+    execution: [
+      {
+        period: "Days 1\u201330",
+        title:  "Accelerate Commercial Levers",
+        items:  [
+          "Launch corridor profitability optimization program",
+          "Begin client-level profitability model build",
+        ],
+      },
+      {
+        period: "Days 31\u201360",
+        title:  "Deepen Integration",
+        items:  [
+          "Begin workflow integration program for top-20 clients",
+          "Implement dynamic rail routing",
+        ],
+      },
+      {
+        period: "Days 61\u201390",
+        title:  "Scale Growth Engine",
+        items:  [
+          "Formalize new corridor entry playbook",
+          "Deploy growth engine across pipeline with repeatable model",
+        ],
+      },
+    ],
+    strategic_takeaway:
+      "Operational stability is a platform, not a destination. The payments franchise that stays stable " +
+      "too long loses ground to competitors who move from stability to growth faster. The 90-day priority " +
+      "is converting operating capability into commercial momentum.",
+  },
+
+  // ── SCENARIO 4: STRATEGICALLY ALIGNED ────────────────────────────────────
+  {
+    range: [71, 85],
+    label: "STRATEGICALLY ALIGNED",
+    scenario_name: "High-Performance Franchise \u2014 Optimizing for Scale",
+    benchmark_insight:
+      "At this level, the payments franchise has strong commercial and operational foundations. Strategy, " +
+      "governance, and execution are aligned. The focus shifts to scaling what is working, eliminating " +
+      "remaining friction points, and building the next generation of capabilities that will defend the " +
+      "franchise against competitive pressure.",
+    pillar_commentary: {
+      revenue_arch:
+        "Revenue architecture is well-developed. Pricing is segmented and corridor economics are actively " +
+        "managed. Mix management is systematic and rail economics are integrated into decisions.",
+      growth_engine:
+        "Growth engine is structured and repeatable. Workflow embed is high across the top client base. " +
+        "Pipeline is well-qualified and margin-accretive deals dominate.",
+      margin_cost:
+        "Margins are strong and actively managed. Exception rates are low. Repair costs are minimal and " +
+        "tracked. Pricing governance is enforced. Unit economics are well-understood.",
+      multi_rail:
+        "Multi-rail strategy is sophisticated. Routing is dynamically optimized. Real-time capability is " +
+        "fully deployed. Data quality is high across corridors.",
+      balance_liquidity:
+        "Balance sheet is fully integrated into the payments franchise. NII is priced into relationships " +
+        "systematically. Float optimization is active and rate-cycle exposure is managed.",
+      governance:
+        "Operating model is mature. Management cadence is rigorous and fully embedded. KPIs are " +
+        "comprehensive and consistently reviewed. Pricing governance is enforced with full authority structure.",
+    },
+    exec_diagnosis:
+      "The payments franchise is operating at a high level across all dimensions. The strategic challenge " +
+      "at this stage is defending the advantage, scaling efficiently, and continuing to raise the " +
+      "performance ceiling before competitive pressure forces a reactive response.",
+    structural_issues: [
+      "At this performance level, the risks are complacency and complexity. High-performing franchises " +
+        "often over-invest in sustaining existing programs rather than building next-generation capabilities.",
+      "Talent concentration risk is a structural vulnerability in aligned franchises. Performance depends " +
+        "on specific individuals, which creates succession and transition risk.",
+      "External competitive dynamics require ongoing monitoring. A strategically aligned payments franchise " +
+        "can lose ground quickly if it does not anticipate rail disruption or pricing pressure from new entrants.",
+    ],
+    key_issues: [
+      "Complacency risk \u2014 over-investment in existing programs vs. next-generation capabilities",
+      "Talent concentration creates succession and transition risk",
+      "Competitive disruption requires proactive monitoring and response capability",
+    ],
+    immediate_focus:
+      "Protect the advantage and extend the lead. The franchise is performing well. The risk now is " +
+      "competitive disruption and internal complacency. Focus shifts to next-generation capability " +
+      "and portfolio optimization.",
+    priorities: [
+      {
+        title: "Build Next-Generation Corridor Strategy",
+        owner: "Strategy + Product",
+        kpi:   "Corridor pipeline, market share by corridor, pricing premium",
+        why:   "Strategically aligned franchises must actively expand their addressable market. Next-generation " +
+               "corridor strategy ensures the franchise is growing its competitive position, not just defending it.",
+      },
+      {
+        title: "Institutionalize Talent and Knowledge Transfer Programs",
+        owner: "HR + Senior Leadership",
+        kpi:   "Succession depth, knowledge documentation rate, retention",
+        why:   "Performance concentration is the hidden vulnerability of high-performing franchises. " +
+               "Institutionalizing knowledge and building succession depth de-risks the business.",
+      },
+      {
+        title: "Launch Innovation Pipeline for Emerging Payment Flows",
+        owner: "Product + Tech",
+        kpi:   "Innovation pipeline size, time-to-pilot, revenue from new flows",
+        why:   "Rail and technology disruption is accelerating. A structured innovation pipeline ensures the " +
+               "franchise participates in new payment flows before competitors establish a lead.",
+      },
+      {
+        title: "Develop Competitive Intelligence Capability",
+        owner: "Strategy",
+        kpi:   "Competitor move response time, pricing benchmark accuracy",
+        why:   "At high performance levels, competitive dynamics become the primary external threat. Systematic " +
+               "intelligence capability enables faster and better-informed strategic responses.",
+      },
+      {
+        title: "Optimize Total Returns Across the Client Portfolio",
+        owner: "Finance + Relationship Management",
+        kpi:   "Total relationship return, NII + fee mix, client tenure",
+        why:   "Portfolio optimization at this level is about maximizing total return, not just fee revenue. " +
+               "Systematic review of NII and fee economics improves resource allocation significantly.",
+      },
+    ],
+    execution: [
+      {
+        period: "Days 1\u201330",
+        title:  "Defend and Extend",
+        items:  [
+          "Launch next-generation corridor strategy process",
+          "Begin competitive intelligence capability build",
+        ],
+      },
+      {
+        period: "Days 31\u201360",
+        title:  "Build Future Capability",
+        items:  [
+          "Launch innovation pipeline for emerging payment flows",
+          "Institutionalize talent and knowledge transfer programs",
+        ],
+      },
+      {
+        period: "Days 61\u201390",
+        title:  "Optimize Returns",
+        items:  [
+          "Complete total returns optimization across client portfolio",
+          "Deploy expanded corridor strategy with market entry plan",
+        ],
+      },
+    ],
+    strategic_takeaway:
+      "Strategic alignment is a competitive advantage \u2014 but only if it is actively leveraged. " +
+      "The payments franchise that rests on current performance cedes ground to competitors building " +
+      "the next generation of capability. The 90-day priority is staying ahead.",
+  },
+
+  // ── SCENARIO 5: BEST-IN-CLASS ─────────────────────────────────────────────
+  {
+    range: [86, 100],
+    label: "BEST-IN-CLASS",
+    scenario_name: "Best-in-Class Franchise \u2014 Industry-Leading Execution",
+    benchmark_insight:
+      "At this level, the payments franchise is operating at or near the top of its peer group across " +
+      "all six pillars. Revenue architecture, margin discipline, governance, and growth engine quality " +
+      "are all mature and mutually reinforcing. The challenge at this level is sustaining excellence, " +
+      "managing complexity, and continuing to raise the performance standard.",
+    pillar_commentary: {
+      revenue_arch:
+        "Revenue architecture is sophisticated and fully integrated. Pricing is dynamically optimized " +
+        "by segment, corridor, and rail. Mix management is active and margin-accretive.",
+      growth_engine:
+        "Growth engine is industry-leading. Workflow embed is deep across the client base. Pipeline is " +
+        "systematically managed and consistently margin-accretive. Client acquisition cost is low.",
+      margin_cost:
+        "Margins are best-in-class and systematically protected. Exception rates are minimal. Unit " +
+        "economics are fully understood at the rail, corridor, and client level.",
+      multi_rail:
+        "Multi-rail capability is fully optimized. Dynamic routing, real-time capability, and data " +
+        "quality are all operating at peak performance. Rail strategy is a competitive differentiator.",
+      balance_liquidity:
+        "Balance sheet integration is complete and fully optimized. NII is systematically priced. Float " +
+        "economics are actively managed. Rate-cycle positioning is proactive.",
+      governance:
+        "Governance is industry-leading. Operating cadence is rigorous and fully embedded. KPIs are " +
+        "comprehensive, real-time, and inform decision-making at every level.",
+    },
+    exec_diagnosis:
+      "The payments franchise is executing at the highest level across all dimensions. The challenge at " +
+      "this stage is sustaining performance across organizational change, market cycles, and competitive " +
+      "disruption. Best-in-class franchises become competitive targets \u2014 the priority is building " +
+      "the resilience and adaptability to remain at the top.",
+    structural_issues: [
+      "Sustaining best-in-class performance requires continuous investment in capability refresh. " +
+        "Franchises at this level risk falling behind by optimizing existing programs rather than building the next generation.",
+      "Organizational complexity grows with performance. Best-in-class franchises often develop " +
+        "coordination overhead and decision latency that erodes the agility that drove their success.",
+      "Market leadership creates pricing pressure from competitors and clients. Systematic defense of " +
+        "pricing power requires ongoing investment in differentiation and switching cost.",
+    ],
+    key_issues: [
+      "Capability refresh risk \u2014 optimizing existing programs instead of building next-generation",
+      "Organizational complexity creating decision latency and coordination overhead",
+      "Market leadership under pressure \u2014 pricing power requires active defense",
+    ],
+    immediate_focus:
+      "Sustain the standard and build next-generation capability. Best-in-class performance is the " +
+      "starting point, not the destination. The franchise that stops building loses its lead faster than it gained it.",
+    priorities: [
+      {
+        title: "Build Franchise Resilience and Succession Program",
+        owner: "Senior Leadership + HR",
+        kpi:   "Succession depth, knowledge retention, leadership pipeline",
+        why:   "Best-in-class performance creates dependency on specific talent and programs. Systematic " +
+               "resilience-building ensures the franchise performs across leadership transitions and market cycles.",
+      },
+      {
+        title: "Deploy Next-Generation Analytics and Intelligence Platform",
+        owner: "Tech + Finance + Product",
+        kpi:   "Decision velocity, analytics coverage, real-time KPI availability",
+        why:   "Industry-leading franchises increasingly differentiate through data and analytics capability. " +
+               "A next-generation platform sustains the decision-making advantage that drives performance.",
+      },
+      {
+        title: "Lead Industry Standards in Payments Governance",
+        owner: "Senior Leadership + Compliance",
+        kpi:   "Industry participation, standards influence, regulatory positioning",
+        why:   "Best-in-class franchises shape the industry they lead. Active participation in standards and " +
+               "governance positions the franchise as the reference point and creates regulatory advantage.",
+      },
+      {
+        title: "Expand Addressable Market Through New Payment Flow Entry",
+        owner: "Strategy + Product",
+        kpi:   "New flow revenue, time-to-market, market share in new categories",
+        why:   "Market leadership in existing flows must be complemented by systematic expansion into emerging " +
+               "payment categories. Best-in-class franchises grow their addressable market continuously.",
+      },
+      {
+        title: "Deepen Client Ecosystem Integration",
+        owner: "Relationship Management + Product",
+        kpi:   "Ecosystem depth, API integration rate, switching cost index",
+        why:   "The deepest competitive moat at this level is ecosystem integration. Making the franchise the " +
+               "operating infrastructure of client workflows creates durable, compounding competitive advantage.",
+      },
+    ],
+    execution: [
+      {
+        period: "Days 1\u201330",
+        title:  "Sustain and Extend",
+        items:  [
+          "Launch franchise resilience and succession program",
+          "Begin next-generation analytics platform build",
+        ],
+      },
+      {
+        period: "Days 31\u201360",
+        title:  "Lead the Industry",
+        items:  [
+          "Establish industry standards participation program",
+          "Expand addressable market through new payment flow entry",
+        ],
+      },
+      {
+        period: "Days 61\u201390",
+        title:  "Deepen the Moat",
+        items:  [
+          "Deepen client ecosystem integration across top-50 relationships",
+          "Deploy expanded analytics platform with real-time PFI KPI capability",
+        ],
+      },
+    ],
+    strategic_takeaway:
+      "Best-in-class franchises are built over years and lost in a matter of quarters. The priority at " +
+      "this level is not optimization \u2014 it is resilience, adaptability, and the continuous build of " +
+      "next-generation capability that ensures the franchise remains the standard against which others are measured.",
+  },
+];
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+
+function pfiGetScenario(score) {
+  for (var i = 0; i < PFI_SCENARIOS.length; i++) {
+    if (score >= PFI_SCENARIOS[i].range[0] && score <= PFI_SCENARIOS[i].range[1]) {
+      return PFI_SCENARIOS[i];
     }
+  }
+  return PFI_SCENARIOS[0];
+}
+
+// Pillar id → commentary key mapping (matches app.js pillar ids)
+var PFI_PILLAR_COMMENTARY_KEY = {
+  revenue_arch:      "revenue_arch",
+  growth_engine:     "growth_engine",
+  margin_cost:       "margin_cost",
+  multi_rail:        "multi_rail",
+  balance_liquidity: "balance_liquidity",
+  governance:        "governance",
+};
+
+// ── MAIN exportPDF FUNCTION ───────────────────────────────────────────────────
+
+function exportPDF() {
+  if (!state.lastResult) return;
+  if (!window.jspdf) { alert("PDF library not loaded. Please refresh and try again."); return; }
+
+  var r  = state.lastResult;
+  var sc = pfiGetScenario(r.overall);
+
+  var { jsPDF } = window.jspdf;
+  var doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
+
+  var PW = 215.9, PH = 279.4;
+  var ML = 14, MR = 14;
+  var CW = PW - ML - MR;
+
+  // ── Palette (matches Python PDF exactly) ─────────────────────────────────
+  var NAVY     = [13,  27,  42 ];
+  var GOLD     = [201, 168, 76 ];
+  var BURGUNDY = [123, 45,  66 ];
+  var WHITE    = [255, 255, 255];
+  var GDARK    = [44,  62,  80 ];
+  var GMID     = [127, 140, 141];
+  var GLIT     = [236, 240, 241];
+  var GRULE    = [213, 216, 220];
+  var SCORE_R  = [192, 57,  43 ];  // data viz only
+  var SOFT     = [249, 250, 251];
+
+  // Classification scale colors
+  var SCALE_COLORS = [
+    { lo:0,  hi:25,  ink:[139,32,32],   label:"Structural Failure"   },
+    { lo:26, hi:50,  ink:[184,92,26],   label:"Fragile Franchise"    },
+    { lo:51, hi:70,  ink:[138,115,24],  label:"Operationally Stable" },
+    { lo:71, hi:85,  ink:[30,107,60],   label:"Strategically Aligned"},
+    { lo:86, hi:100, ink:[20,82,48],    label:"Best-in-Class"        },
+  ];
+
+  function activeScaleColor() {
+    for (var i = 0; i < SCALE_COLORS.length; i++) {
+      if (r.overall >= SCALE_COLORS[i].lo && r.overall <= SCALE_COLORS[i].hi)
+        return SCALE_COLORS[i].ink;
+    }
+    return BURGUNDY;
+  }
+
+  var pillarModel = window.PPD_MODEL.pillars;
+
+  // ── Shared drawing helpers ────────────────────────────────────────────────
+
+  function setFont(style, size, color) {
+    var parts = (style || "normal").split("-");
+    var weight = parts[0] || "normal";
+    var variant = parts[1] || "normal";
+    doc.setFont("helvetica", weight === "bold" ? "bold" : "normal");
+    if (size) doc.setFontSize(size);
+    if (color) doc.setTextColor.apply(doc, color);
+  }
+
+  function fillRect(x, y, w, h, color, radius) {
+    doc.setFillColor.apply(doc, color);
+    if (radius) doc.roundedRect(x, y, w, h, radius, radius, "F");
+    else        doc.rect(x, y, w, h, "F");
+  }
+
+  function strokeRect(x, y, w, h, color, lw, radius) {
+    doc.setDrawColor.apply(doc, color);
+    doc.setLineWidth(lw || 0.3);
+    if (radius) doc.roundedRect(x, y, w, h, radius, radius, "S");
+    else        doc.rect(x, y, w, h, "S");
+  }
+
+  function hRule(x, y, w, color, lw) {
+    doc.setDrawColor.apply(doc, color || GRULE);
+    doc.setLineWidth(lw || 0.3);
+    doc.line(x, y, x + w, y);
+  }
+
+  function sectionHead(label, y) {
+    setFont("bold", 7.5, NAVY);
+    doc.text(label, ML, y);
+    y += 1.5;
+    hRule(ML, y, CW, GOLD, 1.0);
+    return y + 3.5;
+  }
+
+  function textBlock(text, x, y, maxW, size, color, style) {
+    setFont(style || "normal", size || 8, color || GDARK);
+    var lines = doc.splitTextToSize(text, maxW);
+    doc.text(lines, x, y);
+    return lines.length * (size || 8) * 0.4 + 1;
+  }
+
+  // ── Header / Footer ───────────────────────────────────────────────────────
+
+  function drawHeader(firstPage) {
+    fillRect(0, 0, PW, 14, NAVY);
+    if (firstPage) {
+      setFont("bold", 9, WHITE);
+      doc.text("PAYMENTS FRANCHISE INDEX (PFI)", ML, 6.5);
+      setFont("normal", 6.5, GOLD);
+      doc.text("Operator-Grade Diagnostic", ML, 11.5);
+    } else {
+      setFont("bold", 7.5, WHITE);
+      doc.text("PAYMENTS FRANCHISE INDEX (PFI)", ML, 6.5);
+      setFont("normal", 6, [160, 175, 195]);
+      doc.text("PFI Diagnostic Report", ML, 11.5);
+    }
+  }
+
+  function drawFooter(pageNum, totalPages) {
+    fillRect(0, PH - 10, PW, 10, NAVY);
+    setFont("bold", 6, GOLD);
+    doc.text("Payments Franchise Index (PFI) Diagnostic", ML, PH - 3.5);
+    setFont("normal", 6, [143, 163, 177]);
+    doc.text("Carlos Ure\u00f1a  \u00b7  carlosurena.com", PW - MR, PH - 3.5, { align: "right" });
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PAGE 1 — EXECUTIVE SUMMARY
+  // ═══════════════════════════════════════════════════════════════════════════
+  drawHeader(true);
+  drawFooter(1, 4);
+
+  var y = 18;
+
+  // ── Scenario + Score cards ────────────────────────────────────────────────
+  var halfW = CW / 2 - 2;
+  var cardH = 18;
+
+  // Scenario card (left)
+  fillRect(ML, y, halfW, cardH, GLIT, 2);
+  setFont("bold", 5.5, GMID);
+  doc.text("SCENARIO", ML + 3, y + 5);
+  setFont("bold", 8, NAVY);
+  var nameParts = sc.scenario_name.split(" \u2014 ");
+  if (nameParts.length === 2) {
+    doc.text(nameParts[0] + " \u2014", ML + 3, y + 10);
+    doc.text(nameParts[1], ML + 3, y + 15.5);
+  } else {
+    doc.text(sc.scenario_name, ML + 3, y + 12);
+  }
+
+  // Score card (right)
+  var sx = ML + halfW + 4;
+  fillRect(sx, y, halfW, cardH, NAVY, 2);
+  setFont("bold", 5.5, GOLD);
+  doc.text("PFI SCORE", sx + 3, y + 5);
+  setFont("bold", 24, WHITE);
+  doc.text(String(r.overall), sx + 3, y + 15);
+  setFont("normal", 12, [180,190,210]);
+  doc.text("/ 100", sx + 3 + String(r.overall).length * 6.5, y + 15);
+  setFont("bold", 7, BURGUNDY);
+  doc.text(sc.label, sx + 3, y + 16.5 + 1.5);
+
+  y += cardH + 5;
+  hRule(ML, y, CW, GOLD, 1.2);
+  y += 4;
+
+  // ── Benchmark Insight ─────────────────────────────────────────────────────
+  y = sectionHead("BENCHMARK INSIGHT", y);
+  var biLines = doc.splitTextToSize(sc.benchmark_insight, CW);
+  setFont("normal", 7.5, GDARK);
+  doc.text(biLines, ML, y);
+  y += biLines.length * 3.4 + 5;
+
+  // ── PFI Classification Scale ──────────────────────────────────────────────
+  y = sectionHead("PFI CLASSIFICATION SCALE", y);
+  var scaleRowH = 5.5;
+  SCALE_COLORS.forEach(function(band) {
+    var isActive = r.overall >= band.lo && r.overall <= band.hi;
+    if (isActive) {
+      fillRect(ML - 1, y - 0.5, CW + 2, scaleRowH + 1, [245, 238, 238], 1.5);
+    }
+    // color square
+    doc.setFillColor.apply(doc, band.ink);
+    doc.rect(ML, y + 1, 2.8, 2.8, "F");
+    // label
+    doc.setFont("helvetica", isActive ? "bold" : "normal");
+    doc.setFontSize(8);
+    doc.setTextColor.apply(doc, isActive ? BURGUNDY : NAVY);
+    doc.text(band.label, ML + 4.5, y + 4);
+    // range
+    setFont("normal", 7, GMID);
+    doc.text(band.lo + " \u2013 " + band.hi, ML + 38, y + 4);
+    // YOUR SCORE badge
+    if (isActive) {
+      fillRect(ML + 52, y + 0.5, 20, 4, BURGUNDY, 1.5);
+      setFont("bold", 5.5, WHITE);
+      doc.text("\u25c4 YOUR SCORE", ML + 62, y + 3.5, { align: "center" });
+    }
+    y += scaleRowH;
+  });
+  y += 4;
+
+  // ── Pillar Heatmap ────────────────────────────────────────────────────────
+  y = sectionHead("PILLAR HEATMAP", y);
+  y += 1; // padding below rule so first bar clears it
+
+  var nameColW = 46;
+  var wtColW   = 8;
+  var barX     = ML + nameColW + wtColW + 2;
+  var barMaxW  = CW - nameColW - wtColW - 14;
+  var barH     = 3.6;
+  var hmRowH   = 5.8;
+
+  pillarModel.forEach(function(p) {
+    var ps = r.pillarScores[p.id].score5;
+    var midY = y + hmRowH / 2;
+
+    setFont("normal", 7.5, GDARK);
+    doc.text(p.name, ML, midY + 1.5);
+    setFont("normal", 6.5, GMID);
+    doc.text(Math.round(p.weight * 100) + "%", ML + nameColW, midY + 1.5);
+
+    // bar track
+    fillRect(barX, midY - barH / 2, barMaxW, barH, [232, 234, 236], 1.5);
+    // bar fill
+    var fillW = Math.max((ps / 5) * barMaxW, 1.5);
+    doc.setFillColor.apply(doc, SCORE_R);
+    doc.roundedRect(barX, midY - barH / 2, fillW, barH, 1.5, 1.5, "F");
+
+    // score label
+    var scoreStr = ps === Math.round(ps) ? Math.round(ps) + "/5" : ps.toFixed(1) + "/5";
+    setFont("bold", 6.5, GDARK);
+    doc.text(scoreStr, barX + barMaxW + 2, midY + 1.5);
+
+    y += hmRowH;
+  });
+  y += 4;
+
+  // ── Key Structural Issues ─────────────────────────────────────────────────
+  y = sectionHead("KEY STRUCTURAL ISSUES", y);
+  sc.key_issues.forEach(function(issue) {
+    var issueLines = doc.splitTextToSize(issue, CW - 5);
+    // bullet dot — aligned to first line baseline
+    doc.setFillColor.apply(doc, BURGUNDY);
+    doc.circle(ML + 1.5, y + 1.8, 1.2, "F");
+    setFont("normal", 7.8, GDARK);
+    doc.text(issueLines, ML + 4.5, y + 3);
+    y += issueLines.length * 3.5 + 2;
+  });
+  y += 2;
+
+  // ── Immediate Focus ───────────────────────────────────────────────────────
+  var focusLines = doc.splitTextToSize(sc.immediate_focus, CW - 6);
+  var focusH = focusLines.length * 3.8 + 10;
+  fillRect(ML, y, CW, focusH, NAVY, 2);
+  fillRect(ML, y, 2, focusH, GOLD);
+  setFont("bold", 6.5, GOLD);
+  doc.text("IMMEDIATE FOCUS", ML + 4, y + 5.5);
+  setFont("normal", 7.5, WHITE);
+  doc.text(focusLines, ML + 4, y + 10);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PAGE 2 — WHAT DROVE YOUR SCORE + EXECUTIVE DIAGNOSIS
+  // ═══════════════════════════════════════════════════════════════════════════
+  doc.addPage();
+  drawHeader(false);
+  drawFooter(2, 4);
+  y = 18;
+
+  y = sectionHead("WHAT DROVE YOUR SCORE", y);
+
+  // 6 pillar cards — 2 column grid
+  var cardColW = CW / 2 - 1.5;
+  var cardGap  = 3;
+  var colX     = [ML, ML + cardColW + cardGap];
+  var colY     = [y, y];
+  var cardBodyH = 18;
+  var cardHdrH  = 6;
+  var pCardH    = cardHdrH + cardBodyH;
+
+  pillarModel.forEach(function(p, idx) {
+    var cx = colX[idx % 2];
+    var cy = colY[idx % 2];
+    var commentary = sc.pillar_commentary[p.id] || "";
+
+    // Card background
+    fillRect(cx, cy, cardColW, pCardH, [253, 254, 254], 2);
+    strokeRect(cx, cy, cardColW, pCardH, GRULE, 0.3, 2);
+    // Left accent bar
+    fillRect(cx, cy, 2.5, pCardH, BURGUNDY);
+
+    // Header row
+    var hdrMid = cy + cardHdrH / 2;
+    setFont("normal", 5.8, GMID);
+    doc.text("Weight: " + Math.round(p.weight * 100) + "%", cx + 4, hdrMid + 1);
+    // CRITICAL pill
+    fillRect(cx + cardColW - 16, hdrMid - 2, 15, 4, BURGUNDY, 1.5);
+    setFont("bold", 5, WHITE);
+    doc.text("CRITICAL", cx + cardColW - 8.5, hdrMid + 0.8, { align: "center" });
+
+    hRule(cx + 3, cy + cardHdrH, cardColW - 5, GRULE, 0.3);
+
+    // Pillar name
+    setFont("bold", 7.5, NAVY);
+    doc.text(p.name, cx + 4, cy + cardHdrH + 5);
+
+    // Commentary
+    var cLines = doc.splitTextToSize(commentary, cardColW - 8);
+    setFont("normal", 6.5, GDARK);
+    doc.text(cLines, cx + 4, cy + cardHdrH + 9.5);
+
+    colY[idx % 2] += pCardH + 2;
+  });
+
+  y = Math.max(colY[0], colY[1]) + 4;
+  hRule(ML, y, CW, GRULE, 0.3);
+  y += 4;
+
+  // Executive Diagnosis
+  setFont("bold", 10, NAVY);
+  doc.text("Executive Diagnosis", ML, y);
+  y += 5;
+
+  var edLines = doc.splitTextToSize(sc.exec_diagnosis, CW);
+  setFont("normal", 7.5, GDARK);
+  doc.text(edLines, ML, y);
+  y += edLines.length * 3.5 + 5;
+
+  // Structural issues
+  var tagW = 27, tagH = 4.5;
+  sc.structural_issues.forEach(function(text, i) {
+    var label = "STRUCTURAL ISSUE " + (i + 1);
+    var iLines = doc.splitTextToSize(text, CW - tagW - 5);
+    var rowH = Math.max(iLines.length * 3.5, tagH) + 3;
+
+    // pill
+    fillRect(ML, y + rowH / 2 - tagH / 2, tagW, tagH, BURGUNDY, 1.5);
+    setFont("bold", 5, WHITE);
+    doc.text(label, ML + tagW / 2, y + rowH / 2 + 0.8, { align: "center" });
+
+    // text
+    setFont("normal", 7.2, GDARK);
+    doc.text(iLines, ML + tagW + 3, y + (rowH - iLines.length * 3.5) / 2 + 3);
+
+    y += rowH + 2;
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PAGE 3 — 90-DAY PRIORITIES
+  // ═══════════════════════════════════════════════════════════════════════════
+  doc.addPage();
+  drawHeader(false);
+  drawFooter(3, 4);
+  y = 18;
+
+  y = sectionHead("90-DAY PRIORITIES", y);
+
+  var usableH  = PH - 10 - y;   // space above footer
+  var pGap     = 2;
+  var pCardHt  = (usableH - pGap * 4) / 5;
+  var badgeW   = 11;
+  var labelX   = ML + badgeW + 4;
+  var labelW   = CW - badgeW - 4;
+  var LABELCOL = 12;            // fixed label column width (OWNER / KPI / WHY)
+  var VALCOL_X = labelX + LABELCOL + 3; // value column always starts here
+  var valW     = labelW - LABELCOL - 3;
+
+  sc.priorities.forEach(function(pri, idx) {
+    // Card
+    fillRect(ML, y, CW, pCardHt, [253, 254, 254], 2);
+    strokeRect(ML, y, CW, pCardHt, GRULE, 0.3, 2);
+
+    // Navy left badge strip
+    fillRect(ML, y, badgeW, pCardHt, NAVY, 2);
+    doc.rect(ML + badgeW - 3, y, 3, pCardHt, "F");  // square right edge
+
+    // Number centred in badge
+    setFont("bold", 14, GOLD);
+    doc.text(String(idx + 1), ML + badgeW / 2, y + pCardHt / 2 + 4, { align: "center" });
+
+    // Title zone (top 28% of card)
+    var titleZoneH = pCardHt * 0.28;
+    setFont("bold", 7.5, NAVY);
+    var titleLines = doc.splitTextToSize(pri.title, labelW - 2);
+    doc.text(titleLines[0], labelX, y + titleZoneH / 2 + 2);
+    if (titleLines.length > 1) doc.text(titleLines[1], labelX, y + titleZoneH / 2 + 5.5);
+    hRule(labelX, y + titleZoneH, labelW, GRULE, 0.3);
+
+    // Body — 3 equal rows: OWNER / KPI / WHY
+    var bodyTop = y + titleZoneH + 1;
+    var bodyBot = y + pCardHt - 1;
+    var bodyH   = bodyBot - bodyTop;
+    var rowH3   = bodyH / 3;
+
+    var rows3 = [
+      { label: "OWNER", value: pri.owner, color: NAVY    },
+      { label: "KPI",   value: pri.kpi,   color: NAVY    },
+      { label: "WHY",   value: pri.why,   color: GDARK   },
+    ];
+
+    rows3.forEach(function(row, ri) {
+      var rowTop = bodyTop + ri * rowH3;
+      var rowMid = rowTop + rowH3 / 2;
+
+      // divider below rows 0 and 1
+      if (ri < 2) hRule(labelX, rowTop + rowH3, labelW, [234, 236, 238], 0.2);
+
+      // label — always at fixed x, centred in row
+      setFont("bold", 5.5, GOLD);
+      doc.text(row.label, labelX, rowMid + 1.5);
+
+      // value — always starts at VALCOL_X
+      var vLines = doc.splitTextToSize(row.value, valW);
+      setFont("normal", 6.8, row.color);
+      // centre the text block vertically in the row
+      var textBlockH = vLines.length * 2.8;
+      var textStartY = rowMid - textBlockH / 2 + 2.5;
+      doc.text(vLines, VALCOL_X, textStartY);
+    });
+
+    y += pCardHt + pGap;
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PAGE 4 — EXECUTION PLAN + STRATEGIC TAKEAWAY + CONTACT
+  // ═══════════════════════════════════════════════════════════════════════════
+  doc.addPage();
+  drawHeader(false);
+  drawFooter(4, 4);
+  y = 18;
+
+  y = sectionHead("SUGGESTED 30 / 60 / 90 EXECUTION PLAN", y);
+
+  // Three execution phase cards
+  var phaseColW = (CW - 4) / 3;
+  var phaseHdrH = 14;
+  var phaseBodyH = 34;
+  var phaseTotalH = phaseHdrH + phaseBodyH;
+  var phaseColors = [NAVY, [26, 82, 118], [21, 67, 96]];
+
+  sc.execution.forEach(function(phase, pi) {
+    var px = ML + pi * (phaseColW + 2);
+
+    // Card bg
+    fillRect(px, y, phaseColW, phaseTotalH, [253, 254, 254], 3);
+    strokeRect(px, y, phaseColW, phaseTotalH, GRULE, 0.3, 3);
+
+    // Header band
+    fillRect(px, y, phaseColW, phaseHdrH, phaseColors[pi], 3);
+    doc.rect(px, y + phaseHdrH - 3, phaseColW, 3, "F"); // square bottom corners
+
+    setFont("bold", 6.5, GOLD);
+    doc.text(phase.period, px + 3, y + 6);
+    setFont("bold", 8, WHITE);
+    doc.text(phase.title, px + 3, y + 11.5);
+
+    // Bullets
+    var by = y + phaseHdrH + 5;
+    phase.items.forEach(function(item) {
+      var iLines = doc.splitTextToSize(item, phaseColW - 8);
+      // dot aligned to first line
+      doc.setFillColor.apply(doc, GOLD);
+      doc.circle(px + 3, by + 1, 1.2, "F");
+      setFont("normal", 6.5, GDARK);
+      doc.text(iLines, px + 6, by + 2.5);
+      by += iLines.length * 3 + 3;
+    });
+  });
+
+  y += phaseTotalH + 8;
+
+  // Timeline note
+  setFont("normal", 6.5, GMID);
+  doc.text("Execution sequence \u2014 stabilize before you scale", PW / 2, y, { align: "center" });
+  y += 3;
+  hRule(ML, y, CW, GRULE, 0.3);
+  y += 5;
+
+  // Strategic Takeaway
+  var stLines = doc.splitTextToSize(sc.strategic_takeaway, CW - 8);
+  var stH = stLines.length * 3.8 + 12;
+  fillRect(ML, y, CW, stH, NAVY, 3);
+  fillRect(ML, y, 2.5, stH, GOLD);
+  setFont("bold", 6, GOLD);
+  doc.text("STRATEGIC TAKEAWAY", ML + 5, y + 6);
+  setFont("normal", 7.8, WHITE);
+  doc.text(stLines, ML + 5, y + 11);
+  y += stH + 5;
+
+  // PPD Engagement Note
+  var noteText =
+    "Payments Franchise Index (PFI) Diagnostic Engagement — " +
+    "This model expands into a structured review using your actual transaction data, pricing records, " +
+    "and corridor economics \u2014 producing a Corridor Profitability Map, Portfolio Scorecard, " +
+    "and Infrastructure Cost Stack.";
+  var noteLines = doc.splitTextToSize(noteText, CW - 8);
+  var noteH = noteLines.length * 3.5 + 10;
+  fillRect(ML, y, CW, noteH, [244, 246, 248], 2);
+  fillRect(ML, y, 2.5, noteH, GOLD);
+  setFont("normal", 7, GDARK);
+  doc.text(noteLines, ML + 5, y + 6);
+  y += noteH + 5;
+
+  // Contact
+  hRule(ML, y, CW, GRULE, 0.3);
+  y += 5;
+
+  setFont("bold", 9, NAVY);
+  doc.text("Questions About Your Results", ML, y);
+  y += 5;
+
+  setFont("bold", 8, GDARK);
+  doc.text("Carlos Ure\u00f1a", ML, y);
+  y += 4;
+  setFont("normal", 7.5, GMID);
+  doc.text("Payments Strategy & Commercialization", ML, y);
+  y += 4;
+  setFont("bold", 7.5, GOLD);
+  doc.text("urena.m.carlos@gmail.com", ML, y);
+  setFont("normal", 7.5, GMID);
+  doc.text("  \u00b7  carlosurena.com", ML + 40, y);
+
+  // ── Save ──────────────────────────────────────────────────────────────────
+  doc.save("Payments-Franchise-Index-PFI-Diagnostic.pdf");
+}
+
 
     // ── Event listeners ───────────────────────────────────────────────────
 
