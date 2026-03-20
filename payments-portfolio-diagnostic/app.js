@@ -492,36 +492,19 @@
 
     // ── Render: pillar narratives ─────────────────────────────────────────
 
-    function renderPillarNarratives(pillarScores) {
+    function renderPillarNarratives(pillarScores, overall) {
       if (!els.pillarNarratives) return;
+      const sc = pfiGetScenario(overall);
       els.pillarNarratives.innerHTML = "";
       pillars.forEach((p) => {
-        const s = pillarScores[p.id].score5;
-        const band = pillarBand(s);
-        const narrative = PILLAR_NARRATIVES[p.id] && PILLAR_NARRATIVES[p.id][band];
+        const narrative = sc.pillar_commentary[p.id];
         if (!narrative) return;
-
-        const bandLabels = {
-          critical:    "Critical",
-          weak:        "Developing",
-          developing:  "Progressing",
-          strong:      "Strong",
-          exceptional: "Optimized"
-        };
-        const bandClasses = {
-          critical:    "pn-critical",
-          weak:        "pn-weak",
-          developing:  "pn-developing",
-          strong:      "pn-strong",
-          exceptional: "pn-exceptional"
-        };
-
         const row = document.createElement("div");
         row.className = "pn-row";
         row.innerHTML = `
           <div class="pn-header">
             <span class="pn-name">${p.name}</span>
-            <span class="pn-badge ${bandClasses[band]}">${bandLabels[band]}</span>
+            <span class="pn-badge pn-critical">${sc.label}</span>
           </div>
           <div class="pn-text">${narrative}</div>
         `;
@@ -537,16 +520,15 @@
       3: { label: "Portfolio risk",      cls: "tier-3" },
     };
 
-    function renderDiagnosis(diag, diagSources) {
+    function renderDiagnosis(overall) {
       if (!els.diagnosisList) return;
+      const sc = pfiGetScenario(overall);
       els.diagnosisList.innerHTML = "";
-      diag.forEach((d, i) => {
-        const src = diagSources[i];
-        const meta = src ? TIER_META[src.tier] : null;
+      sc.structural_issues.forEach((d, i) => {
         const li = document.createElement("li");
         li.className = "diagnosis-item";
         li.innerHTML = `
-          ${meta ? `<span class="diag-tier ${meta.cls}">${meta.label}</span>` : ""}
+          <span class="diag-tier tier-1">Structural issue</span>
           <div class="diag-text">${d}</div>
         `;
         els.diagnosisList.appendChild(li);
@@ -555,20 +537,19 @@
 
     // ── Render: priorities ────────────────────────────────────────────────
 
-    function renderPriorities(recIds) {
+    function renderPriorities(overall) {
       if (!els.prioritiesList) return;
+      const sc = pfiGetScenario(overall);
       els.prioritiesList.innerHTML = "";
-      recIds.forEach((id, idx) => {
-        const r = recommendations[id];
-        if (!r) return;
+      sc.priorities.forEach((pri, idx) => {
         const box = document.createElement("div");
         box.className = "priority";
         box.innerHTML = `
           <div class="priority-num">${idx + 1}</div>
           <div class="priority-body">
-            <div class="priority-title">${r.title}</div>
-            <div class="priority-meta">Owner: ${r.owner} · KPI: ${r.metric}</div>
-            <div class="priority-why">${r.why}</div>
+            <div class="priority-title">${pri.title}</div>
+            <div class="priority-meta">Owner: ${pri.owner} · KPI: ${pri.kpi}</div>
+            <div class="priority-why">${pri.why}</div>
           </div>
         `;
         els.prioritiesList.appendChild(box);
@@ -577,30 +558,24 @@
 
     // ── Render: 30/60/90 plan ─────────────────────────────────────────────
 
-    function render3090(recIds) {
+    function render3090(overall) {
       if (!els.plan3090) return;
-      const w0 = recIds.slice(0, 2).map((id) => recommendations[id]?.title).filter(Boolean);
-      const w1 = recIds.slice(2, 4).map((id) => recommendations[id]?.title).filter(Boolean);
-      const w2 = recIds.slice(4).map((id) => recommendations[id]?.title).filter(Boolean);
+      const sc = pfiGetScenario(overall);
 
-      function col(phase, title, items) {
-        const ul = items.length
-          ? `<ul>${items.map((x) => `<li>${x}</li>`).join("")}</ul>`
+      function col(phase) {
+        const ul = phase.items.length
+          ? `<ul>${phase.items.map((x) => `<li>${x}</li>`).join("")}</ul>`
           : `<div class="micro">No items.</div>`;
         return `
           <div class="plan-col">
-            <div class="plan-phase">${phase}</div>
-            <div class="plan-title">${title}</div>
+            <div class="plan-phase">${phase.period}</div>
+            <div class="plan-title">${phase.title}</div>
             ${ul}
           </div>
         `;
       }
 
-      els.plan3090.innerHTML = `
-        ${col("Weeks 1–2", "Stabilize & measure", w0)}
-        ${col("Weeks 3–6", "Fix leakage & align levers", w1)}
-        ${col("Weeks 7–12", "Scale the winners", w2)}
-      `;
+      els.plan3090.innerHTML = sc.execution.map(col).join("");
     }
 
     // ── Render: results ───────────────────────────────────────────────────
@@ -616,10 +591,10 @@
       if (els.badgeReadiness) els.badgeReadiness.textContent = `Strategic readiness: ${result.sub.readiness}/100`;
 
       renderHeatmap(result.pillarScores);
-      renderPillarNarratives(result.pillarScores);
-      renderDiagnosis(result.rules.diag, result.rules.diagSources);
-      renderPriorities(result.rules.recIds);
-      render3090(result.rules.recIds);
+      renderPillarNarratives(result.pillarScores, result.overall);
+      renderDiagnosis(result.overall);
+      renderPriorities(result.overall);
+      render3090(result.overall);
     }
 
     // ── Compute & show ────────────────────────────────────────────────────
