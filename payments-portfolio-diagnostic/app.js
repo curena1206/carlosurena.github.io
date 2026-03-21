@@ -1518,29 +1518,43 @@ function exportPDF() {
 
   // ── PFI Classification Scale ──────────────────────────────────────────────
   y = sectionHead("PFI CLASSIFICATION SCALE", y);
-  y += 1.5;  // breathing room so gold rule doesn't sit on first row text
-  var scaleRowH = 5.5;
+  y += 1.0;  // small gap after gold rule
+  var scaleRowH = 6.0;
   SCALE_COLORS.forEach(function(band) {
     var isActive = r.overall >= band.lo && r.overall <= band.hi;
+    var rowMid = y + scaleRowH / 2;
+    var textBaseline = rowMid + 1.5;          // text baseline
+    var capTop = textBaseline + 1.94;          // top of 8pt capitals (cap_height ≈ 1.94mm)
+    var descender = 0.5;                       // below baseline
+
+    // Box/badge spans cap_top+pad above to baseline-descender-pad below
+    var boxPad = 1.1;                          // mm padding above and below text
+    var boxTop = capTop + boxPad;
+    var boxBot = textBaseline - descender - boxPad;
+    var badgeH = boxTop - boxBot;
+    var boxY = boxBot;                         // jsPDF y is top edge
+
+    // Highlight box — fully encloses text
     if (isActive) {
-      fillRect(ML - 1, y - 0.5, CW + 2, scaleRowH + 1, [245, 238, 238], 1.5);
+      fillRect(ML - 1, boxY, CW + 2, badgeH, [245, 238, 238], 1.5);
     }
-    // color square
+    // Color square — top edge at capTop
     doc.setFillColor.apply(doc, band.ink);
-    doc.rect(ML, y + 1, 2.8, 2.8, "F");
-    // label
-    doc.setFont("helvetica", isActive ? "bold" : "normal");
+    doc.rect(ML, capTop - 2.8, 2.8, 2.8, "F");
+    // Label text
+    doc.setFont("helvetica", "normal");  // same weight all rows
     doc.setFontSize(8);
-    doc.setTextColor.apply(doc, isActive ? BURGUNDY : NAVY);
-    doc.text(band.label, ML + 4.5, y + 4);
-    // range
+    doc.setTextColor.apply(doc, NAVY);  // always navy, no active distinction
+    doc.text(band.label, ML + 4.5, textBaseline);
+    // Range text
     setFont("normal", 7, GMID);
-    doc.text(band.lo + " \u2013 " + band.hi, ML + 38, y + 4);
-    // YOUR SCORE badge
+    doc.text(band.lo + " \u2013 " + band.hi, ML + 38, textBaseline);
+    // YOUR SCORE badge — color matches the active tier
     if (isActive) {
-      fillRect(ML + 52, y + 0.5, 26, 4, BURGUNDY, 1.5);
+      fillRect(ML + 52, boxY, 26, badgeH, band.ink, 1.5);
       setFont("bold", 5.5, WHITE);
-      doc.text("YOUR SCORE", ML + 65, y + 3.5, { align: "center" });
+      var badgeMid = boxY + badgeH / 2;
+      doc.text("YOUR SCORE", ML + 65, badgeMid + 1.0, { align: "center" });
     }
     y += scaleRowH;
   });
@@ -1622,7 +1636,7 @@ function exportPDF() {
   var colX      = [ML, ML + cardColW + cardGap];
   var colY      = [y, y];
   var cardHdrH  = 6;
-  var pCardH    = 33;   // fixed height — all 6 cards identical
+  var pCardH    = 36;   // fixed height — all 6 cards identical (increased for 7.5pt body text)
 
   pillarModel.forEach(function(p, idx) {
     var cx = colX[idx % 2];
@@ -1632,7 +1646,7 @@ function exportPDF() {
 
     // Dynamic rating based on actual pillar score
     var rating;
-    if      (ps < 2.0) rating = { label: "CRITICAL",   color: BURGUNDY          };
+    if      (ps < 2.0) rating = { label: "CRITICAL",   color: SCORE_R           };
     else if (ps < 3.0) rating = { label: "DEVELOPING",  color: [184, 92,  26]   };
     else if (ps < 4.0) rating = { label: "PROGRESSING", color: [138, 115, 24]   };
     else if (ps < 5.0) rating = { label: "STRONG",      color: [30,  107, 60]   };
@@ -1661,7 +1675,7 @@ function exportPDF() {
     // Commentary — font set BEFORE split, text clipped to card bottom
     setFont("normal", 7.5, GDARK);
     var cLines = doc.splitTextToSize(commentary, cardColW - 8);
-    var maxLines = Math.floor((pCardH - cardHdrH - 10) / 3.9);  // 7.5pt leading
+    var maxLines = Math.floor((pCardH - cardHdrH - 10) / 3.9);  // 7.5pt leading, 36mm card
     doc.text(cLines.slice(0, maxLines), cx + 4, cy + cardHdrH + 9.5);
 
     colY[idx % 2] += pCardH + 2;
@@ -1683,7 +1697,7 @@ function exportPDF() {
 
   // Structural issues — label dynamically matches scenario band
   var diagLabels = {
-    "STRUCTURAL FAILURE":   { prefix: "STRUCTURAL ISSUE", color: BURGUNDY        },
+    "STRUCTURAL FAILURE":   { prefix: "STRUCTURAL ISSUE", color: SCORE_R         },
     "FRAGILE FRANCHISE":    { prefix: "PRIORITY AREA",    color: [184, 92,  26]  },
     "OPERATIONALLY STABLE": { prefix: "IMPROVEMENT AREA", color: [138, 115, 24]  },
     "STRATEGICALLY ALIGNED":{ prefix: "OPTIMIZATION AREA",color: [30,  107, 60]  },
@@ -1720,7 +1734,7 @@ function exportPDF() {
 
   y = sectionHead("90-DAY PRIORITIES", y);
 
-  var usableH  = PH - 10 - y - 4;   // 4mm bottom margin keeps card 5 clear of footer
+  var usableH  = PH - 10 - y - 8;   // 8mm bottom margin — clear gap above footer
   var pGap     = 2;
   var pCardHt  = (usableH - pGap * 4) / 5;
   var badgeW   = 11;
