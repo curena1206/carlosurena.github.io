@@ -1540,8 +1540,8 @@ function exportPDF() {
 
   var nameColW = 46;
   var wtColW   = 8;
-  var barX     = ML + nameColW + wtColW + 2;
-  var barMaxW  = CW - nameColW - wtColW - 14;
+  var barX     = ML + nameColW + wtColW + 6;   // extra gap after %
+  var barMaxW  = CW - nameColW - wtColW - 18;
   var barH     = 3.6;
   var hmRowH   = 5.8;
 
@@ -1552,7 +1552,7 @@ function exportPDF() {
     setFont("normal", 7.5, GDARK);
     doc.text(p.name, ML, midY + 1.5);
     setFont("normal", 6.5, GMID);
-    doc.text(Math.round(p.weight * 100) + "%", ML + nameColW, midY + 1.5);
+    doc.text(Math.round(p.weight * 100) + "%", ML + nameColW + 4, midY + 1.5);
 
     // bar track
     fillRect(barX, midY - barH / 2, barMaxW, barH, [232, 234, 236], 1.5);
@@ -1795,7 +1795,7 @@ function exportPDF() {
       // dot centre = first line baseline minus ~half cap height (6.5pt * 0.35 ≈ 2.3)
       var firstBaseline = by + 2.5;
       doc.setFillColor.apply(doc, GOLD);
-      doc.circle(px + 3, firstBaseline - 1.2, 1.2, "F");
+      doc.circle(px + 3, firstBaseline - 0.2, 1.2, "F");  // lowered to align with first text line
       doc.text(iLines, px + 6, firstBaseline);
       by += iLines.length * 3 + 3;
     });
