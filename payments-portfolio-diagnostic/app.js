@@ -1518,6 +1518,7 @@ function exportPDF() {
 
   // ── PFI Classification Scale ──────────────────────────────────────────────
   y = sectionHead("PFI CLASSIFICATION SCALE", y);
+  y += 1.5;  // breathing room so gold rule doesn't sit on first row text
   var scaleRowH = 5.5;
   SCALE_COLORS.forEach(function(band) {
     var isActive = r.overall >= band.lo && r.overall <= band.hi;
@@ -1719,7 +1720,7 @@ function exportPDF() {
 
   y = sectionHead("90-DAY PRIORITIES", y);
 
-  var usableH  = PH - 10 - y;   // space above footer
+  var usableH  = PH - 10 - y - 4;   // 4mm bottom margin keeps card 5 clear of footer
   var pGap     = 2;
   var pCardHt  = (usableH - pGap * 4) / 5;
   var badgeW   = 11;
@@ -1841,10 +1842,10 @@ function exportPDF() {
   hRule(ML, y, CW, GRULE, 0.3);
   y += 5;
 
-  // Strategic Takeaway
+  // Strategic Takeaway — dynamic height so long text never clips
   setFont("normal", 7.5, WHITE);   // font BEFORE split
   var stLines = doc.splitTextToSize(sc.strategic_takeaway, CW - 8);
-  var stH = stLines.length * 3.8 + 12;
+  var stH = stLines.length * 4.2 + 16;  // 4.2mm per line + label + padding
   fillRect(ML, y, CW, stH, NAVY, 3);
   fillRect(ML, y, 2.5, stH, GOLD);
   setFont("bold", 6, GOLD);
