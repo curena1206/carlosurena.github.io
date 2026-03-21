@@ -523,12 +523,20 @@
     function renderDiagnosis(overall) {
       if (!els.diagnosisList) return;
       const sc = pfiGetScenario(overall);
+      const diagLabels = {
+        "STRUCTURAL FAILURE":    { prefix: "Structural issue",  cls: "tier-1" },
+        "FRAGILE FRANCHISE":     { prefix: "Priority area",     cls: "tier-2" },
+        "OPERATIONALLY STABLE":  { prefix: "Improvement area",  cls: "tier-3" },
+        "STRATEGICALLY ALIGNED": { prefix: "Optimization area", cls: "tier-3" },
+        "BEST-IN-CLASS":         { prefix: "Watch area",        cls: "tier-3" },
+      };
+      const meta = diagLabels[sc.label] || diagLabels["STRUCTURAL FAILURE"];
       els.diagnosisList.innerHTML = "";
       sc.structural_issues.forEach((d, i) => {
         const li = document.createElement("li");
         li.className = "diagnosis-item";
         li.innerHTML = `
-          <span class="diag-tier tier-1">Structural issue</span>
+          <span class="diag-tier ${meta.cls}">${meta.prefix} ${i + 1}</span>
           <div class="diag-text">${d}</div>
         `;
         els.diagnosisList.appendChild(li);
@@ -1437,7 +1445,7 @@ function exportPDF() {
 
   // ── Header / Footer ───────────────────────────────────────────────────────
 
-  function drawHeader(firstPage) {
+  function drawHeader(pageNum, firstPage) {
     fillRect(0, 0, PW, 14, NAVY);
     if (firstPage) {
       setFont("bold", 9, WHITE);
@@ -1450,6 +1458,9 @@ function exportPDF() {
       setFont("normal", 6, [160, 175, 195]);
       doc.text("PFI Diagnostic Report", ML, 11.5);
     }
+    // Page number — always shown on all pages
+    setFont("normal", 7, GOLD);
+    doc.text("Page " + pageNum + " of 4", PW - MR, 8.5, { align: "right" });
   }
 
   function drawFooter(pageNum, totalPages) {
@@ -1463,7 +1474,7 @@ function exportPDF() {
   // ═══════════════════════════════════════════════════════════════════════════
   // PAGE 1 — EXECUTIVE SUMMARY
   // ═══════════════════════════════════════════════════════════════════════════
-  drawHeader(true);
+  drawHeader(1, true);
   drawFooter(1, 4);
 
   var y = 18;
@@ -1562,7 +1573,7 @@ function exportPDF() {
     doc.roundedRect(barX, midY - barH / 2, fillW, barH, 1.5, 1.5, "F");
 
     // score label
-    var scoreStr = ps === Math.round(ps) ? Math.round(ps) + "/5" : ps.toFixed(1) + "/5";
+    var scoreStr = ps.toFixed(1) + "/5";
     setFont("bold", 6.5, GDARK);
     doc.text(scoreStr, barX + barMaxW + 2, midY + 1.5);
 
@@ -1573,7 +1584,7 @@ function exportPDF() {
   // ── Key Structural Issues ─────────────────────────────────────────────────
   y = sectionHead("KEY STRUCTURAL ISSUES", y);
   sc.key_issues.forEach(function(issue) {
-    setFont("normal", 7.8, GDARK);   // font BEFORE split
+    setFont("normal", 7.5, GDARK);   // font BEFORE split
     var issueLines = doc.splitTextToSize(issue, CW - 5);
     // dot aligned to first line
     doc.setFillColor.apply(doc, BURGUNDY);
@@ -1598,7 +1609,7 @@ function exportPDF() {
   // PAGE 2 — WHAT DROVE YOUR SCORE + EXECUTIVE DIAGNOSIS
   // ═══════════════════════════════════════════════════════════════════════════
   doc.addPage();
-  drawHeader(false);
+  drawHeader(2, false);
   drawFooter(2, 4);
   y = 18;
 
@@ -1616,19 +1627,30 @@ function exportPDF() {
     var cx = colX[idx % 2];
     var cy = colY[idx % 2];
     var commentary = sc.pillar_commentary[p.id] || "";
+    var ps = r.pillarScores[p.id] ? r.pillarScores[p.id].score5 : 0;
 
-    // Card background — fixed dimensions
+    // Dynamic rating based on actual pillar score
+    var rating;
+    if      (ps < 2.0) rating = { label: "CRITICAL",   color: BURGUNDY          };
+    else if (ps < 3.0) rating = { label: "DEVELOPING",  color: [184, 92,  26]   };
+    else if (ps < 4.0) rating = { label: "PROGRESSING", color: [138, 115, 24]   };
+    else if (ps < 5.0) rating = { label: "STRONG",      color: [30,  107, 60]   };
+    else               rating = { label: "OPTIMIZED",   color: [20,  82,  48]   };
+
+    // Card background — fixed dimensions, accent bar uses rating color
     fillRect(cx, cy, cardColW, pCardH, [253, 254, 254], 2);
     strokeRect(cx, cy, cardColW, pCardH, GRULE, 0.3, 2);
-    fillRect(cx, cy, 2.5, pCardH, BURGUNDY);
+    fillRect(cx, cy, 2.5, pCardH, rating.color);
 
     // Header row
     var hdrMid = cy + cardHdrH / 2;
     setFont("normal", 5.8, GMID);
     doc.text("Weight: " + Math.round(p.weight * 100) + "%", cx + 4, hdrMid + 1);
-    fillRect(cx + cardColW - 16, hdrMid - 2, 15, 4, BURGUNDY, 1.5);
+    // Dynamic rating pill
+    var pillW = rating.label.length > 8 ? 20 : 15;
+    fillRect(cx + cardColW - pillW - 1, hdrMid - 2, pillW, 4, rating.color, 1.5);
     setFont("bold", 5, WHITE);
-    doc.text("CRITICAL", cx + cardColW - 8.5, hdrMid + 0.8, { align: "center" });
+    doc.text(rating.label, cx + cardColW - pillW/2 - 1, hdrMid + 0.8, { align: "center" });
     hRule(cx + 3, cy + cardHdrH, cardColW - 5, GRULE, 0.3);
 
     // Pillar name
@@ -1636,9 +1658,9 @@ function exportPDF() {
     doc.text(p.name, cx + 4, cy + cardHdrH + 5);
 
     // Commentary — font set BEFORE split, text clipped to card bottom
-    setFont("normal", 6.5, GDARK);
+    setFont("normal", 7.5, GDARK);
     var cLines = doc.splitTextToSize(commentary, cardColW - 8);
-    var maxLines = Math.floor((pCardH - cardHdrH - 10) / 3.4);
+    var maxLines = Math.floor((pCardH - cardHdrH - 10) / 3.9);  // 7.5pt leading
     doc.text(cLines.slice(0, maxLines), cx + 4, cy + cardHdrH + 9.5);
 
     colY[idx % 2] += pCardH + 2;
@@ -1658,21 +1680,30 @@ function exportPDF() {
   doc.text(edLines, ML, y);
   y += edLines.length * 3.6 + 5;
 
-  // Structural issues
-  var tagW = 27, tagH = 4.5;
+  // Structural issues — label dynamically matches scenario band
+  var diagLabels = {
+    "STRUCTURAL FAILURE":   { prefix: "STRUCTURAL ISSUE", color: BURGUNDY        },
+    "FRAGILE FRANCHISE":    { prefix: "PRIORITY AREA",    color: [184, 92,  26]  },
+    "OPERATIONALLY STABLE": { prefix: "IMPROVEMENT AREA", color: [138, 115, 24]  },
+    "STRATEGICALLY ALIGNED":{ prefix: "OPTIMIZATION AREA",color: [30,  107, 60]  },
+    "BEST-IN-CLASS":        { prefix: "WATCH AREA",       color: [20,  82,  48]  },
+  };
+  var diagMeta = diagLabels[sc.label] || diagLabels["STRUCTURAL FAILURE"];
+  var tagH = 4.5;
   sc.structural_issues.forEach(function(text, i) {
-    var label = "STRUCTURAL ISSUE " + (i + 1);
-    setFont("normal", 7.2, GDARK);   // set font before measuring
+    var label = diagMeta.prefix + " " + (i + 1);
+    var tagW = label.length > 16 ? 32 : 27;
+    setFont("normal", 7.5, GDARK);   // set font before measuring
     var iLines = doc.splitTextToSize(text, CW - tagW - 5);
     var rowH = Math.max(iLines.length * 3.5, tagH) + 3;
 
     // pill
-    fillRect(ML, y + rowH / 2 - tagH / 2, tagW, tagH, BURGUNDY, 1.5);
+    fillRect(ML, y + rowH / 2 - tagH / 2, tagW, tagH, diagMeta.color, 1.5);
     setFont("bold", 5, WHITE);
     doc.text(label, ML + tagW / 2, y + rowH / 2 + 0.8, { align: "center" });
 
     // text
-    setFont("normal", 7.2, GDARK);
+    setFont("normal", 7.5, GDARK);
     doc.text(iLines, ML + tagW + 3, y + (rowH - iLines.length * 3.5) / 2 + 3);
 
     y += rowH + 2;
@@ -1682,7 +1713,7 @@ function exportPDF() {
   // PAGE 3 — 90-DAY PRIORITIES
   // ═══════════════════════════════════════════════════════════════════════════
   doc.addPage();
-  drawHeader(false);
+  drawHeader(3, false);
   drawFooter(3, 4);
   y = 18;
 
@@ -1743,7 +1774,7 @@ function exportPDF() {
       doc.text(row.label, labelX, rowMid + 1.5);
 
       // value — set font BEFORE wrap measurement so metrics are correct
-      setFont("normal", 6.8, row.color);
+      setFont("normal", 7.5, row.color);
       var vLines = doc.splitTextToSize(row.value, valW);
       var textBlockH = vLines.length * 2.8;
       var textStartY = rowMid - textBlockH / 2 + 2.5;
@@ -1757,7 +1788,7 @@ function exportPDF() {
   // PAGE 4 — EXECUTION PLAN + STRATEGIC TAKEAWAY + CONTACT
   // ═══════════════════════════════════════════════════════════════════════════
   doc.addPage();
-  drawHeader(false);
+  drawHeader(4, false);
   drawFooter(4, 4);
   y = 18;
 
@@ -1790,7 +1821,7 @@ function exportPDF() {
     var by = y + phaseHdrH + 5;
     phase.items.forEach(function(item) {
       // set font before measuring so wrap uses correct metrics
-      setFont("normal", 6.5, GDARK);
+      setFont("normal", 7.5, GDARK);
       var iLines = doc.splitTextToSize(item, phaseColW - 8);
       // dot centre = first line baseline minus ~half cap height (6.5pt * 0.35 ≈ 2.3)
       var firstBaseline = by + 2.5;
@@ -1811,14 +1842,14 @@ function exportPDF() {
   y += 5;
 
   // Strategic Takeaway
-  setFont("normal", 7.8, WHITE);   // font BEFORE split
+  setFont("normal", 7.5, WHITE);   // font BEFORE split
   var stLines = doc.splitTextToSize(sc.strategic_takeaway, CW - 8);
   var stH = stLines.length * 3.8 + 12;
   fillRect(ML, y, CW, stH, NAVY, 3);
   fillRect(ML, y, 2.5, stH, GOLD);
   setFont("bold", 6, GOLD);
   doc.text("STRATEGIC TAKEAWAY", ML + 5, y + 6);
-  setFont("normal", 7.8, WHITE);
+  setFont("normal", 7.5, WHITE);
   doc.text(stLines, ML + 5, y + 11);
   y += stH + 5;
 
@@ -1828,12 +1859,12 @@ function exportPDF() {
     "This model expands into a structured review using your actual transaction data, pricing records, " +
     "and corridor economics \u2014 producing a Corridor Profitability Map, Portfolio Scorecard, " +
     "and Infrastructure Cost Stack.";
-  setFont("normal", 7, GDARK);   // font BEFORE split
+  setFont("normal", 7.5, GDARK);   // font BEFORE split
   var noteLines = doc.splitTextToSize(noteText, CW - 8);
   var noteH = noteLines.length * 3.5 + 10;
   fillRect(ML, y, CW, noteH, [244, 246, 248], 2);
   fillRect(ML, y, 2.5, noteH, GOLD);
-  setFont("normal", 7, GDARK);
+  setFont("normal", 7.5, GDARK);
   doc.text(noteLines, ML + 5, y + 6);
   y += noteH + 5;
 
