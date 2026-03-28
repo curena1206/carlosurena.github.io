@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payments Strategy Playbooks — Carlos Ureña</title>
+<style>
+  :root {
+    --navy:#0f1f3d;--navy-mid:#1a3a6b;--gold:#b7882c;--gold-lt:#fdf6e3;
+    --slate:#4a5568;--muted:#6b7280;--border:#e2e8f0;--soft:#f7f9fc;--white:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Georgia',serif;color:var(--navy);background:var(--white);line-height:1.6;}
+  nav{background:var(--navy);padding:18px 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold);}
+  nav .logo{font-family:'Georgia',serif;font-size:15px;color:var(--white);letter-spacing:0.5px;text-decoration:none;}
+  nav .logo span{color:var(--gold);}
+  nav a{color:#b0bec5;text-decoration:none;font-family:Helvetica,sans-serif;font-size:13px;letter-spacing:0.5px;margin-left:28px;transition:color 0.2s;}
+  nav a:hover{color:var(--gold);}
+  nav a.active{color:var(--gold);}
+  .hero{background:var(--navy);padding:72px 48px 56px;border-bottom:3px solid var(--gold);}
+  .hero-inner{max-width:860px;margin:0 auto;}
+  .hero-label{font-family:Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;}
+  .hero h1{font-size:38px;color:var(--white);line-height:1.2;margin-bottom:20px;font-weight:normal;}
+  .hero-rule{width:60px;height:3px;background:var(--gold);margin:0 0 24px;}
+  .hero-sub{font-family:Helvetica,sans-serif;font-size:15px;color:#b0bec5;max-width:620px;line-height:1.7;}
+  main{max-width:900px;margin:0 auto;padding:56px 48px 80px;}
+  .section-label{font-family:Helvetica,sans-serif;font-size:10px;font-weight:bold;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+  .intro-block{margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--border);}
+  .intro-block p{font-family:Helvetica,sans-serif;font-size:15px;color:var(--slate);line-height:1.75;max-width:700px;}
+  .playbooks-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:48px;}
+  .playbook-card{background:var(--white);padding:32px 36px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;transition:background 0.15s;text-decoration:none;color:inherit;}
+  .playbook-card:hover{background:var(--soft);}
+  .playbook-card:hover .playbook-title{color:var(--gold);}
+  .playbook-num{font-family:Helvetica,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+  .playbook-title{font-size:20px;font-weight:normal;color:var(--navy);margin-bottom:10px;line-height:1.3;transition:color 0.15s;}
+  .playbook-desc{font-family:Helvetica,sans-serif;font-size:13.5px;color:var(--slate);line-height:1.65;max-width:580px;margin-bottom:12px;}
+  .playbook-tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .playbook-tag{font-family:Helvetica,sans-serif;font-size:10px;color:var(--muted);background:var(--soft);border:1px solid var(--border);padding:2px 10px;border-radius:2px;letter-spacing:0.3px;}
+  .playbook-cta{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;}
+  .download-btn{display:inline-block;background:var(--navy);color:var(--white);font-family:Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;text-decoration:none;padding:12px 24px;white-space:nowrap;transition:background 0.2s;border:1px solid var(--navy);}
+  .download-btn:hover{background:var(--navy-mid);}
+  .download-note{font-family:Helvetica,sans-serif;font-size:10px;color:var(--muted);text-align:center;}
+  .usage-note{background:var(--gold-lt);border:1px solid var(--gold);border-left-width:3px;padding:20px 24px;margin-bottom:48px;}
+  .usage-note p{font-family:Helvetica,sans-serif;font-size:14px;color:var(--slate);line-height:1.65;margin:0;}
+  .usage-note p strong{color:var(--navy);}
+  .cta-box{background:var(--navy);border-top:3px solid var(--gold);padding:44px 48px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+  .cta-box h2{font-size:24px;font-weight:normal;color:var(--white);line-height:1.3;margin-bottom:10px;}
+  .cta-box p{font-family:Helvetica,sans-serif;font-size:14px;color:#b0bec5;line-height:1.65;margin:0;max-width:500px;}
+  .cta-btn{display:inline-block;background:var(--gold);color:var(--navy);font-family:Helvetica,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;text-decoration:none;padding:16px 32px;white-space:nowrap;transition:background 0.2s;}
+  .cta-btn:hover{background:#c99b3a;}
+  .cta-note{font-family:Helvetica,sans-serif;font-size:11px;color:var(--muted);text-align:center;margin-top:8px;}
+  footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.1);padding:28px 48px;text-align:center;font-family:Helvetica,sans-serif;font-size:12px;color:var(--muted);}
+  footer a{color:var(--gold);text-decoration:none;}
+  @media(max-width:700px){nav{padding:14px 20px;}.hero{padding:48px 20px 40px;}main{padding:40px 20px 60px;}.hero h1{font-size:28px;}.playbook-card{grid-template-columns:1fr;gap:20px;}.cta-box{grid-template-columns:1fr;padding:32px 24px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Carlos Ure&#241;a &nbsp;<span>·</span>&nbsp; Payments Strategy</a>
+  <div>
+    <a href="/">Home</a>
+    <a href="/payments-portfolio-diagnostic/">Diagnostic</a>
+    <a href="/consulting.html">Consulting</a>
+    <a href="/playbooks.html" class="active">Playbooks</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Payments Strategy Playbooks</div>
+    <h1>Frameworks for managing payments<br>as a disciplined economic system.</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">Five practitioner playbooks covering the core disciplines of payments franchise economics. Built from 20 years of direct P&amp;L ownership across Citi, Deutsche Bank, HSBC, and Mashreq.</p>
+  </div>
+</div>
+
+<main>
+
+  <div class="intro-block">
+    <div class="section-label">About These Playbooks</div>
+    <p>Each playbook addresses a specific dimension of payments portfolio economics. They are written for senior payments executives who own the P&amp;L and need frameworks that work in real institutional environments, not ideal ones.</p>
+  </div>
+
+  <div class="section-label">Available Playbooks</div>
+
+  <div class="playbooks-list">
+
+    <a class="playbook-card" href="/payments-pricing-governance-playbook.pdf" target="_blank">
+      <div>
+        <div class="playbook-num">Playbook 01</div>
+        <div class="playbook-title">Payments Pricing Governance</div>
+        <p class="playbook-desc">How pricing decisions accumulate into margin leakage and how to build the governance structure that prevents it. Covers the Pricing Leakage Loop, a 2x2 diagnostic framework, and the operating model for pricing discipline at scale.</p>
+        <div class="playbook-tags"><span class="playbook-tag">Pricing Architecture</span><span class="playbook-tag">Exception Management</span><span class="playbook-tag">Governance Design</span><span class="playbook-tag">Margin Recovery</span></div>
+      </div>
+      <div class="playbook-cta"><span class="download-btn">Download PDF</span><span class="download-note">Opens in new tab</span></div>
+    </a>
+
+    <a class="playbook-card" href="/payments-corridor-strategy-framework.pdf" target="_blank">
+      <div>
+        <div class="playbook-num">Playbook 02</div>
+        <div class="playbook-title">Payments Corridor Strategy</div>
+        <p class="playbook-desc">A framework for mapping corridor economics from gross revenue to net margin and classifying each corridor as Grow, Defend, Optimize, or De-prioritize. Covers the full cost stack including correspondent charges, nostro funding, compliance, and operational exceptions.</p>
+        <div class="playbook-tags"><span class="playbook-tag">Corridor Economics</span><span class="playbook-tag">Cost Stack Analysis</span><span class="playbook-tag">Strategic Classification</span><span class="playbook-tag">FX Margin</span></div>
+      </div>
+      <div class="playbook-cta"><span class="download-btn">Download PDF</span><span class="download-note">Opens in new tab</span></div>
+    </a>
+
+    <a class="playbook-card" href="/payments-infrastructure-strategy.pdf" target="_blank">
+      <div>
+        <div class="playbook-num">Playbook 03</div>
+        <div class="playbook-title">Payments Infrastructure Strategy</div>
+        <p class="playbook-desc">How to evaluate rail economics, network participation, and infrastructure investment through a commercial lens. Most infrastructure decisions were made historically. This framework introduces the economic discipline to evaluate and reposition them.</p>
+        <div class="playbook-tags"><span class="playbook-tag">Rail Economics</span><span class="playbook-tag">Network Participation</span><span class="playbook-tag">Infrastructure ROI</span><span class="playbook-tag">RTP · FedNow · SWIFT</span></div>
+      </div>
+      <div class="playbook-cta"><span class="download-btn">Download PDF</span><span class="download-note">Opens in new tab</span></div>
+    </a>
+
+    <a class="playbook-card" href="/payments-franchise-portfolio-management.pdf" target="_blank">
+      <div>
+        <div class="playbook-num">Playbook 04</div>
+        <div class="playbook-title">Payments Franchise Portfolio Management</div>
+        <p class="playbook-desc">How to manage the payments business as an integrated portfolio rather than a collection of products. Covers the six-pillar franchise framework, portfolio health scoring, and the operating discipline required to sustain margin as volume scales.</p>
+        <div class="playbook-tags"><span class="playbook-tag">Portfolio Economics</span><span class="playbook-tag">Franchise Management</span><span class="playbook-tag">Multi-Rail Strategy</span><span class="playbook-tag">P&amp;L Governance</span></div>
+      </div>
+      <div class="playbook-cta"><span class="download-btn">Download PDF</span><span class="download-note">Opens in new tab</span></div>
+    </a>
+
+    <a class="playbook-card" href="/payments-franchise-commercialization-guide.pdf" target="_blank">
+      <div>
+        <div class="playbook-num">Playbook 05</div>
+        <div class="playbook-title">Payments Franchise Commercialization</div>
+        <p class="playbook-desc">How to translate payments infrastructure into commercial revenue. Covers corridor monetization, client segmentation, product packaging, and GTM strategy for multi-rail payment businesses.</p>
+        <div class="playbook-tags"><span class="playbook-tag">Commercialization Strategy</span><span class="playbook-tag">Revenue Architecture</span><span class="playbook-tag">Client Segmentation</span><span class="playbook-tag">GTM Design</span></div>
+      </div>
+      <div class="playbook-cta"><span class="download-btn">Download PDF</span><span class="download-note">Opens in new tab</span></div>
+    </a>
+
+  </div>
+
+  <div class="usage-note">
+    <p><strong>How these playbooks are used in practice.</strong> Each playbook is a standalone reference readable in under 30 minutes. In consulting engagements, they serve as the structural foundation for the diagnostic and implementation work. The Payments Franchise Diagnostic applies all five frameworks simultaneously to produce a prioritized action roadmap specific to your portfolio.</p>
+  </div>
+
+  <div class="cta-box">
+    <div>
+      <h2>If this resonates, start with a conversation about where your payments franchise is leaking margin.</h2>
+      <p>The diagnostic applies these frameworks to your specific portfolio and delivers a prioritized action roadmap within two to three weeks. No pitch deck. No proposal before we have talked.</p>
+    </div>
+    <div style="text-align:center;">
+      <a class="cta-btn" href="https://calendly.com/carlos-carlosurena/30min" target="_blank">Book a Call</a>
+      <div class="cta-note">30 minutes &nbsp;·&nbsp; No obligation</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Carlos Ure&#241;a &nbsp;·&nbsp; Payments Strategy &amp; Commercialization &nbsp;·&nbsp; <a href="/">carlosurena.com</a>
+</footer>
+
+</body>
+</html>
