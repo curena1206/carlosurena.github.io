@@ -28,7 +28,7 @@
     line-height: 1.6;
   }
 
-  /* ── SITE NAV (matches existing site) ── */
+  /* ── SITE NAV ── */
   nav {
     background: var(--navy);
     padding: 18px 48px;
@@ -170,6 +170,59 @@
     color: var(--slate);
     line-height: 1.65;
     margin: 0;
+  }
+
+  /* ── PPD INTERSTITIAL BLOCK ── */
+  .ppd-interstitial {
+    margin: 48px 0 0;
+    background: var(--navy);
+    border-top: 3px solid var(--gold);
+    padding: 32px 36px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+  }
+  .ppd-interstitial-label {
+    font-family: Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .ppd-interstitial h3 {
+    font-size: 18px;
+    font-weight: normal;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.35;
+  }
+  .ppd-interstitial p {
+    font-family: Helvetica, sans-serif;
+    font-size: 13.5px;
+    color: #b0bec5;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .ppd-btn {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 24px;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+  }
+  .ppd-btn:hover {
+    background: var(--gold);
+    color: var(--navy);
   }
 
   /* ── DIAGNOSTIC SECTION ── */
@@ -534,7 +587,6 @@
   }
   footer a { color: var(--gold); text-decoration: none; }
 
-
   .hero-byline {
     font-family: Helvetica, sans-serif;
     font-size: 13px;
@@ -573,7 +625,6 @@
     background: var(--white);
     padding: 28px 24px;
   }
-  
   .pricing-tier {
     font-family: Helvetica, sans-serif;
     font-size: 10px;
@@ -617,6 +668,7 @@
   }
   @media (max-width: 700px) {
     .pricing-grid { grid-template-columns: 1fr; }
+    .ppd-interstitial { grid-template-columns: 1fr; }
   }
   @media (max-width: 700px) {
     nav { padding: 14px 20px; }
@@ -648,7 +700,10 @@
     <h1>Most payments businesses are managed<br>as collections of products.<br><em>The ones that outperform are managed<br>as economic portfolios.</em></h1>
     <p style="font-family:Helvetica,sans-serif;font-size:16px;color:#b0bec5;margin:16px 0 0;max-width:680px;">That is why volume grows, but margin does not.</p>
     <div class="hero-rule"></div>
-    <p class="hero-byline">Built from 20 years in payments across Citi, Deutsche Bank, HSBC, and Mashreq, including direct P&amp;L leadership in wire and cross-border businesses.</p>
+
+    <!-- EDIT 1: Upgraded credibility — ownership language, not experience language -->
+    <p class="hero-byline" style="color:var(--gold);">20 years leading pricing governance, corridor economics, and payments portfolio strategy across Citi, Deutsche Bank, HSBC, and Mashreq.<br>Direct P&amp;L ownership across wire and cross-border businesses at global scale.</p>
+
     <p class="hero-thesis">
       <strong>The Payments Franchise Diagnostic</strong> identifies where margin leakage, corridor inefficiencies, and capital misallocation are occurring in your payments business — and delivers a prioritized roadmap to fix them within 90 days.
     </p>
@@ -663,7 +718,9 @@
     <h2>Revenue grows. Margins erode. Nobody can explain why.</h2>
     <p>Most banks organize payments with separate product ownership across ACH, wires, cross-border, and FX. Each team optimizes its own product. The economics of the payments franchise across rails and corridors rarely has a single owner.</p>
     <p>The same dynamics increasingly apply to networks and fintech platforms building cross-border and multi-rail businesses at scale.</p>
-    <p>The result is a payments business that can grow volume while margin quietly erodes — because pricing decisions happen transaction by transaction, corridor economics are invisible after full cost allocation, and infrastructure spending is disconnected from commercial return.</p>
+
+    <!-- EDIT 2: Replaced vague magnitude with specific structural observation -->
+    <p>In most multi-rail portfolios, fewer than 25% of corridors generate the bulk of the margin. The rest dilute it through pricing exceptions, routing inefficiencies, and operational cost structures that remain invisible at the product level — often for years before anyone notices.</p>
 
     <div class="three-problems">
       <div class="problem-card">
@@ -682,6 +739,18 @@
         <p>Rail decisions are made historically — a client asked, a product team responded, an integration became a dependency. Nobody evaluated the routing economics. The result is a cost structure nobody chose and few can change.</p>
       </div>
     </div>
+
+    <!-- EDIT 3: PPD interstitial block — mid-page, after The Problem -->
+    <div class="ppd-interstitial">
+      <div>
+        <div class="ppd-interstitial-label">Before You Engage</div>
+        <h3>Not sure where your franchise stands? Test it directly.</h3>
+        <p>The Payments Portfolio Diagnostic is a structured self-assessment built on the same framework used in paid engagements. Spend 10 minutes with it. If the patterns are recognizable, the diagnostic takes it further — with full cost-stack analysis, corridor mapping, and a prioritized action roadmap.</p>
+      </div>
+      <div>
+        <a class="ppd-btn" href="/payments-portfolio-diagnostic/">Explore the Diagnostic &rarr;</a>
+      </div>
+    </div>
   </section>
 
   <!-- DIAGNOSTIC -->
@@ -689,7 +758,7 @@
     <div class="section-label">The Diagnostic</div>
     <h2>What the Payments Franchise Diagnostic produces</h2>
     <p style="font-family:Helvetica,sans-serif;font-size:15px;color:#1a3a6b;font-weight:bold;margin-bottom:16px;">This is designed to answer one question quickly: where is margin leaking, and what is worth fixing first.</p>
-    <p>The diagnostic assesses the payments business across six structural pillars — pricing governance, corridor economics, client monetization, infrastructure strategy, operational efficiency, and portfolio management — and delivers three analytical outputs. Each one moves from analysis to decision — showing not just where the problems are, but what to do about them. The patterns reflect what I have observed consistently across institutional payments businesses at global scale.</p>
+    <p>The diagnostic assesses the payments business across six structural pillars — pricing governance, corridor economics, client monetization, infrastructure strategy, operational efficiency, and portfolio management — and delivers three analytical outputs. Each one moves from analysis to decision — showing not just where the problems are, but what to do about them.</p>
 
     <div class="outputs-grid">
 
@@ -708,16 +777,12 @@
             <div class="quadrant-label ql-opt">Optimize</div>
             <div class="quadrant-label ql-exp">Expansion</div>
             <div class="quadrant-label ql-exit">Exit</div>
-            <!-- Core dots -->
             <div class="dot" style="width:16px;height:16px;background:#0f1f3d;top:22px;right:22px;opacity:0.9;"></div>
             <div class="dot" style="width:12px;height:12px;background:#2a5a8a;top:32px;right:50px;opacity:0.85;"></div>
-            <!-- Expansion dots -->
             <div class="dot" style="width:14px;height:14px;background:#1a3a6b;bottom:20px;right:28px;opacity:0.7;"></div>
             <div class="dot" style="width:11px;height:11px;background:#1a3a6b;bottom:30px;right:58px;opacity:0.65;"></div>
-            <!-- Optimize dots -->
             <div class="dot" style="width:10px;height:10px;background:#2a5a8a;top:28px;left:28px;opacity:0.55;"></div>
             <div class="dot" style="width:9px;height:9px;background:#2a5a8a;top:40px;left:52px;opacity:0.5;"></div>
-            <!-- Exit dots -->
             <div class="dot" style="width:8px;height:8px;background:#b7882c;bottom:22px;left:22px;opacity:0.8;"></div>
             <div class="dot" style="width:7px;height:7px;background:#b7882c;bottom:34px;left:42px;opacity:0.7;"></div>
           </div>
@@ -817,7 +882,7 @@
     </div>
 
     <div class="callout">
-      <p><strong>What the diagnostic produces within two to three weeks of engagement start:</strong> a corridor profitability map, a portfolio scorecard with pillar-level findings, and a prioritized 90-day action roadmap. <strong>In my experience, addressing the first two priorities produces measurable margin improvement within 90 days — <strong>often without repricing a single client.</strong></strong></p>
+      <p><strong>What the diagnostic produces within two to three weeks of engagement start:</strong> a corridor profitability map, a portfolio scorecard with pillar-level findings, and a prioritized 90-day action roadmap. <strong>In my experience, the first one or two issues identified consistently represent multiples of the engagement cost — often without repricing a single client.</strong></p>
     </div>
   </section>
 
@@ -883,7 +948,7 @@
       <div class="who-card">
         <div class="who-role">Why Now</div>
         <h4>Margin compression is happening — but most banks cannot see where, or respond with precision.</h4>
-        <p>The problem is not competition. It is loss of control over payments economics. Pricing decisions accumulate without governance. Corridors erode without visibility. Infrastructure costs grow without a commercial lens. The banks that hold margin are the ones that can see the full picture and act on it — not the ones that wait for perfect data.</p>
+        <p>The problem is not competition. It is loss of control over payments economics. Pricing decisions accumulate without governance. Corridors erode without visibility. Infrastructure costs grow without a commercial lens. The banks that hold margin are the ones that can see the full picture and act on it.</p>
       </div>
     </div>
   </section>
@@ -892,8 +957,10 @@
   <section class="pricing-section">
     <div class="section-label">Engagement Economics</div>
     <h2>Transparent pricing. Defined scope. No retainer before value is established.</h2>
-    <p class="pricing-intro">Payments franchises where corridor economics, pricing architecture, or portfolio visibility are not yet managed as a unified discipline typically find that even modest improvements deliver multiples of the engagement cost. The diagnostic is designed to demonstrate that value clearly before any further commitment. In my operating experience, the gaps this diagnostic surfaces have consistently represented multiples of what a structured engagement would cost to fix.</p>
-    <p class="pricing-intro" style="margin-top:-20px;font-size:13px;color:#6b7280;">Engagement fees are scaled to institution size, corridor complexity, and scope. The ranges above reflect the typical span across community banks, regional banks, and larger commercial banking franchises.</p>
+
+    <!-- EDIT 4: Pricing justification line before the pricing table -->
+    <p class="pricing-intro">Most institutions find that the first one or two issues identified in the diagnostic more than cover the cost of the engagement — often without repricing a single client. The diagnostic is designed to demonstrate that value clearly before any further commitment.</p>
+    <p class="pricing-intro" style="margin-top:-20px;font-size:13px;color:#6b7280;">Engagement fees are scaled to institution size, corridor complexity, and scope. The ranges below reflect the typical span across community banks, regional banks, and larger commercial banking franchises.</p>
 
     <div class="pricing-grid">
       <div class="pricing-card">
@@ -921,16 +988,16 @@
   </section>
 
   <!-- CTA -->
+  <!-- EDIT 4 continued: Rewritten CTA — diagnostic framing, not passive invitation -->
   <section class="cta-section">
     <div class="cta-box">
       <div>
-        <h2>If this resonates — start with a conversation about where your payments franchise is leaking margin.</h2>
-        <p>A 30-minute call is enough to understand whether the diagnostic is the right starting point. No pitch deck. No proposal before we've talked. Just a direct conversation about where you are and what the framework can do for you.</p>
+        <h2>If you cannot clearly explain where your payments margins are created and lost — start with a 30-minute conversation.</h2>
+        <p>No pitch deck. No proposal before we've talked. A direct conversation about where your franchise stands and what the diagnostic can surface. I work with a limited number of clients at a time to ensure depth and speed of execution.</p>
       </div>
       <div style="text-align:center;">
         <a class="cta-btn" href="https://calendly.com/carlos-carlosurena/30min" target="_blank">Book a Call</a>
         <div class="cta-note" style="color:#6b7280;margin-top:10px;">30 minutes · No obligation</div>
-        <div class="cta-note" style="color:#6b7280;margin-top:6px;font-size:11px;">I work with a limited number of clients at a time<br>to ensure depth and speed of execution.</div>
       </div>
     </div>
   </section>
