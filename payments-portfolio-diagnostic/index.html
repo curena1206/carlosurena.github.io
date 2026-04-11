@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Payments Portfolio Diagnostic — Carlos Ureña</title>
   <meta name="description" content="A structured diagnostic for commercial payments franchises — scoring monetization depth, margin resilience, and operating model maturity. Built by Carlos Ureña." />
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
   <style>
     /* ── COMPREHENSIVE OVERRIDES — prevents styles.css from bleeding through ── */
 
@@ -18,13 +18,16 @@
     .option-sub, .q-desc, .q-title { font-family: Georgia, serif !important; font-size: 17px !important; }
 
     /* Nav — full override so Inter from styles.css cannot apply */
-    .site-nav { background: #0f1f3d !important; border-bottom: 3px solid #b7882c !important; padding: 0 24px !important; height: 48px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; }
-    .site-nav a, .site-nav span, .topnav-link { font-family: Georgia, serif !important; }
-    .site-nav-links a, .topnav-link { font-family: Georgia, serif !important; font-size: 13px !important; color: rgba(255,255,255,0.75) !important; text-decoration: none !important; letter-spacing: 0.02em !important; }
-    .site-nav-links a:hover, .topnav-link:hover { color: #b7882c !important; }
+    nav.site-nav { background: #0f1f3d !important; border-bottom: 3px solid #b7882c !important; padding: 0 24px !important; height: 48px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; }
+    nav.site-nav a { font-family: Georgia, serif !important; }
+    nav.site-nav .site-nav-links a,
+    nav.site-nav a.topnav-link,
+    nav.site-nav .topnav-link { font-family: Georgia, serif !important; font-size: 13px !important; color: rgba(255,255,255,0.75) !important; text-decoration: none !important; letter-spacing: 0.02em !important; background: transparent !important; padding: 0 !important; border-radius: 0 !important; }
+    nav.site-nav .site-nav-links a:hover,
+    nav.site-nav a.topnav-link:hover { color: #b7882c !important; background: transparent !important; }
 
     /* Footer */
-    .footer { background: #0f1f3d !important; border-top: 3px solid #b7882c !important; padding: 0 24px !important; height: 48px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; }
+    footer.footer { background: #0f1f3d !important; border-top: 3px solid #b7882c !important; padding: 0 24px !important; height: 48px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; }
   </style>
 </head>
 
@@ -37,9 +40,9 @@
       <span style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:0.01em;">Payments Franchise Index</span>
     </div>
     <div class="site-nav-links">
-      <a href="#about">About</a>
-      <a href="#tool">Diagnostic</a>
-      <a href="#results">Results</a>
+      <a href="#about" style="font-family:Georgia,serif!important;font-size:13px!important;color:rgba(255,255,255,0.75)!important;text-decoration:none!important;letter-spacing:0.02em!important;">About</a>
+      <a href="#tool" style="font-family:Georgia,serif!important;font-size:13px!important;color:rgba(255,255,255,0.75)!important;text-decoration:none!important;letter-spacing:0.02em!important;">Diagnostic</a>
+      <a href="#results" style="font-family:Georgia,serif!important;font-size:13px!important;color:rgba(255,255,255,0.75)!important;text-decoration:none!important;letter-spacing:0.02em!important;">Results</a>
     </div>
   </nav>
 
