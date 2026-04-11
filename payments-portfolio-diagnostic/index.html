@@ -6,13 +6,22 @@
   <title>Payments Portfolio Diagnostic — Carlos Ureña</title>
   <meta name="description" content="A structured diagnostic for commercial payments franchises — scoring monetization depth, margin resilience, and operating model maturity. Built by Carlos Ureña." />
   <link rel="stylesheet" href="styles.css?v=4" />
+  <style>
+    body { font-family: Georgia, serif !important; font-size: 17px !important; }
+    p, li, .hero-lead, .section-lead, .scenario-desc, .pillar-card-desc,
+    .diag-text, .priority-why, .plan-col li, .tool-micro, .option-label,
+    .option-sub, .q-desc, .q-title { font-family: Georgia, serif !important; font-size: 17px !important; }
+  </style>
 </head>
 
 <body>
   <!-- NAV -->
   <nav class="site-nav">
-    <a href="/" class="site-nav-home">&#8592; Home</a>
-    <span class="site-nav-title">Payments Franchise Index</span>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="/" style="font-family:Georgia,serif;font-size:14px;font-weight:normal;color:#fff;text-decoration:none;letter-spacing:0.01em;">Carlos Ureña</a>
+      <span style="color:rgba(255,255,255,0.25);font-size:13px;">·</span>
+      <span style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.6);letter-spacing:0.01em;">Payments Franchise Index</span>
+    </div>
     <div class="site-nav-links">
       <a href="#about">About</a>
       <a href="#tool">Diagnostic</a>
@@ -29,22 +38,22 @@
         <div class="hero-content">
           <div class="hero-eyebrow">Payments Franchise Index &nbsp;·&nbsp; PFI &nbsp;·&nbsp; V1 &nbsp;·&nbsp; Free</div>
 
-          <h1 class="hero-headline">Most payments franchises cannot see where revenue is lost.</h1>
-          <h2 class="hero-subheadline" style="font-family:Georgia,serif;font-size:24px;font-weight:normal;color:#b7882c;margin:16px 0 0;font-style:italic;">This makes it visible.</h2>
+          <h1 class="hero-headline" style="font-size:32px;font-family:Georgia,serif;font-weight:normal;line-height:1.2;letter-spacing:-0.01em;color:#fff;margin-bottom:18px;">Most payments franchises cannot see where revenue is lost.</h1>
+          <h2 class="hero-subheadline" style="font-family:Georgia,serif;font-size:17px;font-weight:normal;color:#b7882c;margin:0 0 18px;font-style:italic;">This makes it measurable.</h2>
 
           <p class="hero-lead">
-            This was built to address a recurring gap in underperforming payments franchises.
             Revenue leakage exists across pricing, routing, and cost structures, but is rarely visible at the portfolio level.
-            This diagnostic makes it measurable and actionable.
+          </p>
+          <p class="hero-lead">
+            This diagnostic makes it measurable and directly actionable.
           </p>
 
           <div class="hero-how">
             <div class="how-label">How it works</div>
             <div class="how-steps">
-              <div class="how-step"><span class="how-num">1</span><span>Answer 42 operator-level questions that expose where revenue is lost across the portfolio</span></div>
-              <div class="how-step"><span class="how-num">2</span><span>The model calculates your PFI Score and pillar sub-scores</span></div>
-              <div class="how-step"><span class="how-num">3</span><span>Results produce an executive diagnosis and pillar heatmap</span></div>
-              <div class="how-step"><span class="how-num">4</span><span>The system generates prioritized 30/60/90-day actions</span></div>
+              <div class="how-step"><span class="how-num">1</span><span>Operator-level questions that expose where revenue is lost across the portfolio</span></div>
+              <div class="how-step"><span class="how-num">2</span><span>Portfolio score, pillar heatmap, and prioritized actions</span></div>
+              <div class="how-step"><span class="how-num">3</span><span>Results define a 30/60/90-day execution plan</span></div>
             </div>
           </div>
           <div class="hero-actions">
@@ -80,7 +89,7 @@
         <div class="tool-head">
           <div>
             <h2 class="section-title">Diagnostic inputs</h2>
-            <p class="section-lead" style="margin-top:6px;max-width:100%;">42 operator-level questions that expose where revenue is lost across the portfolio. Answer what you know — partial answers still produce directional output.</p>
+            <p class="section-lead" style="margin-top:6px;max-width:100%;">Operator-level questions that expose where revenue is lost across the portfolio. Answer based on direct operational experience. The output remains directionally valid.</p>
           </div>
           <div class="progress-wrap">
             <div class="progress-meta">
@@ -119,8 +128,7 @@
         <h2 class="section-title">Portfolio assessment</h2>
         <p class="section-lead" style="max-width:100%;">
           The objective is not precision. It is visibility into where revenue is being lost.
-          Outputs are directional and reflect operator-grade portfolio judgment — not false precision.
-          Use these as a starting point for leadership conversation, not a final verdict.
+          The output reflects operator-grade portfolio judgment and highlights where action is required first.
         </p>
 
         <div id="resultsEmpty" class="empty-state">
@@ -178,7 +186,7 @@
             <div style="padding:24px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
               <div>
                 <div style="font-family:Georgia,serif;font-size:17px;color:#ffffff;margin-bottom:8px;">The recoverable revenue is already inside the portfolio.</div>
-                <div style="font-family:Helvetica,sans-serif;font-size:13px;color:#b0bec5;line-height:1.6;max-width:520px;">This becomes measurable very quickly once the portfolio is examined directly.</div>
+                <div style="font-family:Georgia,serif;font-size:13px;color:#b0bec5;line-height:1.6;max-width:520px;">This becomes measurable within weeks once the portfolio is examined directly.</div>
               </div>
               <a href="/consulting.html" style="display:inline-block;background:#b7882c;color:#0f1f3d;font-family:Helvetica,sans-serif;font-size:12px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;text-decoration:none;padding:14px 28px;white-space:nowrap;">Examine the portfolio</a>
             </div>
@@ -206,15 +214,19 @@
     <!-- FRAMEWORK LINK -->
     <div style="text-align:center; padding: 48px 0 32px;">
       <a href="/consulting.html" style="font-family:Helvetica,sans-serif; font-size:13px; color:#b7882c; text-decoration:none; letter-spacing:0.05em;">
-        Learn how the framework works ↗
+        Learn how the diagnostic works ↗
       </a>
     </div>
 
     <!-- FOOTER -->
-    <footer class="footer">
-      <div class="container footer-inner">
-        <span>Payments Franchise Index &nbsp;&middot;&nbsp; PFI V1 &nbsp;&middot;&nbsp; Free &nbsp;&middot;&nbsp; No data stored</span>
-      </div>
+    <footer class="footer" style="padding:0 24px;height:48px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.7);">Making payments portfolio economics visible</span>
+      <span style="font-size:13px;color:rgba(255,255,255,0.5);">
+        <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener" style="color:#b7882c;text-decoration:none;">LinkedIn</a>
+        &nbsp;·&nbsp;
+        <a href="mailto:carlos@carlosurena.com" style="color:#b7882c;text-decoration:none;">Email</a>
+        &nbsp;·&nbsp; © 2026
+      </span>
     </footer>
 
   </main>
