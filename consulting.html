@@ -32,10 +32,11 @@
   /* ── SITE NAV ── */
   nav {
     background: var(--navy);
-    padding: 18px 48px;
+    padding: 0 48px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 48px;
     border-bottom: 3px solid var(--gold);
   }
   nav .logo {
@@ -103,7 +104,7 @@
   }
 
   /* ── MAIN LAYOUT ── */
-  main { max-width: 900px; margin: 0 auto; padding: 0 48px 80px; }
+  main { max-width: 900px; margin: 0 auto; padding: 0 48px 32px; }
 
   /* ── SECTION LABEL ── */
   .section-label {
@@ -118,7 +119,7 @@
 
   /* ── PROBLEM SECTION ── */
   .problem {
-    padding: 60px 0 48px;
+    padding: 28px 0 28px;
     border-bottom: 1px solid var(--border);
   }
   .problem h2 {
@@ -228,7 +229,7 @@
 
   /* ── DIAGNOSTIC SECTION ── */
   .diagnostic {
-    padding: 56px 0 48px;
+    padding: 28px 0 28px;
     border-bottom: 1px solid var(--border);
   }
   .diagnostic h2 {
@@ -402,7 +403,7 @@
 
   /* ── WHAT FOLLOWS ── */
   .what-follows {
-    padding: 56px 0 48px;
+    padding: 28px 0 28px;
     border-bottom: 1px solid var(--border);
   }
   .what-follows h2 {
@@ -473,7 +474,7 @@
 
   /* ── WHO THIS IS FOR ── */
   .who {
-    padding: 56px 0 48px;
+    padding: 28px 0 28px;
     border-bottom: 1px solid var(--border);
   }
   .who h2 {
@@ -525,12 +526,12 @@
 
   /* ── CTA ── */
   .cta-section {
-    padding: 64px 0 20px;
+    padding: 28px 0 20px;
   }
   .cta-box {
     background: var(--navy);
     border-top: 3px solid var(--gold);
-    padding: 48px;
+    padding: 28px;
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 40px;
@@ -597,7 +598,7 @@
   }
 
   .pricing-section {
-    padding: 56px 0 48px;
+    padding: 28px 0 28px;
     border-bottom: 1px solid var(--border);
   }
   .pricing-section h2 {
@@ -964,21 +965,14 @@
 
 </main>
 
-<footer>
-  <div class="container" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;padding:28px;">
-    <div style="display:flex;flex-direction:column;gap:4px;">
-      <span style="font-family:Georgia,serif;font-size:14px;color:#fff;">Carlos Ureña</span>
-      <span style="font-size:13px;color:rgba(255,255,255,0.45);">Making payments portfolio economics visible</span>
-    </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-      <span style="font-size:13px;">
-        <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">LinkedIn</a>
-        &nbsp;·&nbsp;
-        <a href="mailto:carlos@carlosurena.com" style="color:var(--gold);text-decoration:none;">Email</a>
-      </span>
-      <span style="font-size:12px;color:rgba(255,255,255,0.25);">© 2026 Carlos Ureña</span>
-    </div>
-  </div>
+<footer style="background:var(--navy);border-top:2px solid var(--gold);padding:0 48px;height:48px;display:flex;align-items:center;justify-content:space-between;">
+  <span style="font-family:Georgia,serif;font-size:13px;color:#fff;">Carlos Ureña &nbsp;·&nbsp; <span style="color:rgba(255,255,255,0.5);font-size:13px;">Making payments portfolio economics visible</span></span>
+  <span style="font-size:13px;color:rgba(255,255,255,0.5);">
+    <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">LinkedIn</a>
+    &nbsp;·&nbsp;
+    <a href="mailto:carlos@carlosurena.com" style="color:var(--gold);text-decoration:none;">Email</a>
+    &nbsp;·&nbsp; © 2026
+  </span>
 </footer>
 
 </body>
