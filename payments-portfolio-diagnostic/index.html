@@ -7,10 +7,24 @@
   <meta name="description" content="A structured diagnostic for commercial payments franchises — scoring monetization depth, margin resilience, and operating model maturity. Built by Carlos Ureña." />
   <link rel="stylesheet" href="styles.css?v=4" />
   <style>
+    /* ── COMPREHENSIVE OVERRIDES — prevents styles.css from bleeding through ── */
+
+    /* Body */
     body { font-family: Georgia, serif !important; font-size: 17px !important; }
+
+    /* All paragraph and list elements */
     p, li, .hero-lead, .section-lead, .scenario-desc, .pillar-card-desc,
     .diag-text, .priority-why, .plan-col li, .tool-micro, .option-label,
     .option-sub, .q-desc, .q-title { font-family: Georgia, serif !important; font-size: 17px !important; }
+
+    /* Nav — full override so Inter from styles.css cannot apply */
+    .site-nav { background: #0f1f3d !important; border-bottom: 3px solid #b7882c !important; padding: 0 24px !important; height: 48px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; }
+    .site-nav a, .site-nav span, .topnav-link { font-family: Georgia, serif !important; }
+    .site-nav-links a, .topnav-link { font-family: Georgia, serif !important; font-size: 13px !important; color: rgba(255,255,255,0.75) !important; text-decoration: none !important; letter-spacing: 0.02em !important; }
+    .site-nav-links a:hover, .topnav-link:hover { color: #b7882c !important; }
+
+    /* Footer */
+    .footer { background: #0f1f3d !important; border-top: 3px solid #b7882c !important; padding: 0 24px !important; height: 48px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; }
   </style>
 </head>
 
