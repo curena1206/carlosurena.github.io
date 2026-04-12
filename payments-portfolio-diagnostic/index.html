@@ -1,4 +1,4 @@
-<!-- v2 --><!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -20,14 +20,13 @@
     .diag-text, .priority-why, .plan-col li, .tool-micro, .option-label,
     .option-sub, .q-desc, .q-title { font-family: Georgia, serif !important; font-size: 17px !important; }
 
-    /* Nav — full override so Inter from styles.css cannot apply */
+    /* Nav — targeting exact styles.css class names */
     nav.site-nav { background: #0f1f3d !important; border-bottom: 3px solid #b7882c !important; padding: 0 24px !important; height: 48px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; }
-    nav.site-nav a { font-family: Georgia, serif !important; }
-    nav.site-nav .site-nav-links a,
-    nav.site-nav a.topnav-link,
-    nav.site-nav .topnav-link { font-family: Georgia, serif !important; font-size: 13px !important; color: rgba(255,255,255,0.75) !important; text-decoration: none !important; letter-spacing: 0.02em !important; background: transparent !important; padding: 0 !important; border-radius: 0 !important; }
-    nav.site-nav .site-nav-links a:hover,
-    nav.site-nav a.topnav-link:hover { color: #b7882c !important; background: transparent !important; }
+    .brand-title { font-family: Georgia, serif !important; font-size: 14px !important; color: #fff !important; font-weight: normal !important; letter-spacing: 0.01em !important; }
+    .topnav-link { font-family: Georgia, serif !important; font-size: 13px !important; color: rgba(255,255,255,0.75) !important; letter-spacing: 0.02em !important; background: transparent !important; }
+    .topnav-link:hover { color: #b7882c !important; background: transparent !important; }
+    nav.site-nav a { font-family: Georgia, serif !important; color: rgba(255,255,255,0.75) !important; }
+    nav.site-nav .site-nav-links a { font-family: Georgia, serif !important; font-size: 13px !important; color: rgba(255,255,255,0.75) !important; letter-spacing: 0.02em !important; }
 
     /* Footer */
     footer.footer { background: #0f1f3d !important; border-top: 3px solid #b7882c !important; padding: 0 24px !important; height: 48px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; }
