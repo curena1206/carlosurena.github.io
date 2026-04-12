@@ -12,6 +12,9 @@
   <style>
     /* ── COMPREHENSIVE OVERRIDES — prevents styles.css from bleeding through ── */
 
+    /* Override font variables so Inter never applies */
+    :root { --font-body: Georgia, serif !important; --font-display: Georgia, serif !important; }
+
     /* Body */
     body { font-family: Georgia, serif !important; font-size: 17px !important; }
 
@@ -37,9 +40,9 @@
   <!-- NAV -->
   <nav class="site-nav">
     <div style="display:flex;align-items:center;gap:10px;">
-      <a href="/" style="font-family:Georgia,serif;font-size:14px;font-weight:normal;color:#fff !important;text-decoration:none;letter-spacing:0.01em;">Carlos Ureña</a>
+      <a href="/" style="font-family:Georgia,serif !important;font-size:14px;font-weight:normal;color:#fff !important;text-decoration:none;letter-spacing:0.01em;">Carlos Ureña</a>
       <span style="color:rgba(255,255,255,0.25);font-size:13px;">·</span>
-      <span style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:0.01em;">Payments Franchise Index</span>
+      <span style="font-family:Georgia,serif !important;font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:0.01em;">Payments Franchise Index</span>
     </div>
     <div class="site-nav-links">
       <a href="#about" style="font-family:Georgia,serif!important;font-size:13px!important;color:rgba(255,255,255,0.75)!important;text-decoration:none!important;letter-spacing:0.02em!important;">About</a>
