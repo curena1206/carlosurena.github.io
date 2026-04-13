@@ -59,6 +59,8 @@
       font-weight: normal;
       color: #fff;
       letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     .site-nav-links { display: flex; gap: 24px; }
     .site-nav-links a {
@@ -71,7 +73,7 @@
     .site-nav-links a:hover, .site-nav-links a.active { color: var(--gold); }
 
     /* LAYOUT */
-    .wrap { max-width: 860px; margin: 0 auto; padding: 56px 24px 72px; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 56px 48px 72px; }
 
     /* SECTION BLOCKS */
     .section-block { margin-bottom: 52px; }
@@ -132,7 +134,7 @@
     .hero-anchor {
       font-family: Georgia, serif;
       font-size: 32px !important;
-      font-weight: bold;
+      font-weight: normal;
       color: var(--navy);
       font-style: normal;
       line-height: 1.2;
@@ -461,7 +463,7 @@
     <div class="site-nav-links">
       <a href="/" class="active">Home</a>
       <a href="/consulting.html">Diagnostic</a>
-      <a href="/pfi.html">PFI</a>
+      <a href="/payments-portfolio-diagnostic/">PFI</a>
       <a href="https://models.carlosurena.com">Models</a>
       <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
