@@ -117,30 +117,31 @@
     }
     .hero-headline {
       font-family: Georgia, serif;
-      font-size: clamp(26px, 3.5vw, 38px);
-      font-weight: normal;
-      line-height: 1.15;
+      font-size: 32px !important;
+      font-weight: normal !important;
+      line-height: 1.2;
       letter-spacing: -0.01em;
       color: #fff;
       margin-bottom: 12px;
     }
     .hero-subheadline {
       font-family: Georgia, serif;
-      font-size: clamp(26px, 3.5vw, 38px);
-      font-weight: normal;
+      font-size: 32px !important;
+      font-weight: normal !important;
       color: var(--gold);
       margin-bottom: 20px;
-      font-style: italic;
-      line-height: 1.15;
+      font-style: normal;
+      line-height: 1.2;
     }
     .hero-lead {
-      font-size: 15px;
-      color: rgba(255,255,255,0.65);
-      max-width: 54ch;
+      font-family: Georgia, serif;
+      font-size: 17px;
+      color: #b0bec5;
       line-height: 1.7;
       margin-bottom: 8px;
     }
     .hero-micro {
+      font-family: Georgia, serif;
       font-size: 11.5px;
       color: rgba(255,255,255,0.3);
       letter-spacing: 0.02em;
@@ -177,9 +178,9 @@
       align-items: flex-start;
       gap: 10px;
       font-family: Georgia, serif;
-      font-size: 13px;
+      font-size: 17px;
       color: rgba(255,255,255,0.75);
-      line-height: 1.5;
+      line-height: 1.6;
     }
     .how-num {
       width: 20px; height: 20px;
@@ -212,19 +213,19 @@
       margin-bottom: 12px;
     }
     .hero-card p {
-      font-size: 13px;
+      font-size: 17px;
       color: rgba(255,255,255,0.8);
       margin: 0 0 12px;
-      line-height: 1.6;
+      line-height: 1.7;
     }
     .checklist { list-style: none; display: grid; gap: 10px; }
     .checklist li {
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      font-size: 13.5px;
+      font-size: 17px;
       color: rgba(255,255,255,0.7);
-      line-height: 1.5;
+      line-height: 1.6;
     }
     .check-icon { color: var(--gold); flex-shrink: 0; margin-top: 1px; font-size: 12px; }
     .checklist strong { color: #fff; font-weight: bold; }
@@ -279,7 +280,7 @@
     }
     .section-lead {
       font-family: Georgia, serif;
-      font-size: 15px;
+      font-size: 17px;
       color: var(--slate);
       max-width: 62ch;
       line-height: 1.7;
@@ -323,14 +324,14 @@
     /* ── SCENARIOS ── */
     .scenario-section { margin-bottom: 32px; }
     .scenario-intro {
-      font-size: 13.5px;
+      font-size: 17px;
       color: var(--slate);
       margin-bottom: 14px;
       padding: 12px 16px;
       background: var(--soft);
       border: 1px solid var(--line);
       border-radius: var(--radius-sm);
-      line-height: 1.6;
+      line-height: 1.7;
     }
     .scenario-intro strong { color: var(--navy); font-weight: bold; }
     .scenario-grid {
@@ -432,7 +433,7 @@
     .pillar.open .pillar-header:hover { background: var(--navy-2); }
     .pillar-title {
       font-family: Georgia, serif;
-      font-size: 14px;
+      font-size: 17px;
       font-weight: normal;
       color: var(--navy);
       letter-spacing: 0.01em;
@@ -456,8 +457,8 @@
     /* Questions */
     .q { padding: 16px 0; border-bottom: 1px solid var(--line-2); }
     .q:last-child { border-bottom: none; padding-bottom: 4px; }
-    .q-title { font-family: Georgia, serif; font-weight: bold; font-size: 14px; color: var(--navy); margin-bottom: 4px; }
-    .q-desc { font-family: Georgia, serif; font-size: 13px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; }
+    .q-title { font-family: Georgia, serif; font-weight: bold; font-size: 17px; color: var(--navy); margin-bottom: 4px; }
+    .q-desc { font-family: Georgia, serif; font-size: 17px; color: var(--slate); margin-bottom: 12px; line-height: 1.7; }
     .q-options { display: grid; gap: 7px; }
     .option {
       display: flex;
@@ -473,17 +474,17 @@
     .option:hover { background: var(--soft); border-color: var(--slate-2); }
     .option-selected { border-color: var(--gold) !important; background: var(--gold-light) !important; }
     .option input[type="radio"] { margin-top: 3px; accent-color: var(--gold); flex-shrink: 0; }
-    .option-label { font-family: Georgia, serif; font-size: 13.5px; font-weight: bold; color: var(--navy); }
-    .option-sub { font-family: Georgia, serif; font-size: 12px; color: var(--slate-2); margin-top: 2px; line-height: 1.4; }
+    .option-label { font-family: Georgia, serif; font-size: 17px; font-weight: bold; color: var(--navy); }
+    .option-sub { font-family: Georgia, serif; font-size: 14px; color: var(--slate-2); margin-top: 2px; line-height: 1.5; }
 
     /* Actions */
     .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .tool-micro {
       font-family: Georgia, serif;
       margin-top: 14px;
-      font-size: 12px;
+      font-size: 17px;
       color: var(--slate-2);
-      line-height: 1.6;
+      line-height: 1.7;
       max-width: 70ch;
     }
 
@@ -622,7 +623,7 @@
     .pn-developing  { background: #e0f2fe; color: #0c4a6e; }
     .pn-strong      { background: #dcfce7; color: #166534; }
     .pn-exceptional { background: #f3e8ff; color: #581c87; }
-    .pn-text { font-family: Georgia, serif; font-size: 12.5px; color: #374151; line-height: 1.55; }
+    .pn-text { font-family: Georgia, serif; font-size: 17px; color: #374151; line-height: 1.7; }
 
     .diag-tier {
       display: inline-flex;
@@ -638,7 +639,7 @@
     .tier-1 { background: var(--red-bg);    color: var(--red-ink);    border: 1px solid var(--red-line); }
     .tier-2 { background: var(--yellow-bg); color: var(--yellow-ink); border: 1px solid var(--yellow-line); }
     .tier-3 { background: var(--soft-2);    color: var(--slate);      border: 1px solid var(--line); }
-    .diag-text { font-family: Georgia, serif; font-size: 14px; color: var(--navy); line-height: 1.6; }
+    .diag-text { font-family: Georgia, serif; font-size: 17px; color: var(--navy); line-height: 1.7; }
 
     /* Priorities */
     .priorities-list { display: grid; gap: 10px; }
@@ -663,9 +664,9 @@
       flex-shrink: 0;
     }
     .priority-body { flex: 1; min-width: 0; }
-    .priority-title { font-family: Georgia, serif; font-weight: bold; font-size: 13.5px; color: var(--navy); margin-bottom: 4px; line-height: 1.35; }
-    .priority-meta { font-family: Georgia, serif; font-size: 11.5px; color: var(--slate-2); margin-bottom: 5px; }
-    .priority-why { font-family: Georgia, serif; font-size: 13px; color: var(--slate); line-height: 1.55; }
+    .priority-title { font-family: Georgia, serif; font-weight: bold; font-size: 17px; color: var(--navy); margin-bottom: 4px; line-height: 1.35; }
+    .priority-meta { font-family: Georgia, serif; font-size: 13px; color: var(--slate-2); margin-bottom: 5px; }
+    .priority-why { font-family: Georgia, serif; font-size: 17px; color: var(--slate); line-height: 1.7; }
 
     /* 30/60/90 Plan */
     .plan-grid {
@@ -698,9 +699,9 @@
     .plan-col ul { list-style: none; display: grid; gap: 9px; }
     .plan-col li {
       font-family: Georgia, serif;
-      font-size: 13px;
+      font-size: 17px;
       color: var(--slate);
-      line-height: 1.5;
+      line-height: 1.7;
       padding-left: 14px;
       position: relative;
     }
@@ -792,22 +793,29 @@
       <div class="container hero-inner">
 
         <div class="hero-content">
-          <h1 class="hero-headline">Most payments franchises cannot see where revenue is lost.</h1>
-          <h2 class="hero-subheadline">This makes it measurable.</h2>
+          <h1 class="hero-headline" style="font-weight:normal;font-size:32px;">Most payments franchises cannot see where revenue is lost.</h1>
+          <h2 class="hero-subheadline" style="font-weight:normal;font-size:32px;">Once it is visible, this measures it.</h2>
 
           <p class="hero-lead">
-            Revenue leakage exists across pricing, routing, and cost structures, but is rarely visible at the portfolio level.
+            The Diagnostic makes revenue leakage visible. The Payments Franchise Index measures it structurally, across the portfolio, across six dimensions.
           </p>
           <p class="hero-lead">
-            This diagnostic surfaces it and makes it directly actionable.
+            This is not a second diagnostic. It is the measurement layer.
+          </p>
+          <p class="hero-lead">
+            The Diagnostic surfaces where revenue is lost. This measures how the portfolio is structured once it becomes visible.
+          </p>
+          <p class="hero-lead" style="border-left:3px solid var(--gold);padding-left:16px;margin:12px 0 24px;"><strong style="color:#fff;">Revenue becomes visible. Then measured. Then explained. Then actionable.</strong></p>
+          <p class="hero-lead">
+            These measurements are supported by underlying models that quantify each dimension and explain where the economics break down.
           </p>
 
           <div class="hero-how">
             <div class="how-label">How it works</div>
             <div class="how-steps">
-              <div class="how-step"><span class="how-num">1</span><span>Operator-level questions that expose where revenue is lost across the portfolio</span></div>
-              <div class="how-step"><span class="how-num">2</span><span>Portfolio score, pillar heatmap, and prioritized actions</span></div>
-              <div class="how-step"><span class="how-num">3</span><span>Results define a 30/60/90-day execution plan</span></div>
+              <div class="how-step"><span class="how-num">1</span><span>Operator-level questions that score the portfolio across six structural dimensions</span></div>
+              <div class="how-step"><span class="how-num">2</span><span>Portfolio score, pillar heatmap, and maturity assessment</span></div>
+              <div class="how-step"><span class="how-num">3</span><span>Results define a 30/60/90-day execution plan with prioritized actions</span></div>
             </div>
           </div>
 
@@ -940,7 +948,7 @@
             <div style="padding:24px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
               <div>
                 <div style="font-family:Georgia,serif;font-size:17px;color:#ffffff;margin-bottom:8px;">The recoverable revenue is already inside the portfolio.</div>
-                <div style="font-family:Georgia,serif;font-size:13px;color:#b0bec5;line-height:1.6;max-width:520px;">This becomes measurable within weeks once the portfolio is examined directly.</div>
+                <div style="font-family:Georgia,serif;font-size:13px;color:#b0bec5;line-height:1.6;max-width:520px;">This becomes measurable within weeks once the portfolio is examined directly. The Diagnostic makes it visible. The Index measures it. The Models explain it.</div>
               </div>
               <a href="/consulting.html" style="display:inline-block;background:var(--gold);color:var(--navy);font-family:Georgia,serif;font-size:12px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;text-decoration:none;padding:14px 28px;white-space:nowrap;">Examine the portfolio</a>
             </div>
@@ -1130,7 +1138,7 @@ window.PPD_MODEL = (() => {
       els.scenarioContainer.innerHTML = "";
       const intro = document.createElement("div");
       intro.className = "scenario-intro";
-      intro.innerHTML = `<div><strong>Start with a scenario</strong> — or answer the questions fresh below. Each scenario pre-fills all 42 questions and computes results instantly, reflecting real portfolio situations encountered in practice.</div>`;
+      intro.innerHTML = `<div><strong>Start with a scenario</strong> or answer the questions fresh below. Each scenario pre-fills all 42 questions and computes results instantly, reflecting real portfolio situations encountered in practice.</div>`;
       els.scenarioContainer.appendChild(intro);
       const grid = document.createElement("div");
       grid.className = "scenario-grid";
