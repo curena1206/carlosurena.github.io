@@ -791,7 +791,7 @@
       <div class="container hero-inner">
 
         <div class="hero-content">
-          <h1 class="hero-headline" style="font-weight:normal;font-size:32px;">Most payment portfolios grow before they are structurally sound.</h1>
+          <h1 class="hero-headline" style="font-weight:normal;font-size:32px;">Payments franchises rarely evolve evenly across growth, governance, operating discipline, and economic management.</h1>
           <h2 class="hero-subheadline" style="font-weight:normal;font-size:32px;">Scale does not resolve operating misalignment. It exposes it.</h2>
 
           <p class="hero-lead">
@@ -803,7 +803,7 @@
           <p class="hero-lead">
             The framework highlights where leadership attention, validation, or operating review may be required before structural pressure becomes materially embedded across the portfolio.
           </p>
-          <p class="hero-lead" style="border-left:3px solid var(--gold);padding-left:16px;margin:12px 0 24px;"><strong style="color:#fff;">Operating maturity becomes visible. Portfolio alignment becomes measurable. Management priorities become clearer.</strong></p>
+          <p class="hero-lead" style="border-left:3px solid var(--gold);padding-left:16px;margin:12px 0 24px;"><strong style="color:#fff;">Operating maturity becomes visible. Portfolio alignment becomes measurable. Structural pressure becomes easier to identify before it compounds.</strong></p>
           <p class="hero-lead">
             The outputs reflect structured operating interpretation across pricing, workflow integration, treasury linkage, governance discipline, and portfolio management.
           </p>
@@ -833,8 +833,8 @@
               <li><span class="check-icon">✓</span><span>PFI Score <strong>(0–100)</strong></span></li>
               <li><span class="check-icon">✓</span><span>Operating discipline · Portfolio resilience · Strategic readiness sub-scores</span></li>
               <li><span class="check-icon">✓</span><span>Pillar heatmap across all six dimensions</span></li>
-              <li><span class="check-icon">✓</span><span>Executive diagnosis with tier classification</span></li>
-              <li><span class="check-icon">✓</span><span>90-day priorities with owners and KPIs</span></li>
+              <li><span class="check-icon">✓</span><span>Executive operating interpretation with maturity classification</span></li>
+              <li><span class="check-icon">✓</span><span>Suggested operating priorities and management focus areas</span></li>
               <li><span class="check-icon">✓</span><span>Sequenced 30/60/90 execution plan</span></li>
             </ul>
           </div>
@@ -871,7 +871,7 @@
         <div id="pillarsContainer" class="pillars-list"></div>
 
         <div class="actions">
-          <button id="btnCompute" class="btn btn-primary btn-lg">Compute Results</button>
+          <button id="btnCompute" class="btn btn-primary btn-lg">Generate Portfolio Assessment</button>
           <button id="btnCopy" class="btn btn-secondary" disabled>Download PDF</button>
         </div>
 
@@ -885,7 +885,7 @@
     <section class="section results-section" id="results">
       <div class="container">
         <div class="section-label">Results</div>
-        <h2 class="section-title">Portfolio assessment</h2>
+        <h2 class="section-title">Operating maturity assessment</h2>
         <p class="section-lead" style="max-width:100%;">
           The objective is not precision. It is structured visibility into where operating maturity, governance discipline, and portfolio alignment may require management attention first.
           The output reflects operator-grade interpretation across portfolio management, operating scalability, pricing discipline, and strategic readiness.
@@ -1012,15 +1012,15 @@ window.PPD_MODEL = (() => {
       id: "revenue_arch",
       name: "Revenue Architecture",
       weight: 0.20,
-      subtitle: "How the portfolio monetizes payment activity and how consistently that behavior is understood",
+      subtitle: "How the portfolio generates and captures revenue across payment flows and client relationships",
       questions: [
         {
           id: "RA1",
           title: "Revenue mix across fee, FX, and balance contribution",
           desc: "How diversified and structurally balanced is the portfolio's revenue across transaction fees, FX-related activity, and balance-driven contribution?",
           options: [
-            { score: 1, label: "Revenue concentrated in a single primary source", sub: "The portfolio appears materially dependent on one dominant economic driver" },
-            { score: 2, label: "Multiple revenue sources exist but concentration remains meaningful", sub: "Some diversification is present, though economic dependence remains uneven" },
+            { score: 1, label: "Revenue concentrated in a single primary source", sub: "The portfolio appears materially dependent on one dominant revenue source" },
+            { score: 2, label: "Multiple revenue sources exist but concentration remains meaningful", sub: "Some diversification is present, though revenue concentration remains uneven" },
             { score: 4, label: "Revenue diversified across multiple economic drivers", sub: "Fee, FX-related, and balance contribution are visible and incorporated into portfolio evaluation" },
             { score: 5, label: "Revenue composition actively evaluated across major economic drivers", sub: "The franchise demonstrates disciplined visibility into how multiple revenue components contribute across the portfolio" }
           ]
@@ -1066,10 +1066,10 @@ window.PPD_MODEL = (() => {
           title: "Revenue versus payment activity growth",
           desc: "Over the last 12–24 months, how has revenue growth behaved relative to payment activity and transaction growth?",
           options: [
-            { score: 1, label: "Revenue growth materially trailing activity growth", sub: "Monetization performance may not be scaling consistently with portfolio activity" },
+            { score: 1, label: "Revenue growth materially trailing activity growth", sub: "Revenue performance may not be scaling consistently with portfolio activity" },
             { score: 2, label: "Revenue growth generally flat relative to activity growth", sub: "Economic performance may be expanding more slowly than operational scale" },
-            { score: 4, label: "Revenue growth modestly ahead of activity growth", sub: "Monetization discipline appears reasonably aligned with portfolio expansion" },
-            { score: 5, label: "Revenue growth consistently outpacing activity growth", sub: "The franchise demonstrates strong alignment between portfolio growth and monetization performance" }
+            { score: 4, label: "Revenue growth modestly ahead of activity growth", sub: "Revenue growth appears reasonably aligned with portfolio expansion" },
+            { score: 5, label: "Revenue growth consistently outpacing activity growth", sub: "The franchise demonstrates strong alignment between portfolio growth and revenue performance" }
           ]
         },
         {
@@ -1077,7 +1077,7 @@ window.PPD_MODEL = (() => {
           title: "FX-related monetization discipline",
           desc: "Where FX-related payment activity exists, how consistently are pricing, spread management, and economic performance evaluated?",
           options: [
-            { score: 0, label: "FX-related activity minimally monetized or not strategically evaluated", sub: "FX contribution appears operational rather than economically managed" },
+            { score: 0, label: "FX-related activity minimally monetized or not strategically evaluated", sub: "FX contribution appears operational rather than strategically managed" },
             { score: 2, label: "FX pricing exists but governance appears inconsistent", sub: "Spread management and monetization visibility may vary across segments and flows" },
             { score: 3, label: "FX economics managed across major payment segments", sub: "Core pricing discipline exists, though consistency across the broader portfolio may vary" },
             { score: 4, label: "FX-related economics incorporated into portfolio management", sub: "Pricing, spread management, and economic performance are evaluated systematically across major flows" },
@@ -1087,12 +1087,12 @@ window.PPD_MODEL = (() => {
         {
           id: "RA7",
           title: "Packaging and monetization structure",
-          desc: "How intentionally is the payments offering structured to support monetization visibility and economic flexibility?",
+          desc: "How intentionally is the payments offering structured to support pricing visibility and commercial flexibility?",
           options: [
-            { score: 1, label: "Primarily bundled with limited economic differentiation", sub: "Packaging structure may reduce visibility into underlying monetization behavior" },
-            { score: 2, label: "Some differentiated pricing or add-on structures exist", sub: "Basic monetization levers are present, though operational consistency may vary" },
-            { score: 4, label: "Packaging structure aligned with defined monetization objectives", sub: "Bundled and variable pricing structures are evaluated with measurable economic intent" },
-            { score: 5, label: "Packaging strategy integrated into broader portfolio economics", sub: "Client behavior, pricing flexibility, and monetization objectives are consistently aligned across the offering structure" }
+            { score: 1, label: "Primarily bundled with limited economic differentiation", sub: "Packaging structure may reduce visibility into underlying pricing and revenue behavior" },
+            { score: 2, label: "Some differentiated pricing or add-on structures exist", sub: "Basic pricing levers are present, though operational consistency may vary" },
+            { score: 4, label: "Packaging structure aligned with defined monetization objectives", sub: "Bundled and variable pricing structures are evaluated with measurable commercial intent" },
+            { score: 5, label: "Packaging strategy integrated into broader portfolio economics", sub: "Client behavior, pricing flexibility, and commercial objectives are consistently aligned across the offering structure" }
           ]
         }
       ]
@@ -1103,7 +1103,7 @@ window.PPD_MODEL = (() => {
       id: "growth_engine",
       name: "Growth Engine Quality",
       weight: 0.10,
-      subtitle: "How durable, repeatable, and economically aligned the franchise's growth model appears",
+      subtitle: "How durable, repeatable, and commercially aligned the franchise's growth model appears",
       questions: [
         {
           id: "GE1",
@@ -1114,7 +1114,7 @@ window.PPD_MODEL = (() => {
             { score: 2, label: "Some repeatability exists across selected segments", sub: "Defined acquisition approaches exist, though scalability and consistency may vary" },
             { score: 3, label: "Structured acquisition model for major client groups", sub: "Core growth motions are established, though differentiation and expansion quality may vary across the portfolio" },
             { score: 4, label: "Growth engine supported by defined commercial processes", sub: "Acquisition, onboarding, and relationship expansion are operationalized across major segments" },
-            { score: 5, label: "Growth model integrated into broader portfolio strategy", sub: "Commercial expansion is consistently aligned with client value, operating economics, and strategic portfolio priorities" }
+            { score: 5, label: "Growth model integrated into broader portfolio strategy", sub: "Commercial expansion is consistently aligned with client value, operating priorities, and strategic portfolio goals" }
           ]
         },
         {
@@ -1204,11 +1204,11 @@ window.PPD_MODEL = (() => {
           title: "Gross economic margin — current band",
           desc: "What is the approximate gross margin of the payments portfolio after direct costs, where this data is available?",
           options: [
-            { score: 0, label: "Below 25%", sub: "The portfolio may be operating with structurally limited economic flexibility" },
-            { score: 2, label: "25–40%", sub: "Economic margin appears relatively thin and may be sensitive to mix, pricing, or cost changes" },
-            { score: 3, label: "40–55%", sub: "Economics appear workable, though meaningful improvement levers may exist" },
-            { score: 4, label: "55–70%", sub: "The portfolio appears to have strong economic capacity with room to invest while maintaining discipline" },
-            { score: 5, label: "Above 70%", sub: "The franchise appears to have strong structural economics relative to direct cost burden" }
+            { score: 0, label: "Below 25%", sub: "The portfolio may be operating with structurally limited margin flexibility" },
+            { score: 2, label: "25–40%", sub: "Gross margin appears relatively thin and may be sensitive to mix, pricing, or cost changes" },
+            { score: 3, label: "40–55%", sub: "Margins appear workable, though meaningful improvement levers may exist" },
+            { score: 4, label: "55–70%", sub: "The portfolio appears to have strong operating capacity with room to invest while maintaining discipline" },
+            { score: 5, label: "Above 70%", sub: "The franchise appears to have strong structural margins relative to direct cost burden" }
           ]
         },
         {
@@ -1254,9 +1254,9 @@ window.PPD_MODEL = (() => {
           options: [
             { score: 1, label: "High dependency with limited visibility or management", sub: "External cost exposure may be creating structural economic pressure" },
             { score: 2, label: "Costs managed reactively or deal-by-deal", sub: "Cost discipline exists in specific situations but is not yet systematic" },
-            { score: 3, label: "Contracts reviewed and routing considered periodically", sub: "Some economic management is present, though optimization may be inconsistent" },
+            { score: 3, label: "Contracts reviewed and routing considered periodically", sub: "Some cost management is present, though optimization may be inconsistent" },
             { score: 4, label: "Managed through routing strategy and contract structure", sub: "External cost discipline is visible and incorporated into operating decisions" },
-            { score: 5, label: "Continuously evaluated across providers, rails, and economics", sub: "External cost management is treated as a strategic portfolio lever" }
+            { score: 5, label: "Continuously evaluated across providers, rails, and economics", sub: "External costs are treated as a strategic portfolio lever" }
           ]
         },
         {
@@ -1264,11 +1264,11 @@ window.PPD_MODEL = (() => {
           title: "Pricing override discipline — discounting and exception control",
           desc: "How controlled is deal-level discounting, and is override frequency measured, governed, and reviewed?",
           options: [
-            { score: 1, label: "Overrides are frequent and not consistently tracked", sub: "Pricing discipline appears fragmented and the economic impact may be difficult to assess" },
+            { score: 1, label: "Overrides are frequent and not consistently tracked", sub: "Pricing discipline appears fragmented and the operating impact may be difficult to assess" },
             { score: 2, label: "Some controls exist but are inconsistently applied", sub: "Governance exists, though override behavior may not be fully visible or enforced" },
             { score: 3, label: "Controls in place for large deals; broader portfolio varies", sub: "Top-of-book discipline exists, though consistency across the portfolio may be uneven" },
             { score: 4, label: "Override controls active with analytics and approval tiers", sub: "Discounting is measured, governed, and reviewed through a defined process" },
-            { score: 5, label: "Pricing discipline governed with documented authority and analytics", sub: "Override behavior is measurable, controlled, and incorporated into economic management routines" }
+            { score: 5, label: "Pricing discipline governed with documented authority and analytics", sub: "Override behavior is measurable, controlled, and incorporated into operating management routines" }
           ]
         },
         {
@@ -1276,9 +1276,9 @@ window.PPD_MODEL = (() => {
           title: "Economic resilience — sensitivity to rate and volume mix shifts",
           desc: "How well does the portfolio understand and manage sensitivity to rate changes, volume mix shifts, or client behavior changes?",
           options: [
-            { score: 1, label: "Highly sensitive with limited response levers", sub: "Small changes may create material economic pressure without clear mitigation options" },
+            { score: 1, label: "Highly sensitive with limited response levers", sub: "Small changes may create material operating pressure without clear mitigation options" },
             { score: 2, label: "Some sensitivity understood directionally", sub: "Exposure is recognized, though response options may be limited or informal" },
-            { score: 3, label: "Manageable exposure with some available levers", sub: "Economic resilience appears reasonable, though response playbooks may not be formalized" },
+            { score: 3, label: "Manageable exposure with some available levers", sub: "Portfolio resilience appears reasonable, though response playbooks may not be formalized" },
             { score: 4, label: "Resilient with multiple levers understood", sub: "Pricing, mix, cost, and portfolio actions can be coordinated when conditions change" },
             { score: 5, label: "Resilience actively managed through documented playbooks", sub: "Sensitivity is monitored and response actions are owned, tested, and incorporated into management discipline" }
           ]
@@ -1291,7 +1291,7 @@ window.PPD_MODEL = (() => {
       id: "multi_rail",
       name: "Multi-Rail Strategy & Future Readiness",
       weight: 0.15,
-      subtitle: "How prepared the franchise is to adapt economically as payment infrastructure evolves",
+      subtitle: "How prepared the franchise is to adapt as payment rails, data standards, and infrastructure evolve",
       questions: [
         {
           id: "MR1",
@@ -1385,7 +1385,7 @@ window.PPD_MODEL = (() => {
       id: "balance_liquidity",
       name: "Balance Sheet & Liquidity Contribution",
       weight: 0.20,
-      subtitle: "How intentionally payment activity contributes to broader treasury, liquidity, and relationship economics",
+      subtitle: "How intentionally payment activity contributes to treasury, liquidity, and broader relationship value",
       questions: [
         {
           id: "BL1",
@@ -1394,7 +1394,7 @@ window.PPD_MODEL = (() => {
           options: [
             { score: 1, label: "Limited linkage between payments and balances", sub: "Payment activity appears largely transactional with minimal treasury integration" },
             { score: 2, label: "Some balance linkage exists for selected relationships", sub: "Treasury value is recognized in parts of the portfolio, though consistency may vary" },
-            { score: 3, label: "Core payment relationships generally support balances", sub: "Operating balances contribute to relationship economics across major client segments" },
+            { score: 3, label: "Core payment relationships generally support balances", sub: "Operating balances contribute to relationship value across major client segments" },
             { score: 4, label: "Balance linkage incorporated into relationship management", sub: "Payments and treasury economics are evaluated together across major commercial relationships" },
             { score: 5, label: "Operating balances strategically integrated into franchise economics", sub: "Payment activity, treasury value, and relationship economics are consistently managed together across the portfolio" }
           ]
@@ -1406,9 +1406,9 @@ window.PPD_MODEL = (() => {
           options: [
             { score: 1, label: "Relationship economics evaluated primarily on fee activity", sub: "Broader treasury or liquidity contribution may not be consistently incorporated into economic evaluation" },
             { score: 2, label: "Balance contribution considered selectively", sub: "Some treasury value awareness exists, though application may vary across teams or segments" },
-            { score: 3, label: "Balance-adjusted economics incorporated for major relationships", sub: "Relationship evaluation includes broader economic contribution in key areas of the portfolio" },
+            { score: 3, label: "Balance-adjusted economics incorporated for major relationships", sub: "Relationship evaluation includes broader financial contribution in key areas of the portfolio" },
             { score: 4, label: "Treasury contribution integrated into pricing and relationship review", sub: "Liquidity and balance value are incorporated into management and commercial decision-making" },
-            { score: 5, label: "Balance-adjusted economics operationalized across the franchise", sub: "Relationship economics consistently incorporate fee, liquidity, and treasury contribution across portfolio management routines" }
+            { score: 5, label: "Balance-adjusted economics operationalized across the franchise", sub: "Relationships consistently incorporate fee, liquidity, and treasury contribution across portfolio management routines" }
           ]
         },
         {
@@ -1416,10 +1416,10 @@ window.PPD_MODEL = (() => {
           title: "Treasury and payments coordination",
           desc: "How effectively are treasury, liquidity, and payments teams aligned operationally and strategically?",
           options: [
-            { score: 1, label: "Payments and treasury operate largely independently", sub: "Economic coordination across treasury and payment activity appears limited" },
+            { score: 1, label: "Payments and treasury operate largely independently", sub: "Coordination across treasury and payment activity appears limited" },
             { score: 2, label: "Coordination occurs selectively or relationship-by-relationship", sub: "Some alignment exists, though integration may depend on specific clients or initiatives" },
             { score: 3, label: "Core treasury and payments coordination established", sub: "Major relationships and strategic decisions include cross-functional alignment" },
-            { score: 4, label: "Treasury coordination integrated into operating routines", sub: "Liquidity, payments, and relationship economics are regularly reviewed together" },
+            { score: 4, label: "Treasury coordination integrated into operating routines", sub: "Liquidity, payments, and relationship value are regularly reviewed together" },
             { score: 5, label: "Treasury and payments strategy integrated across the franchise", sub: "The organization demonstrates coordinated management of payments, liquidity, and broader relationship economics" }
           ]
         },
@@ -1440,11 +1440,11 @@ window.PPD_MODEL = (() => {
           title: "Liquidity economics awareness in portfolio decisions",
           desc: "How consistently are funding, liquidity, or balance sheet considerations incorporated into strategic portfolio decisions?",
           options: [
-            { score: 1, label: "Liquidity economics rarely incorporated into payment decisions", sub: "Portfolio decisions may focus primarily on transaction activity or fee generation" },
+            { score: 1, label: "Liquidity economics rarely incorporated into payment decisions", sub: "Portfolio decisions may focus primarily on transaction activity or fee volume" },
             { score: 2, label: "Some awareness exists but application is inconsistent", sub: "Liquidity considerations are recognized, though operational integration may be limited" },
             { score: 3, label: "Liquidity considerations incorporated for major decisions", sub: "Treasury and funding impact are evaluated in key pricing or relationship discussions" },
             { score: 4, label: "Liquidity economics integrated into portfolio evaluation", sub: "Balance sheet considerations are incorporated into strategic and operating decisions" },
-            { score: 5, label: "Liquidity contribution operationalized across franchise management", sub: "Funding value, treasury impact, and relationship economics are consistently integrated into portfolio steering routines" }
+            { score: 5, label: "Liquidity contribution operationalized across franchise management", sub: "Funding value, treasury impact, and relationship value are consistently integrated into portfolio steering routines" }
           ]
         },
         {
@@ -1479,7 +1479,7 @@ window.PPD_MODEL = (() => {
       id: "governance",
       name: "Governance & Operating Model",
       weight: 0.15,
-      subtitle: "How consistently the franchise governs, prioritizes, and steers portfolio economics",
+      subtitle: "How consistently the franchise governs, prioritizes, and steers portfolio performance",
       questions: [
         {
           id: "GO1",
@@ -1495,14 +1495,14 @@ window.PPD_MODEL = (() => {
         },
         {
           id: "GO2",
-          title: "Economic KPI integration into management routines",
+          title: "KPI integration into portfolio management routines",
           desc: "How consistently are economic metrics incorporated into operating reviews and strategic decision-making?",
           options: [
-            { score: 1, label: "Metrics tracked inconsistently or operationally only", sub: "Economic visibility may exist in pockets but is not consistently incorporated into management cadence" },
-            { score: 2, label: "Some KPIs reviewed periodically", sub: "Basic economic reporting exists, though integration into decision-making may be uneven" },
-            { score: 3, label: "Core KPIs reviewed across major portfolio areas", sub: "Management routines include economic review, though consistency may vary across functions" },
+            { score: 1, label: "Metrics tracked inconsistently or operationally only", sub: "Reporting visibility may exist in pockets but is not consistently incorporated into management cadence" },
+            { score: 2, label: "Some KPIs reviewed periodically", sub: "Basic reporting exists, though integration into decision-making may be uneven" },
+            { score: 3, label: "Core KPIs reviewed across major portfolio areas", sub: "Management routines include portfolio review, though consistency may vary across functions" },
             { score: 4, label: "Economic KPIs integrated into governance and prioritization", sub: "Metrics are consistently used in pricing, investment, and operating review discussions" },
-            { score: 5, label: "Portfolio economics embedded into executive steering", sub: "Economic performance, prioritization, and portfolio tradeoffs are operationalized across management routines" }
+            { score: 5, label: "Portfolio economics embedded into executive steering", sub: "Portfolio performance, prioritization, and tradeoffs are operationalized across management routines" }
           ]
         },
         {
@@ -1510,11 +1510,11 @@ window.PPD_MODEL = (() => {
           title: "Cross-functional integration — product, finance, operations, treasury",
           desc: "How effectively are economic decisions coordinated across major functional stakeholders?",
           options: [
-            { score: 1, label: "Functions operate largely independently", sub: "Economic management appears siloed across operational and commercial groups" },
+            { score: 1, label: "Functions operate largely independently", sub: "Portfolio management appears siloed across operational and commercial groups" },
             { score: 2, label: "Coordination occurs selectively or reactively", sub: "Cross-functional engagement exists but may depend on specific initiatives or escalations" },
-            { score: 3, label: "Core coordination exists for major decisions", sub: "Key stakeholders participate in economic management, though integration depth may vary" },
-            { score: 4, label: "Cross-functional operating cadence established", sub: "Economic decisions are routinely coordinated across product, finance, operations, and treasury" },
-            { score: 5, label: "Integrated operating model with shared economic priorities", sub: "Portfolio economics are consistently managed through coordinated enterprise decision-making" }
+            { score: 3, label: "Core coordination exists for major decisions", sub: "Key stakeholders participate in portfolio management, though integration depth may vary" },
+            { score: 4, label: "Cross-functional operating cadence established", sub: "Decisions are routinely coordinated across product, finance, operations, and treasury" },
+            { score: 5, label: "Integrated operating model with shared economic priorities", sub: "Portfolio management is consistently coordinated through enterprise decision-making" }
           ]
         },
         {
@@ -1534,11 +1534,11 @@ window.PPD_MODEL = (() => {
           title: "Portfolio prioritization discipline",
           desc: "How consistently does management prioritize investments, remediation, and strategic focus areas using economic and operational criteria?",
           options: [
-            { score: 1, label: "Prioritization largely reactive or relationship-driven", sub: "Resource allocation may lack consistent economic or strategic evaluation" },
+            { score: 1, label: "Prioritization largely reactive or relationship-driven", sub: "Resource allocation may lack consistent strategic or operational evaluation" },
             { score: 2, label: "Some prioritization frameworks exist", sub: "Decision criteria are partially defined, though application may vary across teams" },
             { score: 3, label: "Major initiatives evaluated against defined criteria", sub: "Core governance exists, though portfolio-wide prioritization may not yet be fully integrated" },
-            { score: 4, label: "Economic and operational prioritization operationalized", sub: "Management decisions consistently incorporate economic impact and strategic alignment" },
-            { score: 5, label: "Enterprise prioritization tied to portfolio economics and strategy", sub: "The franchise demonstrates disciplined allocation of investment, remediation, and strategic focus across the portfolio" }
+            { score: 4, label: "Economic and operational prioritization operationalized", sub: "Management decisions consistently incorporate strategic impact and operational alignment" },
+            { score: 5, label: "Enterprise prioritization tied to portfolio economics and strategy", sub: "The franchise demonstrates disciplined allocation of investment, attention, and strategic focus across the portfolio" }
           ]
         },
         {
@@ -1546,11 +1546,11 @@ window.PPD_MODEL = (() => {
           title: "Management visibility into portfolio economics",
           desc: "How consistently can leadership evaluate economic performance across rails, segments, products, and operating structures?",
           options: [
-            { score: 1, label: "Visibility fragmented across systems or teams", sub: "Management may lack a consistent enterprise view of portfolio economics" },
-            { score: 2, label: "Some reporting exists but integration is limited", sub: "Economic visibility is available in specific areas, though enterprise coordination may be incomplete" },
+            { score: 1, label: "Visibility fragmented across systems or teams", sub: "Management may lack a consistent enterprise view of portfolio performance" },
+            { score: 2, label: "Some reporting exists but integration is limited", sub: "Reporting is available in specific areas, though enterprise coordination may be incomplete" },
             { score: 3, label: "Core portfolio visibility established", sub: "Leadership can evaluate major areas of the portfolio, though consistency may vary" },
-            { score: 4, label: "Integrated reporting supports strategic review", sub: "Economic visibility is incorporated into governance and operating discussions" },
-            { score: 5, label: "Portfolio economics consistently operationalized at management level", sub: "Leadership can evaluate and steer economic behavior across the franchise through integrated visibility and governance routines" }
+            { score: 4, label: "Integrated reporting supports strategic review", sub: "Portfolio visibility is incorporated into governance and operating discussions" },
+            { score: 5, label: "Portfolio economics consistently operationalized at management level", sub: "Leadership can evaluate and steer portfolio behavior across the franchise through integrated visibility and governance routines" }
           ]
         },
         {
@@ -1561,7 +1561,7 @@ window.PPD_MODEL = (() => {
             { score: 1, label: "Governance structure struggles to adapt to change", sub: "New products, rails, or operating demands may create coordination and prioritization pressure" },
             { score: 2, label: "Adaptation occurs but tends to be reactive", sub: "Governance can respond to change, though integration and execution may lag evolving complexity" },
             { score: 3, label: "Governance evolves periodically with business needs", sub: "The operating model demonstrates baseline adaptability across major initiatives" },
-            { score: 4, label: "Governance model designed to support evolving portfolio complexity", sub: "Management structures are capable of integrating new rails, products, and economic considerations" },
+            { score: 4, label: "Governance model designed to support evolving portfolio complexity", sub: "Management structures are capable of integrating new rails, products, and operating considerations" },
             { score: 5, label: "Adaptive governance integrated into strategic portfolio management", sub: "The franchise demonstrates scalable governance discipline as payment infrastructure and operating complexity evolve" }
           ]
         }
