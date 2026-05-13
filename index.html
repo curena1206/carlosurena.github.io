@@ -3,454 +3,79 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Carlos Ureña | Payments Strategy, Product Economics & Commercialization</title>
+  <title>Carlos Ureña | Payments Strategy, Product Economics &amp; Commercialization</title>
   <meta name="description" content="Carlos Ureña helps payment organizations identify where reported growth, monetization behavior, and underlying portfolio economics may be diverging beneath revenue reporting." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://carlosurena.com/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Carlos Ureña | Payments Strategy, Product Economics & Commercialization" />
+  <meta property="og:title" content="Carlos Ureña | Payments Strategy, Product Economics &amp; Commercialization" />
   <meta property="og:description" content="Payment portfolio economics are often less visible than revenue. This work identifies where growth, monetization, and economic behavior diverge across commercial payment flows." />
   <meta property="og:url" content="https://carlosurena.com/" />
-
   <style>
-    :root {
-      --navy:   #0f1f3d;
-      --gold:   #b7882c;
-      --ink:    #1a2332;
-      --slate:  #4a5568;
-      --muted:  #6b7280;
-      --border: #e2e8f0;
-      --bg:     #ffffff;
-      --soft:   #f7f9fc;
-      color-scheme: light;
-    }
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Georgia, serif;
-      font-size: 17px;
-      line-height: 1.6;
-      color: var(--ink);
-      background: var(--bg);
-    }
-
-    /* GLOBAL BODY TEXT */
-    p, li, .os-insight, .economics-item, .proof-coda,
-    .os-step-title, .os-step-link, .os-footer,
-    .hero-lead, .hero-hook, .hero-hook-bridge, .hero-exp,
-    .focus-grid li, .proof-bullets li, .think-bullets li {
-      font-size: 17px !important;
-      font-family: Georgia, serif;
-    }
-
-    /* NAV */
-    .site-nav {
-      background: var(--navy);
-      border-bottom: 3px solid var(--gold);
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 48px;
-    }
-    .site-nav-name {
-      font-family: Georgia, serif;
-      font-size: 14px;
-      font-weight: normal;
-      color: #fff;
-      letter-spacing: 0.01em;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    .site-nav-links { display: flex; gap: 24px; }
-    .site-nav-links a {
-      font-size: 13px;
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      transition: color 0.15s;
-    }
-    .site-nav-links a:hover, .site-nav-links a.active { color: var(--gold); }
-
-    /* LAYOUT */
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 56px 28px 72px; }
-
-    /* SECTION BLOCKS */
-    .section-block { margin-bottom: 52px; }
-    .section-label {
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* TYPOGRAPHY */
-    h1 {
-      font-family: Georgia, serif;
-      font-size: 38px;
-      font-weight: normal;
-      color: var(--navy);
-      margin: 0 0 6px;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-    }
-    h2 {
-      font-family: Georgia, serif;
-      font-size: 22px;
-      font-weight: normal;
-      color: var(--navy);
-      margin: 0 0 14px;
-    }
-    p { margin: 0 0 12px; color: var(--slate); }
-    p:last-child { margin-bottom: 0; }
-
-    /* HERO */
-    .hero {
-      padding-bottom: 44px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 48px;
-    }
-    .hero-eyebrow {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 14px;
-    }
-
-    .hero-anchor {
-      font-family: Georgia, serif;
-      font-size: 32px !important;
-      font-weight: normal;
-      color: var(--navy);
-      font-style: normal;
-      line-height: 1.2;
-      margin: 0 0 28px;
-    }
-
-    .hero-subtitle {
-      font-family: Georgia, serif;
-      font-size: 17px;
-      color: var(--muted);
-      font-style: normal;
-      margin: 0 0 20px;
-      letter-spacing: 0.01em;
-    }
-    .hero-lead {
-      color: var(--slate);
-      line-height: 1.65;
-      margin: 0 0 14px;
-    }
-    .hero-exp {
-      color: var(--slate);
-      line-height: 1.65;
-      margin: 0 0 14px;
-    }
-    .hero-coda {
-      color: var(--navy);
-      font-weight: 600;
-      font-size: 17px !important;
-      font-family: Georgia, serif !important;
-      line-height: 1.6;
-      margin: 0 0 24px;
-    }
-    .links { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 0; }
-    .links a {
-      font-size: 13.5px;
-      color: var(--navy);
-      text-decoration: none;
-      border-bottom: 1px solid var(--gold);
-      padding-bottom: 1px;
-      transition: color 0.15s;
-    }
-    .links a:hover { color: var(--gold); }
-
-    /* FOCUS BULLETS */
-    .focus-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 32px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .focus-grid li {
-      font-size: 14px;
-      color: var(--slate);
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .focus-grid li:last-child,
-    .focus-grid li:nth-last-child(2):nth-child(odd) { border-bottom: none; }
-    .focus-grid li::before {
-      content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* OS DIAGRAM */
-    .os-intro { margin-bottom: 20px; }
-    .os-insight {
-      background: var(--soft);
-      border-left: 3px solid var(--gold);
-      padding: 12px 16px;
-      margin: 16px 0 24px;
-      font-size: 15px;
-      color: var(--slate);
-      line-height: 1.65;
-    }
-    .os-diagram {
-      display: flex;
-      flex-direction: column;
-      max-width: 520px;
-    }
-    .os-step {
-      display: flex;
-      align-items: stretch;
-      gap: 16px;
-    }
-    .os-step-left {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 32px;
-      flex-shrink: 0;
-    }
-    .os-step-num {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      background: var(--navy);
-      color: var(--gold);
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .os-step-line {
-      width: 2px;
-      flex: 1;
-      background: var(--border);
-      margin: 4px 0;
-    }
-    .os-step-content {
-      flex: 1;
-      border: 1px solid var(--border);
-      background: var(--soft);
-      padding: 10px 14px;
-      border-radius: 4px;
-      margin-bottom: 4px;
-    }
-    .os-step-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--navy);
-    }
-    .os-step-link {
-      font-size: 12px;
-      margin-top: 3px;
-    }
-    .os-step-link a {
-      color: var(--gold);
-      text-decoration: none;
-    }
-    .os-step-link a:hover { text-decoration: underline; }
-    .os-footer {
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    .os-footer a {
-      color: var(--gold);
-      text-decoration: none;
-    }
-    .os-footer a:hover { text-decoration: underline; }
-
-    /* ECONOMICS SECTION */
-    .economics-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 16px;
-    }
-    .economics-item {
-      background: var(--soft);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--gold);
-      padding: 12px 14px;
-      font-size: 14px;
-      color: var(--slate);
-      line-height: 1.5;
-    }
-
-    /* OPERATOR PROOF */
-    .proof-bullets {
-      list-style: none;
-      margin: 12px 0 0;
-      padding: 0;
-    }
-    .proof-bullets li {
-      font-size: 14px;
-      color: var(--slate);
-      padding: 7px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .proof-bullets li:last-child { border-bottom: none; }
-    .proof-bullets li::before {
-      content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-    .proof-coda {
-      margin-top: 16px;
-      padding: 14px 16px;
-      background: var(--soft);
-      border-left: 3px solid var(--gold);
-      font-size: 15px;
-      color: var(--slate);
-      line-height: 1.7;
-    }
-
-    /* HOW I THINK */
-    .think-bullets {
-      list-style: none;
-      margin: 12px 0 12px;
-      padding: 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 32px;
-    }
-    .think-bullets li {
-      font-size: 14px;
-      color: var(--slate);
-      padding: 7px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .think-bullets li:last-child,
-    .think-bullets li:nth-last-child(2):nth-child(odd) { border-bottom: none; }
-    .think-bullets li::before {
-      content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* CAREER */
-    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    .card {
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 16px 18px;
-      background: #fff;
-    }
-    .role { font-weight: 600; font-size: 14px; color: var(--navy); }
-    .meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
-    .card-hover {
-      position: relative;
-      cursor: default;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .card-hover:hover {
-      border-color: var(--gold);
-      box-shadow: 0 4px 16px rgba(15,31,61,0.10);
-    }
-    .card-tooltip {
-      display: none;
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 0;
-      width: 320px;
-      background: var(--navy);
-      border: 1px solid rgba(183,136,44,0.4);
-      border-radius: 6px;
-      padding: 14px 16px;
-      z-index: 50;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-    }
-    .card-hover:hover .card-tooltip { display: block; }
-    .card-hover:nth-child(even) .card-tooltip { left: auto; right: 0; }
-    .tooltip-list { margin: 0; padding: 0; list-style: none; }
-    .tooltip-list li {
-      font-size: 12.5px;
-      color: rgba(255,255,255,0.85);
-      line-height: 1.55;
-      padding: 5px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      display: block;
-    }
-    .tooltip-list li::before { display: none; }
-    .tooltip-list li:last-child { border-bottom: none; padding-bottom: 0; }
-
-    /* FOOTER */
-    footer { margin-top: 0; }
-
-    /* RESPONSIVE */
-    @media (min-width: 640px) {
-      .grid { grid-template-columns: 1fr 1fr; }
-      h1 { font-size: 44px; }
-    }
-    @media (max-width: 639px) {
-      .card-tooltip {
-        width: 100%;
-        position: static;
-        display: block;
-        margin-top: 12px;
-        background: var(--soft);
-        border-color: var(--border);
-      }
-      .tooltip-list li { color: var(--slate); }
-      .focus-grid { grid-template-columns: 1fr; }
-      .focus-grid li:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--border); }
-      .focus-grid li:last-child { border-bottom: none; }
-      .economics-grid { grid-template-columns: 1fr; }
-      .think-bullets { grid-template-columns: 1fr; }
-      .think-bullets li:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--border); }
-      .think-bullets li:last-child { border-bottom: none; }
-    }
+    :root { --navy:#0f1f3d;--gold:#b7882c;--ink:#1a2332;--slate:#4a5568;--muted:#6b7280;--border:#e2e8f0;--bg:#ffffff;--soft:#f7f9fc;color-scheme:light; }
+    *,*::before,*::after{box-sizing:border-box;}
+    body{margin:0;font-family:Georgia,serif;font-size:17px;line-height:1.6;color:var(--ink);background:var(--bg);}
+    p,li,.os-insight,.economics-item,.proof-coda,.os-step-title,.os-step-link,.os-footer,.hero-lead,.hero-hook,.hero-hook-bridge,.hero-exp,.focus-grid li,.proof-bullets li,.think-bullets li{font-size:17px!important;font-family:Georgia,serif;}
+    .site-nav{background:var(--navy);border-bottom:3px solid var(--gold);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:48px;}
+    .site-nav-name{font-family:Georgia,serif;font-size:14px;font-weight:normal;color:#fff;letter-spacing:0.01em;}
+    .site-nav-links{display:flex;gap:24px;}
+    .site-nav-links a{font-size:13px;color:rgba(255,255,255,0.75);text-decoration:none;letter-spacing:0.02em;transition:color 0.15s;}
+    .site-nav-links a:hover,.site-nav-links a.active{color:var(--gold);}
+    .wrap{max-width:1100px;margin:0 auto;padding:56px 28px 72px;}
+    .section-block{margin-bottom:52px;}
+    .section-label{font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+    .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+    h1{font-family:Georgia,serif;font-size:38px;font-weight:normal;color:var(--navy);margin:0 0 6px;letter-spacing:-0.01em;line-height:1.2;}
+    h2{font-family:Georgia,serif;font-size:22px;font-weight:normal;color:var(--navy);margin:0 0 14px;}
+    p{margin:0 0 12px;color:var(--slate);}
+    p:last-child{margin-bottom:0;}
+    .hero{padding-bottom:44px;border-bottom:1px solid var(--border);margin-bottom:48px;}
+    .hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+    .hero-anchor{font-family:Georgia,serif;font-size:32px!important;font-weight:normal;color:var(--navy);font-style:normal;line-height:1.2;margin:0 0 28px;}
+    .hero-subtitle{font-family:Georgia,serif;font-size:17px;color:var(--muted);font-style:normal;margin:0 0 20px;letter-spacing:0.01em;}
+    .hero-lead{color:var(--slate);line-height:1.65;margin:0 0 14px;}
+    .hero-exp{color:var(--slate);line-height:1.65;margin:0 0 14px;}
+    .hero-coda{color:var(--navy);font-weight:600;font-size:17px!important;font-family:Georgia,serif!important;line-height:1.6;margin:0 0 24px;}
+    .links{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:0;}
+    .links a{font-size:13.5px;color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:1px;transition:color 0.15s;}
+    .links a:hover{color:var(--gold);}
+    .focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 32px;list-style:none;margin:0;padding:0;}
+    .focus-grid li{font-size:14px;color:var(--slate);padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+    .focus-grid li:last-child,.focus-grid li:nth-last-child(2):nth-child(odd){border-bottom:none;}
+    .focus-grid li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+    .os-intro{margin-bottom:20px;}
+    .os-insight{background:var(--soft);border-left:3px solid var(--gold);padding:12px 16px;margin:16px 0 24px;font-size:15px;color:var(--slate);line-height:1.65;}
+    .economics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+    .economics-item{background:var(--soft);border:1px solid var(--border);border-left:3px solid var(--gold);padding:12px 14px;font-size:14px;color:var(--slate);line-height:1.5;}
+    .proof-bullets{list-style:none;margin:12px 0 0;padding:0;}
+    .proof-bullets li{font-size:14px;color:var(--slate);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+    .proof-bullets li:last-child{border-bottom:none;}
+    .proof-bullets li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+    .proof-coda{margin-top:16px;padding:14px 16px;background:var(--soft);border-left:3px solid var(--gold);font-size:15px;color:var(--slate);line-height:1.7;}
+    .think-bullets{list-style:none;margin:12px 0 12px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 32px;}
+    .think-bullets li{font-size:14px;color:var(--slate);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+    .think-bullets li:last-child,.think-bullets li:nth-last-child(2):nth-child(odd){border-bottom:none;}
+    .think-bullets li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;}
+    .card{border:1px solid var(--border);border-radius:6px;padding:16px 18px;background:#fff;}
+    .role{font-weight:600;font-size:14px;color:var(--navy);}
+    .meta{font-size:13px;color:var(--muted);margin-top:4px;}
+    .card-hover{position:relative;cursor:default;transition:border-color 0.2s,box-shadow 0.2s;}
+    .card-hover:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(15,31,61,0.10);}
+    .card-tooltip{display:none;position:absolute;top:calc(100% + 8px);left:0;width:320px;background:var(--navy);border:1px solid rgba(183,136,44,0.4);border-radius:6px;padding:14px 16px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.18);}
+    .card-hover:hover .card-tooltip{display:block;}
+    .card-hover:nth-child(even) .card-tooltip{left:auto;right:0;}
+    .tooltip-list{margin:0;padding:0;list-style:none;}
+    .tooltip-list li{font-size:12.5px;color:rgba(255,255,255,0.85);line-height:1.55;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.08);display:block;}
+    .tooltip-list li::before{display:none;}
+    .tooltip-list li:last-child{border-bottom:none;padding-bottom:0;}
+    footer{margin-top:0;}
+    @media(min-width:640px){.grid{grid-template-columns:1fr 1fr;}h1{font-size:44px;}}
+    @media(max-width:639px){.card-tooltip{width:100%;position:static;display:block;margin-top:12px;background:var(--soft);border-color:var(--border);}.tooltip-list li{color:var(--slate);}.focus-grid{grid-template-columns:1fr;}.focus-grid li:nth-last-child(2):nth-child(odd){border-bottom:1px solid var(--border);}.focus-grid li:last-child{border-bottom:none;}.economics-grid{grid-template-columns:1fr;}.think-bullets{grid-template-columns:1fr;}.think-bullets li:nth-last-child(2):nth-child(odd){border-bottom:1px solid var(--border);}.think-bullets li:last-child{border-bottom:none;}}
   </style>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Carlos Ureña",
-    "alternateName": "Carlos Urena",
-    "jobTitle": "Payments Portfolio & Commercialization Executive",
-    "url": "https://carlosurena.com/",
-    "sameAs": ["https://www.linkedin.com/in/carlosurena/"]
-  }
-  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Carlos Ureña","alternateName":"Carlos Urena","jobTitle":"Payments Portfolio &amp; Commercialization Executive","url":"https://carlosurena.com/","sameAs":["https://www.linkedin.com/in/carlosurena/"]}</script>
 </head>
-
 <body>
-
-  <!-- NAV -->
   <nav class="site-nav">
     <span class="site-nav-name">Carlos Ureña</span>
     <div class="site-nav-links">
@@ -461,81 +86,62 @@
       <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </nav>
-
   <main class="wrap">
-
-    <!-- 1. HERO -->
     <div class="hero">
-
-      <div class="hero-anchor">Revenue growth does not always reflect economic quality.</div>
-
-      <p class="hero-lead">Payment portfolios can appear healthy long before their economics are fully understood across pricing, monetization, liquidity, and operational structure.</p>
-
+      <div class="hero-anchor">Payment franchises rarely evolve evenly across pricing discipline, governance maturity, execution capacity, and portfolio management.</div>
+      <p class="hero-lead">Payment portfolios can appear operationally healthy long before leadership has a consistent portfolio-level view across pricing discipline, servicing structure, liquidity management, routing behavior, and governance maturity.</p>
       <p class="hero-lead">Volumes grow. Revenue grows. The portfolio looks strong.</p>
-
-      <p class="hero-lead" style="color:var(--navy);font-weight:600;">But underneath that growth, economic behavior can diverge materially across flows, segments, rails, and client structures.</p>
-
-      <p class="hero-lead">I help payment organizations identify where reported growth, monetization behavior, and portfolio economics may be diverging enough to warrant deeper strategic review.</p>
-
-      <p class="hero-exp">The objective is not false precision. It is helping management understand which parts of the portfolio are strengthening, which may be diluting, and where deeper economic review matters most.</p>
-
+      <p class="hero-lead" style="color:var(--navy);font-weight:600;">But underneath that growth, management discipline, servicing complexity, routing behavior, and portfolio visibility can evolve unevenly across flows, segments, rails, and client structures.</p>
+      <p class="hero-lead">I help payment organizations identify where operating maturity, governance consistency, and portfolio alignment may warrant deeper strategic review.</p>
+      <p class="hero-exp">The objective is not precision. It is helping management understand where operating conditions, governance discipline, and portfolio coordination may require deeper review before structural pressure becomes embedded across the organization.</p>
       <p style="font-size:13px;color:var(--muted);margin:0 0 24px;">Across Citi, Deutsche Bank, HSBC, and Mashreq.</p>
-
       <div class="links">
-        <a href="/consulting.html">Run the diagnostic ↗</a>
-        <a href="/pfi.html">PFI ↗</a>
-        <a href="https://models.carlosurena.com">Models ↗</a>
+        <a href="/consulting.html">Run the diagnostic &uarr;</a>
+        <a href="/pfi.html">PFI &uarr;</a>
+        <a href="https://models.carlosurena.com">Models &uarr;</a>
       </div>
-
       <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);">
-        <p class="os-insight">This is the diagnostic approach used to surface those economic signals more directly.</p>
+        <p class="os-insight">This is the operating framework used to help surface those portfolio patterns more clearly.</p>
         <p style="font-family:Georgia,serif;font-size:11px;font-weight:bold;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;">How the diagnostic works</p>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);">
           <div style="background:#fff;padding:20px 24px;">
             <p style="font-family:Georgia,serif;font-size:13px;font-weight:bold;color:var(--navy);margin-bottom:6px;">Diagnostic</p>
-            <p style="font-family:Georgia,serif;font-size:13px;color:var(--slate);line-height:1.6;margin:0;">Surfaces where monetization behavior and portfolio economics appear materially uneven beneath reported growth.</p>
+            <p style="font-family:Georgia,serif;font-size:13px;color:var(--slate);line-height:1.6;margin:0;">Surfaces where operating maturity, governance consistency, and portfolio alignment may not be evolving consistently across the franchise.</p>
           </div>
           <div style="background:#fff;padding:20px 24px;">
             <p style="font-family:Georgia,serif;font-size:13px;font-weight:bold;color:var(--navy);margin-bottom:6px;">Payments Franchise Index</p>
-            <p style="font-family:Georgia,serif;font-size:13px;color:var(--slate);line-height:1.6;margin:0;">Evaluates how structurally prepared the franchise is to convert payment activity into economically durable performance at scale.</p>
+            <p style="font-family:Georgia,serif;font-size:13px;color:var(--slate);line-height:1.6;margin:0;">Evaluates how effectively the franchise aligns pricing discipline, governance maturity, execution capacity, and portfolio management at scale.</p>
           </div>
           <div style="background:#fff;padding:20px 24px;">
             <p style="font-family:Georgia,serif;font-size:13px;font-weight:bold;color:var(--navy);margin-bottom:6px;">Models</p>
-            <p style="font-family:Georgia,serif;font-size:13px;color:var(--slate);line-height:1.6;margin:0;">Explains the economic drivers behind pricing, rail usage, liquidity, operational drag, and flow behavior.</p>
+            <p style="font-family:Georgia,serif;font-size:13px;color:var(--slate);line-height:1.6;margin:0;">Helps explain the underlying drivers behind pricing structure, routing behavior, liquidity management, servicing complexity, and flow characteristics.</p>
           </div>
         </div>
-        <p style="font-family:Georgia,serif;font-size:15px;color:var(--navy);margin-top:20px;line-height:1.6;border-left:3px solid var(--gold);padding-left:16px;"><strong>Revenue is visible. Economic behavior becomes clearer. Strategic priorities become easier to identify.</strong> The Diagnostic surfaces signals. The Index evaluates structure. The Models explain drivers. The output helps prioritize where deeper economic review may have the greatest strategic relevance.</p>
-
+        <p style="font-family:Georgia,serif;font-size:15px;color:var(--navy);margin-top:20px;line-height:1.6;border-left:3px solid var(--gold);padding-left:16px;"><strong>Operating maturity becomes easier to evaluate. Areas of portfolio misalignment become easier to identify before they compound.</strong> The Diagnostic surfaces patterns. The Index evaluates franchise maturity. The Models help explain the underlying drivers. This helps clarify where management attention may be required.</p>
+      </div>
       <div style="margin-top:36px;padding-top:28px;border-top:1px solid var(--border);">
         <p style="font-family:Georgia,serif;font-size:11px;font-weight:bold;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;">Operator Perspective</p>
         <p style="font-family:Georgia,serif;font-size:16px;color:var(--slate);line-height:1.75;margin-bottom:14px;">This work is informed by two decades operating inside treasury, commercial banking, and correspondent payment businesses across Citi, Deutsche Bank, HSBC, and Mashreq.</p>
-        <p style="font-family:Georgia,serif;font-size:16px;color:var(--slate);line-height:1.75;margin-bottom:0;">The perspective comes from environments where pricing, liquidity, operational scale, client economics, and monetization behavior interact directly across the payment franchise.</p>
+        <p style="font-family:Georgia,serif;font-size:16px;color:var(--slate);line-height:1.75;margin-bottom:0;">The perspective comes from environments where pricing discipline, liquidity management, servicing complexity, governance coordination, and client economics interact directly across the payment franchise.</p>
       </div>
-
       <div style="margin-top:32px;background:var(--soft);border-left:3px solid var(--gold);padding:18px 20px;">
-        <p style="font-family:Georgia,serif;font-size:16px;color:var(--navy);line-height:1.75;margin:0;">Economic dilution rarely appears as a single event. It compounds gradually beneath otherwise healthy growth and operating performance.</p>
-        <p style="font-family:Georgia,serif;font-size:16px;color:var(--slate);line-height:1.75;margin-top:14px;margin-bottom:0;">By the time deterioration becomes visible in aggregate reporting, the underlying economic deterioration is often already structurally embedded across the portfolio.</p>
+        <p style="font-family:Georgia,serif;font-size:16px;color:var(--navy);line-height:1.75;margin:0;">Structural pressure rarely appears all at once. It builds gradually beneath otherwise healthy growth, operational performance, and portfolio expansion.</p>
+        <p style="font-family:Georgia,serif;font-size:16px;color:var(--slate);line-height:1.75;margin-top:14px;margin-bottom:0;">By the time pressure becomes fully visible in aggregate reporting, the underlying operating fragmentation is often already embedded across the franchise.</p>
       </div>
-
       <div style="margin-top:24px;display:flex;gap:16px;">
         <a href="mailto:carlos@carlosurena.com" style="font-family:Georgia,serif;font-size:13.5px;color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:1px;">Email</a>
-        <a href="https://www.linkedin.com/in/carlosurena/" rel="me noopener" target="_blank" style="font-family:Georgia,serif;font-size:13.5px;color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:1px;">LinkedIn ↗</a>
+        <a href="https://www.linkedin.com/in/carlosurena/" rel="me noopener" target="_blank" style="font-family:Georgia,serif;font-size:13.5px;color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:1px;">LinkedIn &uarr;</a>
       </div>
     </div>
-
-    <!-- 2. WHAT I FOCUS ON -->
-
   </main>
-
   <footer style="border-top:3px solid var(--gold);background:var(--navy);padding:0 24px;height:48px;display:flex;align-items:center;justify-content:space-between;">
-    <span style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.7);">Making payments portfolio economics visible</span>
+    <span style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.7);">Built from real operating conditions inside payments franchises</span>
     <span style="font-size:13px;color:rgba(255,255,255,0.5);">
       <a href="https://www.linkedin.com/in/carlosurena/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">LinkedIn</a>
-      &nbsp;·&nbsp;
+      &nbsp;&middot;&nbsp;
       <a href="mailto:carlos@carlosurena.com" style="color:var(--gold);text-decoration:none;">Email</a>
-      &nbsp;·&nbsp; © 2026
+      &nbsp;&middot;&nbsp; &copy; 2026
     </span>
   </footer>
-
 </body>
 </html>
