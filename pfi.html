@@ -1137,7 +1137,7 @@ window.PPD_MODEL = (() => {
             { score: 1, label: "Minimal workflow integration", sub: "Client relationships may remain transactional and vulnerable to pricing or service competition" },
             { score: 2, label: "Limited integration for selected clients or products", sub: "Some embed depth exists, though adoption and operational reliance remain uneven" },
             { score: 3, label: "Workflow integration established across core segments", sub: "Payments are operationally embedded for major client groups, though depth may vary" },
-            { score: 4, label: "Embedded workflows support retention and expansion", sub: "Client integration contributes to relationship durability and commercial expansion opportunities" },
+            { score: 4, label: "Embedded workflows support retention and expansion", sub: "Client integration contributes to relationship durability and portfolio expansion opportunities" },
             { score: 5, label: "Workflow integration strategically incorporated into portfolio management", sub: "Embedded payment capabilities are consistently aligned with client operating models and long-term relationship strategy" }
           ]
         },
@@ -1180,13 +1180,13 @@ window.PPD_MODEL = (() => {
         {
           id: "GE7",
           title: "Growth quality versus operational strain",
-          desc: "How well does the franchise balance commercial expansion with operational scalability and economic discipline?",
+          desc: "How well does the franchise balance portfolio expansion with operational scalability and economic discipline?",
           options: [
             { score: 1, label: "Growth appears to create material operational or economic strain", sub: "Commercial expansion may be outpacing onboarding, servicing, or economic management capabilities" },
             { score: 2, label: "Growth manageable but operational pressure visible", sub: "The organization can support expansion, though execution consistency may be uneven" },
             { score: 3, label: "Growth generally aligned with operating capacity", sub: "Expansion appears supportable under current management and infrastructure conditions" },
             { score: 4, label: "Growth supported through defined operational coordination", sub: "Commercial expansion, servicing, and economic management appear reasonably integrated" },
-            { score: 5, label: "Growth strategy integrated with portfolio economics and operating scalability", sub: "The franchise demonstrates disciplined alignment between commercial expansion, operational capacity, and economic management" }
+            { score: 5, label: "Growth strategy integrated with portfolio economics and operating scalability", sub: "The franchise demonstrates disciplined alignment between portfolio expansion, operational capacity, and economic management" }
           ]
         }
       ]
@@ -1576,7 +1576,7 @@ window.PPD_MODEL = (() => {
     R3:  { title: "Redesign packaging model — structured bundle and add-on value tiers", owner: "Product", metric: "ARPA, attach rate, margin contribution per tier", why: "Creates clear levers to capture value and reduces structural bundle leakage." },
     R4:  { title: "Build and implement balance-adjusted pricing model", owner: "Product + Treasury + Finance", metric: "ROE contribution, balance-weighted profitability by client", why: "Aligns payments pricing with total franchise value — not just fee revenue." },
     R5:  { title: "Develop corridor-based FX strategy with spread management discipline", owner: "Product + Trading/FX + Sales", metric: "FX capture rate, spread leakage by corridor, corridor-level P&L", why: "Converts cross-border flows into a deliberately managed revenue lever." },
-    R6:  { title: "Launch Exception Reduction Program with repair KPI ownership and cadence", owner: "Ops + Product + Tech", metric: "Repair rate, STP %, cost per repair, trend vs. target", why: "Repairs are often the largest untracked driver of margin compression in commercial payments." },
+    R6:  { title: "Launch Exception Reduction Program with repair KPI ownership and regular review", owner: "Ops + Product + Tech", metric: "Repair rate, STP %, cost per repair, trend vs. target", why: "Repairs are often the largest untracked driver of margin compression in commercial payments." },
     R7:  { title: "Deploy pre-validation targeting top payment failure modes by rail", owner: "Product + Tech + Ops", metric: "Failure reason frequency, repair reduction rate", why: "Reduces exception volume at the source — improving both margin and client experience." },
     R8:  { title: "Build unit cost model by rail and segment — and use it in pricing governance", owner: "Finance + Product", metric: "Unit cost by rail, segment price floors, contribution margin", why: "Provides the cost anchor needed for disciplined pricing and roadmap tradeoff decisions." },
     R9:  { title: "Optimize correspondent and network costs through routing strategy and contract structure", owner: "Network Management + Product + Finance", metric: "Cost per payment by rail, correspondent and network fee trends", why: "Improves gross margin through structural external cost levers that are often overlooked." },
@@ -2051,25 +2051,25 @@ const PFI_SCENARIOS = [
         range: [0, 25],
         label: "FOUNDATIONAL GAPS",
         scenario_name: "Day 1 \u2014 Inherited Underperforming Franchise",
-        benchmark_insight: "The franchise shows signs of fragmentation across governance, pricing discipline, and management visibility. Stabilization efforts typically focus on operating structure before commercial initiatives gain traction.",
+        benchmark_insight: "The franchise shows uneven maturity across governance, pricing discipline, and management visibility. Early efforts often focus on strengthening operating discipline before broader commercial initiatives gain traction.",
         pillar_commentary: {
-          revenue_arch: "Pricing discipline and management visibility appear largely absent across major payment flows.",
+          revenue_arch: "Pricing discipline and management visibility appear limited across major payment flows.",
           growth_engine: "Growth appears relationship-driven with limited workflow integration and limited repeatable growth capability.",
-          margin_cost: "Operational costs appear elevated and management visibility appears limited across major payment structures.",
-          multi_rail: "Rail strategy appears underdeveloped. Routing is static and data quality may be contributing to exception pressure.",
-          balance_liquidity: "Treasury integration appears absent. Balance contribution and rate-cycle sensitivity appear unquantified.",
-          governance: "Governance discipline appears fragmented across pricing, management cadence, and portfolio oversight."
+          margin_cost: "Operational costs may be elevated while management visibility across major payment structures appears limited.",
+          multi_rail: "Rail strategy appears underdeveloped. Routing remains relatively static and data quality may be contributing to exception pressure.",
+          balance_liquidity: "Treasury integration appears limited. Balance contribution and rate-cycle sensitivity may not yet be consistently visible.",
+          governance: "Governance discipline appears uneven across pricing, management routines, and portfolio oversight."
         },
-        exec_diagnosis: "The portfolio appears structurally fragmented across governance, pricing discipline, management visibility, and portfolio management. The immediate management priority is stabilization: establish ownership, reporting cadence, and pricing discipline before pursuing broader commercial expansion.",
+        exec_diagnosis: "The portfolio appears unevenly developed across governance, pricing discipline, management visibility, and portfolio management. Initial priorities may include strengthening ownership, reporting discipline, and pricing controls before pursuing broader portfolio expansion.",
         structural_issues: [
-          "Exception and repair activity appears elevated enough to warrant direct management attention and named ownership.",
-          "Portfolio management cadence appears underdeveloped, limiting management's ability to identify and act on recurring performance patterns.",
-          "Pricing governance appears fragmented, which may allow inconsistent deal-level decisions to accumulate across the portfolio."
+          "Exception and repair activity may warrant additional management visibility and named ownership.",
+          "Portfolio management routines may benefit from greater structure and recurring review.",
+          "Pricing governance appears inconsistently applied, which may allow deal-level decisions to accumulate unevenly across the franchise."
         ],
         key_issues: [
-          "Exception and repair volume may be creating meaningful operational and portfolio pressure",
-          "Pricing governance appears fragmented \u2014 override behavior without consistent review",
-          "Portfolio management rhythm appears absent \u2014 metrics undefined or inconsistently reviewed"
+          "Exception and repair volume may be creating measurable operational pressure across the franchise.",
+          "Pricing governance appears inconsistent \u2014 override behavior lacks structured review.",
+          "Portfolio management rhythm appears limited \u2014 metrics may not be consistently defined or reviewed."
         ],
         immediate_focus: "Establishing pricing governance and operational discipline before pursuing portfolio expansion may reduce the risk that growth compounds underlying pricing inconsistencies rather than strengthening the franchise.",
         priorities: [
@@ -2077,13 +2077,13 @@ const PFI_SCENARIOS = [
             title: "Launch Exception Reduction Program",
             owner: "Ops + Product + Tech",
             kpi: "Repair rate, STP %, cost per repair, trend vs. target",
-            why: "Exception volume is often among the more visible sources of operational pressure. Named ownership and cadenced review creates accountability that routine operations may not sustain."
+            why: "Exception volume is often among the more visible sources of operational pressure. Named ownership and regular review creates accountability that routine operations may not sustain."
           },
           {
             title: "Implement Monthly Portfolio Performance Review",
             owner: "Portfolio Owner",
             kpi: "Portfolio KPIs trending, actions opened and closed per cycle",
-            why: "Establishes the recurring management cadence needed for sustained improvement and management visibility."
+            why: "Establishes a recurring management rhythm needed for sustained improvement and management visibility."
           },
           {
             title: "Establish Pricing Council with Documented Authority Tiers",
@@ -2109,7 +2109,7 @@ const PFI_SCENARIOS = [
             period: "Days 1\u201330",
             title: "Stabilize & Measure",
             items: [
-              "Launch Exception Reduction Program with repair KPI ownership and cadence",
+              "Launch Exception Reduction Program with repair KPI ownership and regular review",
               "Implement monthly Portfolio Performance Review across rails, segments, and repairs"
             ]
           },
@@ -2117,7 +2117,7 @@ const PFI_SCENARIOS = [
             period: "Days 31\u201360",
             title: "Establish Governance & Controls",
             items: [
-              "Establish Pricing Council with documented authority tiers and cadence",
+              "Establish Pricing Council with documented authority tiers and regular review",
               "Establish rail-level price floors and enforce override controls"
             ]
           },
@@ -2126,30 +2126,30 @@ const PFI_SCENARIOS = [
             title: "Build Portfolio Visibility",
             items: [
               "Build unit cost model by rail and segment \u2014 embed in pricing governance",
-              "Publish portfolio scorecard and make franchise KPIs visible to leadership"
+              "Publish portfolio scorecard and make franchise KPIs visible across management teams"
             ]
           }
         ],
-        strategic_takeaway: "At this maturity level, growth can add volume without strengthening the underlying franchise. The priority is to stabilize governance, operating discipline, and management visibility before scaling commercial activity."
+        strategic_takeaway: "At this maturity level, growth can add volume without strengthening the underlying franchise. The priority is to stabilize governance, operating discipline, and management visibility before expanding commercial activity."
       },
 
       {
         range: [26, 50],
         label: "DEVELOPING FRANCHISE",
         scenario_name: "Fragile but Functioning \u2014 Governance Gaps Present",
-        benchmark_insight: "The franchise demonstrates baseline operating capability, though governance and pricing discipline remain uneven. The risk is that current practices become institutionalized before structural improvement occurs.",
+        benchmark_insight: "The franchise demonstrates baseline operating capability, though governance and pricing discipline remain uneven. The risk is that current practices may become embedded before structural improvement occurs.",
         pillar_commentary: {
           revenue_arch: "Pricing discipline appears functional, though management visibility and pricing consistency may vary across segments.",
           growth_engine: "Growth appears relationship-driven with uneven deal quality and limited repeatable growth capability.",
           margin_cost: "Operational costs appear partially managed. Exception discipline and pricing governance remain inconsistent.",
           multi_rail: "Rail capability appears available but routing and data quality improvements remain incomplete.",
           balance_liquidity: "Balance contribution appears tracked but may not be consistently reflected in pricing or relationship decisions.",
-          governance: "Management cadence appears irregular. Pricing authority and KPI review lack consistent enforcement."
+          governance: "Management routines appear irregular. Pricing authority and KPI review lack consistent enforcement."
         },
-        exec_diagnosis: "The franchise appears commercially functional but operationally uneven. Pricing governance, portfolio review discipline, and management visibility may not yet be operating consistently across the organization.",
+        exec_diagnosis: "The franchise appears commercially functional but operationally uneven. Pricing governance, portfolio review discipline, and management visibility may not yet be operating consistently across the franchise.",
         structural_issues: [
           "Pricing override behavior appears insufficiently governed across the portfolio.",
-          "Portfolio review cadence appears reactive, limiting management visibility into recurring performance patterns.",
+          "Portfolio review appears reactive, limiting management visibility into recurring performance patterns.",
           "Treasury and balance contribution may not be consistently incorporated into relationship economics."
         ],
         key_issues: [
@@ -2166,7 +2166,7 @@ const PFI_SCENARIOS = [
             why: "Structured pricing authority reduces cumulative inconsistency across the portfolio."
           },
           {
-            title: "Launch Portfolio Performance Review Cadence",
+            title: "Launch Portfolio Performance Review Process",
             owner: "Portfolio Owner",
             kpi: "Portfolio KPIs trending, actions opened and closed per cycle",
             why: "Creates recurring management visibility and accountability."
@@ -2223,16 +2223,16 @@ const PFI_SCENARIOS = [
         range: [51, 70],
         label: "OPERATIONALLY STABLE",
         scenario_name: "Stable Platform \u2014 Ready for Scaled Growth",
-        benchmark_insight: "At this level, the payments franchise demonstrates functioning operational controls and a credible operating foundation. The platform appears stable, though not yet fully optimized for portfolio expansion. The opportunity may be to convert operational discipline into sustained commercial momentum through improved pricing consistency, flow-level pricing and cost evaluation, and balance sheet integration.",
+        benchmark_insight: "At this level, the payments franchise demonstrates functioning operational controls and a credible operating foundation. The operating foundation appears stable, though not yet fully optimized for portfolio expansion. The opportunity may be to convert operational discipline into sustained commercial momentum through improved pricing consistency, flow-level pricing and cost evaluation, and balance sheet integration.",
         pillar_commentary: {
           revenue_arch: "Pricing structure is functional. Segmentation exists but flow-level and mix precision may benefit from further calibration.",
           growth_engine: "Commercial growth capability is established. Workflow integration is improving but durable client integration may not yet be established at scale.",
           margin_cost: "Operating costs appear stable and tracked. Exception discipline and pricing consistency are manageable.",
-          multi_rail: "Multi-rail capability is deployed. Routing is functional but dynamic optimization remains an opportunity.",
+          multi_rail: "Multi-rail capability is deployed. Routing is functional but dynamic routing refinement remains an opportunity.",
           balance_liquidity: "Balance contribution and treasury value appear visible in parts of the portfolio but may not yet be consistently reflected in pricing and relationship decisions.",
-          governance: "Governance structures are established. Management cadence is regular, though pricing enforcement consistency may vary."
+          governance: "Governance structures are established. Management routines are regular, though pricing enforcement consistency may vary."
         },
-        exec_diagnosis: "The franchise appears operationally stable with a credible foundation for commercial improvement. The next management challenge is converting stability into more consistent pricing discipline and management visibility, and relationship-level management discipline.",
+        exec_diagnosis: "The franchise appears operationally stable with a credible foundation for commercial improvement. The next management challenge is converting stability into more consistent pricing discipline, management visibility, and relationship-level coordination.",
         structural_issues: [
           "Pricing precision may vary across flows, segments, or client structures despite a functioning baseline model.",
           "Workflow integration appears to be improving, but relationship durability may not yet be fully embedded at scale.",
@@ -2243,7 +2243,7 @@ const PFI_SCENARIOS = [
           "Workflow integration growing but durable client integration not yet established at scale",
           "Balance sheet contribution tracked but may not yet be fully integrated into pricing decisions"
         ],
-        immediate_focus: "Shifting focus from operational management toward commercial optimization may allow the franchise to convert existing stability into more consistent and disciplined portfolio performance.",
+        immediate_focus: "Shifting focus from operational management toward commercial improvement may allow the franchise to convert existing stability into more consistent and disciplined portfolio performance.",
         priorities: [
           {
             title: "Launch Flow-Level Pricing and Mix Review",
@@ -2302,34 +2302,34 @@ const PFI_SCENARIOS = [
             ]
           }
         ],
-        strategic_takeaway: "Operational stability creates the platform for sharper portfolio management. The priority is to move from baseline control toward more consistent monetization, client-level visibility, and strategic portfolio steering."
+        strategic_takeaway: "Operational stability creates the foundation for sharper portfolio management. The priority is to move from baseline control toward more consistent monetization, client-level visibility, and strategic portfolio steering."
       },
 
       {
         range: [71, 85],
         label: "STRATEGICALLY ALIGNED",
         scenario_name: "High-Performance Franchise \u2014 Optimizing for Scale",
-        benchmark_insight: "The franchise demonstrates strong commercial and operational foundations with strategy, governance, and execution aligned across major dimensions. The focus shifts to sustaining discipline and building future capabilities.",
+        benchmark_insight: "The franchise demonstrates strong commercial and operational foundations with strategy, governance, and execution aligned across major dimensions. The focus shifts to sustaining discipline and building emerging capabilities.",
         pillar_commentary: {
           revenue_arch: "Pricing discipline and portfolio mix management appear strong and systematically maintained.",
           growth_engine: "Growth engine is structured and repeatable. Workflow integration is strong and pipeline quality is well-managed.",
           margin_cost: "Operating performance appears well-managed. Exception discipline, pricing governance, and unit cost visibility are strong.",
           multi_rail: "Multi-rail strategy is sophisticated. Routing is dynamically managed and real-time capability is fully deployed.",
           balance_liquidity: "Balance sheet integration is strong. Treasury economics are consistently reflected in relationship pricing.",
-          governance: "Governance is mature. Management cadence, KPI discipline, and pricing authority are consistently enforced."
+          governance: "Governance is mature. Management routines, KPI discipline, and pricing authority are consistently enforced."
         },
-        exec_diagnosis: "The franchise appears strategically aligned across major operating dimensions. The management focus shifts from remediation to durability: sustaining discipline, extending capability, and ensuring the operating model continues to adapt as client expectations and payment infrastructure evolve.",
+        exec_diagnosis: "The franchise appears strategically aligned across major operating dimensions. The management focus shifts from stabilization to durability: sustaining discipline, extending capability, and ensuring the operating model continues to adapt as client expectations and payment infrastructure evolve.",
         structural_issues: [
-          "Performance durability may depend on continued investment in future capabilities rather than optimization of existing programs alone.",
+          "Performance durability may depend on continued investment in emerging capabilities rather than improvement of existing programs alone.",
           "Knowledge concentration and succession depth may become more important as the franchise scales and operating complexity increases.",
           "Competitive and infrastructure change may require a more explicit forward-looking capability agenda."
         ],
         key_issues: [
-          "Complacency risk \u2014 over-investment in existing programs vs. future capability",
+          "Complacency risk \u2014 over-investment in existing programs vs. emerging capability",
           "Knowledge concentration may create succession and transition risk",
           "Competitive dynamics require proactive monitoring and response capability"
         ],
-        immediate_focus: "Sustaining performance while building future capability may reduce the risk that competitive dynamics or organizational complexity erode the franchise's current position.",
+        immediate_focus: "Sustaining performance while building emerging capability may reduce the risk that competitive dynamics or operating complexity erode the franchise's current position.",
         priorities: [
           {
             title: "Build Emerging Flow Strategy",
@@ -2338,10 +2338,10 @@ const PFI_SCENARIOS = [
             why: "Expands the addressable market beyond current operating areas and supports competitive positioning."
           },
           {
-            title: "Institutionalize Talent and Knowledge Transfer Programs",
+            title: "Establish Talent and Knowledge Transfer Programs",
             owner: "HR + Senior Leadership",
             kpi: "Succession depth, knowledge documentation rate, retention",
-            why: "Reduces organizational dependency on specific individuals."
+            why: "Reduces concentration risk on specific individuals."
           },
           {
             title: "Launch Innovation Pipeline for Emerging Payment Flows",
@@ -2367,16 +2367,16 @@ const PFI_SCENARIOS = [
             period: "Days 1\u201330",
             title: "Defend and Extend",
             items: [
-              "Launch future-state flow strategy process",
+              "Launch next-stage flow strategy process",
               "Begin competitive intelligence capability build"
             ]
           },
           {
             period: "Days 31\u201360",
-            title: "Build Future Capability",
+            title: "Build Emerging Capability",
             items: [
               "Launch innovation pipeline for emerging payment flows",
-              "Institutionalize talent and knowledge transfer programs"
+              "Establish talent and knowledge transfer programs"
             ]
           },
           {
@@ -2395,33 +2395,33 @@ const PFI_SCENARIOS = [
         range: [86, 100],
         label: "ENTERPRISE-GRADE",
         scenario_name: "Enterprise Franchise \u2014 Scaled Institutional Discipline",
-        benchmark_insight: "The franchise appears to be operating at or near the leading edge of its peer group. Pricing structure, operating discipline, governance, and growth quality appear mature and mutually reinforcing. The challenge is sustaining that standard across organizational change and competitive disruption.",
+        benchmark_insight: "The franchise appears to be operating at or near the leading edge of its peer group. Pricing structure, operating discipline, governance, and growth quality appear mature and mutually reinforcing. The challenge is sustaining that standard across management change and competitive disruption.",
         pillar_commentary: {
           revenue_arch: "The franchise demonstrates strong pricing discipline and portfolio management across major payment flows.",
           growth_engine: "Growth engine is highly developed. Workflow integration is deep and pipeline management is consistently disciplined.",
           margin_cost: "Operating performance is strong and systematically managed. Unit cost discipline and exception control are well-embedded.",
           multi_rail: "Rail strategy appears operationally advanced. Routing, real-time capability, and data quality operate at a high level.",
           balance_liquidity: "Treasury integration is comprehensive. Balance economics and rate-cycle positioning are actively managed.",
-          governance: "Governance is highly developed. Operating cadence, KPI discipline, and pricing authority are consistently embedded."
+          governance: "Governance is highly developed. Operating routines, KPI discipline, and pricing authority are consistently embedded."
         },
-        exec_diagnosis: "The franchise appears highly mature across portfolio governance and operating discipline, and commercial execution. The management challenge is no longer basic performance improvement. It is resilience, adaptability, and maintaining advantage as market structure and organizational complexity evolve.",
+        exec_diagnosis: "The franchise appears highly mature across portfolio governance and operating discipline, and commercial execution. The management challenge is no longer basic performance improvement. It is resilience, adaptability, and maintaining advantage as market structure and operating complexity evolve.",
         structural_issues: [
           "Sustained performance may require deliberate capability refresh rather than continued optimization of the existing model alone.",
-          "Organizational scale may introduce coordination complexity, decision latency, or knowledge concentration risk over time.",
+          "Scale may introduce coordination complexity, decision latency, or knowledge concentration risk over time.",
           "Scaled franchises may face increasing pricing pressure, client expectations, and competitive response over time."
         ],
         key_issues: [
-          "Capability refresh risk \u2014 optimizing existing programs vs. building future capabilities",
-          "Organizational complexity may create decision latency and coordination overhead",
+          "Capability refresh risk \u2014 optimizing existing programs vs. building emerging capabilities",
+          "Operating complexity may create decision latency and coordination overhead",
           "Market leadership positioning requires active investment in differentiation"
         ],
-        immediate_focus: "Sustaining current performance while actively building future capabilities may reduce the risk that competitive dynamics or organizational complexity erode the franchise's position.",
+        immediate_focus: "Sustaining current performance while actively building emerging capabilities may reduce the risk that competitive dynamics or operating complexity erode the franchise's position.",
         priorities: [
           {
             title: "Build Franchise Resilience and Succession Program",
             owner: "Senior Leadership + HR",
-            kpi: "Succession depth, knowledge retention, leadership pipeline",
-            why: "Reduces organizational dependency on specific talent and supports performance continuity across leadership transitions."
+            kpi: "Succession depth, knowledge retention, management pipeline",
+            why: "Reduces concentration risk on specific talent and supports performance continuity across management transitions."
           },
           {
             title: "Deploy Enterprise Analytics and Intelligence Platform",
@@ -2430,7 +2430,7 @@ const PFI_SCENARIOS = [
             why: "Sustains the decision-making quality and speed that supports continued performance at this level."
           },
           {
-            title: "Lead Industry Standards in Payments Governance",
+            title: "Advance Industry Standards in Payments Governance",
             owner: "Senior Leadership + Compliance",
             kpi: "Industry participation, standards influence, regulatory positioning",
             why: "Reinforces institutional credibility and regulatory positioning."
@@ -2442,7 +2442,7 @@ const PFI_SCENARIOS = [
             why: "Sustains competitive positioning beyond current operating areas."
           },
           {
-            title: "Deepen Client Ecosystem Integration",
+            title: "Deepen Client Workflow Integration",
             owner: "Relationship Management + Product",
             kpi: "Ecosystem depth, integration rate, relationship durability",
             why: "Creates relationship durability that is difficult for competitors to replicate."
@@ -2454,12 +2454,12 @@ const PFI_SCENARIOS = [
             title: "Sustain and Extend",
             items: [
               "Launch franchise resilience and succession program",
-              "Begin future-state analytics platform build"
+              "Begin next-stage analytics platform build"
             ]
           },
           {
             period: "Days 31\u201360",
-            title: "Lead the Industry",
+            title: "Strengthen Market Position",
             items: [
               "Establish industry standards participation program",
               "Expand into new payment flow segments"
@@ -2469,12 +2469,12 @@ const PFI_SCENARIOS = [
             period: "Days 61\u201390",
             title: "Deepen the Advantage",
             items: [
-              "Deepen client ecosystem integration across priority relationships",
-              "Deploy future-state analytics platform with real-time portfolio KPI capability"
+              "Deepen workflow integration across priority relationships",
+              "Deploy next-stage analytics platform with real-time portfolio KPI capability"
             ]
           }
         ],
-        strategic_takeaway: "At this level, the risk is not operating weakness. It is loss of adaptability. The priority is to preserve institutional discipline while continuing to build future operating capability, resilience, and client integration."
+        strategic_takeaway: "At this level, the risk is not operating weakness. It is loss of adaptability. The priority is to preserve institutional discipline while continuing to build emerging operating capability, resilience, and client integration."
       }
     ];
 
