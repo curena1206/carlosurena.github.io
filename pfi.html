@@ -896,7 +896,7 @@
         <h2 class="section-title">Operating maturity assessment</h2>
         <p class="section-lead" style="max-width:100%;">
           The assessment helps establish visibility into where operating maturity, governance discipline, and portfolio alignment may warrant attention.
-          The output reflects operator-grade assessment across portfolio management, organizational scalability, pricing discipline, and strategic readiness.
+          The output reflects operator-grade assessment across portfolio management, operating scalability, pricing discipline, and strategic readiness.
         </p>
 
         <div id="resultsEmpty" class="empty-state">
@@ -1093,14 +1093,14 @@ window.PPD_MODEL = (() => {
         },
         {
           id: "RA6",
-          title: "FX-related monetization discipline",
-          desc: "Where FX-related payment activity exists, how consistently are pricing, spread management, and economic performance evaluated?",
+          title: "Revenue capture across payment activity",
+          desc: "Where payment activity generates variable revenue — through pricing spreads, service fees, or flow-specific economics — how consistently is revenue capture evaluated and managed?",
           options: [
-            { score: 0, label: "FX-related activity minimally monetized or not strategically evaluated", sub: "FX contribution appears operational rather than strategically managed" },
-            { score: 2, label: "FX pricing exists but governance appears inconsistent", sub: "Spread management and monetization visibility may vary across segments and flows" },
-            { score: 3, label: "FX economics managed across major payment segments", sub: "Core pricing discipline exists, though consistency across the broader portfolio may vary" },
-            { score: 4, label: "FX-related economics incorporated into portfolio management", sub: "Pricing, spread management, and economic performance are evaluated systematically across major flows" },
-            { score: 5, label: "FX monetization strategically integrated into payment economics", sub: "FX-related contribution is consistently evaluated alongside broader portfolio economics and client strategy" }
+            { score: 0, label: "Revenue capture appears limited or not strategically evaluated", sub: "Variable revenue from payment flows appears operational rather than strategically managed" },
+            { score: 2, label: "Revenue capture exists but consistency varies across flows and segments", sub: "Pricing discipline and revenue visibility may vary across payment types and client segments" },
+            { score: 3, label: "Revenue capture managed across major payment segments and flows", sub: "Core pricing discipline exists, though consistency across the broader portfolio may vary" },
+            { score: 4, label: "Revenue capture incorporated into portfolio management and pricing discipline", sub: "Pricing discipline, value capture, and economic performance are evaluated systematically across major payment flows" },
+            { score: 5, label: "Revenue capture strategically integrated into payment economics and portfolio management", sub: "Variable revenue contribution is consistently evaluated alongside broader portfolio economics and client strategy" }
           ]
         },
         {
@@ -1357,7 +1357,7 @@ window.PPD_MODEL = (() => {
             { score: 2, label: "Managed reactively or case-by-case", sub: "Flow management appears event-driven, with limited strategic or economic structure" },
             { score: 3, label: "Defined approach for major flows", sub: "Core flow structures are documented, though broader management consistency may vary" },
             { score: 4, label: "Major flows actively managed with economic visibility", sub: "Pricing, partner strategy, service expectations, and economics are reviewed across priority flows" },
-            { score: 5, label: "Cross-border and correspondent flows integrated into portfolio strategy", sub: "Major flows are managed through structured economic, partner, client, and operating discipline" }
+            { score: 5, label: "Cross-border and international payment flows integrated into portfolio strategy", sub: "Major flows are managed through structured economic, servicing, client, and operating discipline" }
           ]
         },
         {
@@ -1420,14 +1420,14 @@ window.PPD_MODEL = (() => {
         },
         {
           id: "BL2",
-          title: "Visibility into balance-adjusted relationship economics",
+          title: "Visibility into balance-inclusive relationship economics",
           desc: "How consistently are balances, liquidity contribution, or treasury value incorporated into relationship evaluation and pricing decisions?",
           options: [
             { score: 1, label: "Relationship economics evaluated primarily on fee activity", sub: "Broader treasury or liquidity contribution may not be consistently incorporated into economic evaluation" },
             { score: 2, label: "Balance contribution considered selectively", sub: "Some treasury value awareness exists, though application may vary across teams or segments" },
-            { score: 3, label: "Balance-adjusted economics incorporated for major relationships", sub: "Relationship evaluation includes broader financial contribution in key areas of the portfolio" },
+            { score: 3, label: "Balance-inclusive economics incorporated for major relationships", sub: "Relationship evaluation includes broader financial contribution in key areas of the portfolio" },
             { score: 4, label: "Treasury contribution integrated into pricing and relationship review", sub: "Liquidity and balance value are incorporated into management and commercial decision-making" },
-            { score: 5, label: "Balance-adjusted economics operationalized across the franchise", sub: "Relationships consistently incorporate fee, liquidity, and treasury contribution across portfolio management routines" }
+            { score: 5, label: "Balance-inclusive economics operationalized across the franchise", sub: "Relationships consistently incorporate fee, liquidity, and treasury contribution across portfolio management routines" }
           ]
         },
         {
@@ -1590,15 +1590,15 @@ window.PPD_MODEL = (() => {
 
   // ── Recommendations library ──────────────────────────────────────────────
   const recommendations = {
-    R1:  { title: "Design and implement segmented pricing by client value and corridor", owner: "Product + Sales + Finance", metric: "Revenue per client, margin by segment, elasticity tracking", why: "Closes monetization capture gaps without depending on volume growth." },
+    R1:  { title: "Design and implement segmented pricing by client value and payment flow", owner: "Product + Sales + Finance", metric: "Revenue per client, margin by segment, elasticity tracking", why: "Closes monetization capture gaps without depending on volume growth." },
     R2:  { title: "Establish rail-level price floors and enforce override controls", owner: "Pricing + Sales Leadership", metric: "Override rate, margin leakage by deal, governance cycle time", why: "Stops silent margin erosion from inconsistent deal-by-deal discounting." },
     R3:  { title: "Redesign packaging model — structured bundle and add-on value tiers", owner: "Product", metric: "ARPA, attach rate, margin contribution per tier", why: "Creates clear levers to capture value and reduces structural bundle leakage." },
-    R4:  { title: "Build and implement balance-adjusted pricing model", owner: "Product + Treasury + Finance", metric: "ROE contribution, balance-weighted profitability by client", why: "Aligns payments pricing with total franchise value — not just fee revenue." },
-    R5:  { title: "Develop corridor-based FX strategy with spread management discipline", owner: "Product + Pricing + Sales", metric: "FX capture rate, spread leakage by corridor, corridor-level P&L", why: "Converts cross-border flows into a deliberately managed revenue lever." },
+    R4:  { title: "Build and implement balance-inclusive pricing model", owner: "Product + Treasury + Finance", metric: "ROE contribution, balance-weighted profitability by client", why: "Aligns payments pricing with total franchise value — not just fee revenue." },
+    R5:  { title: "Develop payment flow pricing strategy and revenue capture discipline", owner: "Product + Pricing + Sales", metric: "Revenue capture rate, pricing realization by flow, contribution visibility", why: "Revenue capture across payment flows is among the more recoverable margin opportunities in a commercial payments portfolio." },
     R6:  { title: "Launch Exception Reduction Program with repair KPI ownership and regular review", owner: "Ops + Product + Tech", metric: "Repair rate, STP %, cost per repair, trend vs. target", why: "Repairs are often the largest untracked driver of margin compression in commercial payments." },
     R7:  { title: "Deploy pre-validation targeting top payment failure modes by rail", owner: "Product + Tech + Ops", metric: "Failure reason frequency, repair reduction rate", why: "Reduces exception volume at the source — improving both margin and client experience." },
     R8:  { title: "Build unit cost model by rail and segment — and use it in pricing governance", owner: "Finance + Product", metric: "Unit cost by rail, segment price floors, contribution margin", why: "Provides the cost anchor needed for disciplined pricing and roadmap tradeoff decisions." },
-    R9:  { title: "Optimize correspondent and network costs through routing strategy and contract structure", owner: "Portfolio Management + Product + Finance", metric: "Cost per payment by rail, correspondent and network fee trends", why: "Improves gross margin through structural external cost levers that are often overlooked." },
+    R9:  { title: "Strengthen external payment network cost management through routing strategy and provider structure", owner: "Portfolio Management + Product + Finance", metric: "Cost per payment by rail, external network and provider fee trends", why: "Improves gross margin through structural external cost levers that are often overlooked." },
     R10: { title: "Create STP scorecard by rail and client segment with standing ownership", owner: "Ops + Product", metric: "STP % by rail and segment, repair rates, trend vs. target", why: "Directs leakage reduction effort where the margin impact is highest." },
     R11: { title: "Build segment-level GTM plays anchored in client economics", owner: "Product + Sales", metric: "Win rate, margin per win, attach rate by segment", why: "Makes growth repeatable and ensures new clients contribute positively to the P&L." },
     R12: { title: "Strengthen ERP, TMS, and AP/AR integration motion for top client segments", owner: "Product + Tech + Sales", metric: "Integration adoption rate, time-to-onboard, NPS post-integration", why: "Increases structural stickiness and reduces the risk of relationship-dependent attrition." },
@@ -1685,14 +1685,14 @@ window.PPD_MODEL = (() => {
       id: "fx_without_corridor",
       tier: 2,
       when: (a) => (a.MR4 !== null && a.MR4 <= 2 && a.RA6 >= 3),
-      diagnosis: "FX-related payment activity appears present but cross-border flow management and spread discipline may not be fully operationalized. This pattern may be associated with inconsistent FX monetization across the portfolio.",
+      diagnosis: "Payment flow revenue activity appears present, though pricing discipline and economics management may not yet be consistently applied across flows.",
       recs: ["R5", "R1", "R19"]
     },
     {
       id: "fx_spread_leakage",
       tier: 2,
       when: (a) => (a.RA6 >= 2 && a.RA6 <= 3 && a.MR4 !== null && a.MR4 <= 3),
-      diagnosis: "Cross-border FX activity is present but spread management and corridor economics may not be consistently applied. This pattern tends to become more visible as cross-border volume grows.",
+      diagnosis: "International payment activity appears present, though pricing and revenue capture discipline may not yet be consistently integrated.",
       recs: ["R5", "R17", "R8"]
     },
     {
@@ -2238,7 +2238,7 @@ const PFI_SCENARIOS = [
             period: "Days 61\u201390",
             title: "Build Reporting Discipline",
             items: [
-              "Launch flow-level pricing and cost visibility framework",
+              "Launch flow-level pricing and cost visibility model",
               "Link management visibility to resource allocation and pricing decisions"
             ]
           }
@@ -2325,7 +2325,7 @@ const PFI_SCENARIOS = [
             title: "Scale Growth Engine",
             items: [
               "Formalize new flow scaling playbook",
-              "Deploy growth engine across pipeline with repeatable model"
+              "Implement growth engine across pipeline with repeatable model"
             ]
           }
         ],
@@ -2451,7 +2451,7 @@ const PFI_SCENARIOS = [
             why: "Reduces concentration risk on specific talent and supports performance continuity across management transitions."
           },
           {
-            title: "Deploy Enterprise Analytics and Intelligence Platform",
+            title: "Implement Enterprise Analytics and Intelligence Platform",
             owner: "Tech + Finance + Product",
             kpi: "Decision velocity, analytics coverage, real-time KPI availability",
             why: "Sustains the decision-making quality and speed that supports continued performance at this level."
@@ -2497,7 +2497,7 @@ const PFI_SCENARIOS = [
             title: "Deepen the Advantage",
             items: [
               "Deepen workflow integration across priority relationships",
-              "Deploy next-stage analytics platform with real-time portfolio KPI capability"
+              "Implement next-stage analytics capability with real-time portfolio KPI visibility"
             ]
           }
         ],
@@ -2559,9 +2559,9 @@ const PFI_SCENARIOS = [
       {id:"treasury_not_integrated",category:"treasury",
        condition:function(a){return (a.BL1||0)<=2&&(a.BL2||0)<=2;},
        pattern_flag:"Treasury and balance contribution may not be consistently reflected in relationship pricing or portfolio economics.",
-       priority_low:{title:"Integrate Treasury Contribution into Relationship and Portfolio Economics",owner:"Finance + Relationship Management",kpi:"Treasury contribution per relationship, balance contribution rate, total relationship return",why:"Payments relationships that do not reflect balance value may be systematically underpriced."},
-       priority_mid:{title:"Deepen Treasury Integration Across Portfolio Pricing and Economics",owner:"Finance + Relationship Management",kpi:"Balance-inclusive return by relationship, treasury contribution trend, pricing adjustment rate",why:"Deepening treasury integration may improve pricing precision and total relationship return visibility."},
-       priority_high:{title:"Advance Treasury-Payment Economics as Portfolio Differentiator",owner:"Finance + Relationship Management",kpi:"Treasury-integrated portfolio return, balance contribution at portfolio level, relationship economics trend",why:"At this maturity level, treasury-payment economics integration may become a source of competitive and client relationship advantage."},
+       priority_low:{title:"Integrate Treasury Contribution into Relationship and Portfolio Economics",owner:"Finance + Portfolio Management",kpi:"Treasury contribution per relationship, balance contribution rate, total relationship return",why:"Payments relationships that do not reflect balance value may be systematically underpriced."},
+       priority_mid:{title:"Deepen Treasury Integration Across Portfolio Pricing and Economics",owner:"Finance + Portfolio Management",kpi:"Balance-inclusive return by relationship, treasury contribution trend, pricing adjustment rate",why:"Deepening treasury integration may improve pricing precision and total relationship return visibility."},
+       priority_high:{title:"Advance Treasury-Payment Economics as Portfolio Differentiator",owner:"Finance + Portfolio Management",kpi:"Treasury-integrated portfolio return, balance contribution at portfolio level, relationship economics trend",why:"At this maturity level, treasury-payment economics integration may become a source of competitive and client relationship advantage."},
        advisory_path:{label:"Treasury contribution analysis",description:"Relationship economics incorporating balance contribution and pricing review."},
        impact_weight:0.25},
       {id:"rate_sensitivity_unmanaged",category:"treasury",
@@ -2575,9 +2575,9 @@ const PFI_SCENARIOS = [
       {id:"treasury_coordination_absent",category:"treasury",
        condition:function(a){return (a.BL3||0)<=2;},
        pattern_flag:"Treasury contribution and payment activity may not yet be consistently integrated into broader portfolio economics.",
-       priority_low:{title:"Establish Treasury-Payments Coordination for Priority Relationships",owner:"Treasury + Relationship Management",kpi:"Treasury engagement rate, joint review cadence, treasury-inclusive deal count",why:"Coordination gaps between treasury and payments often reduce total relationship value visibility."},
-       priority_mid:{title:"Strengthen Treasury-Payments Operating Coordination",owner:"Treasury + Relationship Management",kpi:"Joint review frequency, treasury contribution by relationship, coordination coverage rate",why:"Strengthening treasury-payments coordination may improve total relationship economics and pricing discipline."},
-       priority_high:{title:"Deepen Treasury-Payment Integration Across Portfolio Strategy",owner:"Treasury + Relationship Management",kpi:"Treasury-payment integration rate, portfolio economics contribution, relationship return trend",why:"Deepening treasury-payment integration at this maturity level may reinforce competitive positioning and relationship durability."},
+       priority_low:{title:"Establish Treasury-Payments Coordination for Priority Relationships",owner:"Treasury + Portfolio Management",kpi:"Treasury engagement rate, joint review cadence, treasury-inclusive deal count",why:"Coordination gaps between treasury and payments often reduce total relationship value visibility."},
+       priority_mid:{title:"Strengthen Treasury-Payments Operating Coordination",owner:"Treasury + Portfolio Management",kpi:"Joint review frequency, treasury contribution by relationship, coordination coverage rate",why:"Strengthening treasury-payments coordination may improve total relationship economics and pricing discipline."},
+       priority_high:{title:"Deepen Treasury-Payment Integration Across Portfolio Strategy",owner:"Treasury + Portfolio Management",kpi:"Treasury-payment integration rate, portfolio economics contribution, relationship return trend",why:"Deepening treasury-payment integration at this maturity level may reinforce competitive positioning and relationship durability."},
        advisory_path:null,
        impact_weight:0.15},
       // ── RAIL MATURITY ─────────────────────────────────────────────────────
@@ -2609,9 +2609,9 @@ const PFI_SCENARIOS = [
       {id:"workflow_and_attach_limited",category:"workflow",
        condition:function(a){return (a.GE3||0)<=2&&(a.GE2||0)<=2;},
        pattern_flag:"Client workflow integration and product attach depth appear limited, which may affect relationship durability.",
-       priority_low:{title:"Build Workflow Integration Program for Priority Client Relationships",owner:"Relationship Management + Product",kpi:"Workflow integration rate, product depth per client, relationship durability",why:"Limited workflow integration may increase relationship sensitivity to pricing or service competition."},
-       priority_mid:{title:"Deepen Client Workflow Integration and Product Attach Discipline",owner:"Relationship Management + Product",kpi:"Integration depth trend, attach rate by segment, relationship durability score",why:"Deepening workflow integration may improve relationship durability and reduce competitive vulnerability across priority clients."},
-       priority_high:{title:"Advance Client Integration as Strategic Relationship Capability",owner:"Relationship Management + Product",kpi:"Integration coverage at portfolio level, attach rate trend, client operating dependence",why:"Advancing client integration at this maturity level may create relationship durability that is structurally difficult for competitors to displace."},
+       priority_low:{title:"Build Workflow Integration Program for Priority Client Relationships",owner:"Commercial Management + Product",kpi:"Workflow integration rate, product depth per client, relationship durability",why:"Limited workflow integration may increase relationship sensitivity to pricing or service competition."},
+       priority_mid:{title:"Deepen Client Workflow Integration and Product Attach Discipline",owner:"Commercial Management + Product",kpi:"Integration depth trend, attach rate by segment, relationship durability score",why:"Deepening workflow integration may improve relationship durability and reduce competitive vulnerability across priority clients."},
+       priority_high:{title:"Advance Client Integration as Strategic Relationship Capability",owner:"Commercial Management + Product",kpi:"Integration coverage at portfolio level, attach rate trend, client operating dependence",why:"Advancing client integration at this maturity level may create relationship durability that is structurally difficult for competitors to displace."},
        advisory_path:null,
        impact_weight:0.20},
       {id:"onboarding_friction",category:"workflow",
@@ -2654,7 +2654,7 @@ const PFI_SCENARIOS = [
        priority_low:{title:"Establish Cross-Functional Operating Review with Shared Portfolio Metrics",owner:"Portfolio Owner + Finance + Ops",kpi:"Review participation rate, actions closed per cycle, cross-functional alignment",why:"Portfolio decisions made without cross-functional input may reflect incomplete economics."},
        priority_mid:{title:"Strengthen Cross-Functional Coordination and Portfolio Alignment",owner:"Portfolio Owner + Finance + Ops",kpi:"Coordination consistency, shared metric usage, cross-functional decision quality",why:"Strengthening cross-functional coordination may improve portfolio economics integration and decision-making discipline."},
        priority_high:{title:"Advance Integrated Operating Model as Competitive Capability",owner:"Portfolio Owner + Finance + Ops",kpi:"Operating model integration score, cross-functional decision velocity, portfolio alignment at scale",why:"Advancing the integrated operating model at this maturity level may create coordination advantages that support sustained portfolio performance."},
-       advisory_path:{label:"Portfolio governance design",description:"Cross-functional operating model and shared metrics framework."},
+       advisory_path:{label:"Portfolio governance design",description:"Cross-functional operating model and shared metrics structure."},
        impact_weight:0.20},
       {id:"portfolio_visibility_limited",category:"governance",
        condition:function(a){return (a.GO6||0)<=2&&(a.GO5||0)<=2;},
