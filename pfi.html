@@ -766,6 +766,14 @@
       text-decoration: none;
     }
     .pfi-footer-right a:hover { color: #d4a84b; }
+    .obs-intro { font-family: Georgia, serif; font-size: 14px; color: var(--slate); margin-bottom: 12px; line-height: 1.65; }
+    .obs-bullets { list-style: none; display: grid; gap: 9px; }
+    .obs-bullets li { font-family: Georgia, serif; font-size: 14px; color: var(--navy); padding-left: 16px; position: relative; line-height: 1.65; }
+    .obs-bullets li::before { content: "—"; position: absolute; left: 0; color: var(--gold); }
+    .advisory-paths { list-style: none; display: grid; gap: 10px; margin-top: 8px; }
+    .advisory-paths li { font-family: Georgia, serif; font-size: 14px; color: var(--navy); padding-left: 16px; position: relative; line-height: 1.65; }
+    .advisory-paths li::before { content: "—"; position: absolute; left: 0; color: var(--gold); }
+    .advisory-paths .ap-label { font-weight: bold; }
   </style>
 </head>
 
@@ -931,6 +939,11 @@
             <ul id="diagnosisList" class="diagnosis-list"></ul>
           </div>
 
+          <div class="card card-full" id="observationsCard" style="display:none;">
+            <div class="card-eyebrow">Management observations</div>
+            <div id="observationsList"></div>
+          </div>
+
           <div class="card">
             <div class="card-eyebrow">90-day priorities</div>
             <div id="prioritiesList" class="priorities-list"></div>
@@ -939,6 +952,12 @@
           <div class="card card-full">
             <div class="card-eyebrow">Suggested 30/60/90 execution plan</div>
             <div id="plan3090" class="plan-grid"></div>
+          </div>
+
+          <!-- Dynamic advisory bridge -->
+          <div class="card card-full" id="advisoryCard" style="border-top:3px solid var(--gold-line);display:none;">
+            <div class="card-eyebrow">Areas where deeper review may be warranted</div>
+            <div id="advisoryBridgeContent"></div>
           </div>
 
           <!-- Go deeper CTA -->
@@ -1978,11 +1997,16 @@ window.PPD_MODEL = (() => {
       });
     }
 
-    function renderPriorities(overall) {
+    function renderPriorities(overall, signals) {
       if (!els.prioritiesList) return;
       const sc = pfiGetScenario(overall);
+      const dynP  = (signals && signals.recommended_priorities) ? signals.recommended_priorities : [];
+      const statP = sc.priorities || [];
+      const merged = []; const usedT = {};
+      dynP.forEach(p  => { if (merged.length < 5) { merged.push(p); usedT[p.title] = true; } });
+      statP.forEach(p => { if (merged.length < 5 && !usedT[p.title]) merged.push(p); });
       els.prioritiesList.innerHTML = "";
-      sc.priorities.forEach((pri, idx) => {
+      merged.slice(0, 5).forEach((pri, idx) => {
         const box = document.createElement("div");
         box.className = "priority";
         box.innerHTML = `<div class="priority-num">${idx + 1}</div><div class="priority-body"><div class="priority-title">${pri.title}</div><div class="priority-meta">Owner: ${pri.owner} · KPI: ${pri.kpi}</div><div class="priority-why">${pri.why}</div></div>`;
@@ -2011,7 +2035,9 @@ window.PPD_MODEL = (() => {
       renderHeatmap(result.pillarScores);
       renderPillarNarratives(result.pillarScores, result.overall);
       renderDiagnosis(result.overall);
-      renderPriorities(result.overall);
+      renderObservations(result.signals);
+      renderPriorities(result.overall, result.signals);
+      renderAdvisoryBridge(result.signals);
       render3090(result.overall);
     }
 
@@ -2022,7 +2048,8 @@ window.PPD_MODEL = (() => {
       const sub = computeSubScores(pillarScores);
       const a = answersMapForRules();
       const ruleOutput = runRules(a);
-      const result = { pillarScores, overall, sub, rules: ruleOutput };
+      const signals = computeSignals(state.answers, pillarScores);
+      const result = { pillarScores, overall, sub, rules: ruleOutput, signals };
       state.lastResult = result;
       if (els.btnCopy) els.btnCopy.disabled = false;
       if (els.btnCopy2) els.btnCopy2.disabled = false;
@@ -2483,10 +2510,218 @@ const PFI_SCENARIOS = [
       return PFI_SCENARIOS[0];
     }
 
+
+    // ── SIGNAL ENGINE ─────────────────────────────────────────────────────────
+    var SIGNAL_RULES = [
+      // PRICING
+      {id:"pricing_governance_weak",category:"pricing",
+       condition:function(a){return (a.MC6||0)<=2&&(a.GO4||0)<=2;},
+       pattern_flag:"Pricing override discipline and governance appear limited across the portfolio.",
+       priority:{title:"Establish Pricing Council with Override Controls",owner:"Exec Sponsor + Pricing Lead",kpi:"Override rate, approval cycle time, margin integrity trend",why:"Pricing governance is often the fastest lever for reducing cumulative margin inconsistency."},
+       advisory_path:{label:"Pricing visibility review",description:"Flow-level pricing analysis and override governance design."},
+       impact_weight:0.30},
+      {id:"rail_economics_absent",category:"pricing",
+       condition:function(a){return (a.RA3||0)<=2&&(a.MC4||0)<=2;},
+       pattern_flag:"Rail-level economics may not be consistently informing pricing or investment decisions.",
+       priority:{title:"Build Rail-Level Pricing and Cost Visibility",owner:"Finance + Product",kpi:"Unit cost by rail, pricing realization rate, contribution by flow",why:"Without rail-level cost anchoring, pricing governance and routing decisions may lack economic grounding."},
+       advisory_path:{label:"Flow-level cost structure",description:"Rail and corridor-level cost attribution and pricing floor analysis."},
+       impact_weight:0.25},
+      {id:"fx_monetization_gap",category:"pricing",
+       condition:function(a){return a.MR4!=null&&(a.MR4||0)<=3&&(a.RA6||0)>=2&&(a.RA6||0)<=3;},
+       pattern_flag:"FX-related revenue may not be consistently captured across cross-border payment flows.",
+       priority:{title:"Develop FX Pricing and Spread Management Discipline",owner:"Product + Trading/FX + Sales",kpi:"FX capture rate, spread variance by corridor, corridor-level contribution",why:"Cross-border flows are among the more recoverable margin opportunities in commercial payments."},
+       advisory_path:{label:"Flow economics review",description:"Cross-border corridor economics and FX spread management analysis."},
+       impact_weight:0.20},
+      // EXCEPTION MANAGEMENT
+      {id:"exception_crisis",category:"exceptions",
+       condition:function(a){return (a.MC2||0)<=1&&(a.MC3||0)<=1;},
+       pattern_flag:"Exception and repair volume appears elevated with limited cost visibility or named ownership.",
+       priority:{title:"Launch Exception Reduction Program with Named Ownership",owner:"Ops + Product + Tech",kpi:"Repair rate, STP %, cost per repair, trend vs. target",why:"Exception volume is often among the more visible sources of margin pressure in commercial payments."},
+       advisory_path:{label:"Exception reduction program design",description:"Root cause analysis and STP improvement program across major payment flows."},
+       impact_weight:0.30},
+      {id:"exception_elevated",category:"exceptions",
+       condition:function(a){return (a.MC2||0)>1&&(a.MC2||0)<=3&&(a.MC3||0)>=2;},
+       pattern_flag:"Exception volume may be creating operational pressure that warrants structured review.",
+       priority:{title:"Build Exception Tracking and Repair Cost Ownership Model",owner:"Ops + Product",kpi:"STP % by rail, repair rate trend, cost per exception",why:"Tracking repair costs consistently creates the visibility needed to prioritize reduction effort."},
+       advisory_path:null,
+       impact_weight:0.20},
+      // TREASURY INTEGRATION
+      {id:"treasury_not_integrated",category:"treasury",
+       condition:function(a){return (a.BL1||0)<=2&&(a.BL2||0)<=2;},
+       pattern_flag:"Treasury and balance contribution may not be consistently reflected in relationship pricing or portfolio economics.",
+       priority:{title:"Integrate Treasury Contribution into Relationship and Portfolio Economics",owner:"Finance + Relationship Management",kpi:"Treasury contribution per deal, balance linkage rate, balance-adjusted return",why:"Payments relationships that do not reflect balance value may be systematically underpriced."},
+       advisory_path:{label:"Treasury contribution analysis",description:"Balance-adjusted relationship economics and pricing model review."},
+       impact_weight:0.25},
+      {id:"rate_sensitivity_unmanaged",category:"treasury",
+       condition:function(a){return (a.BL5||0)<=2&&(a.BL1||0)>=3;},
+       pattern_flag:"Balance contribution appears tracked but rate-cycle sensitivity may not be consistently evaluated.",
+       priority:{title:"Build Rate Sensitivity Model Across Operating Balance Relationships",owner:"Finance + Treasury",kpi:"Rate sensitivity by segment, balance-adjusted return vs. prior cycle",why:"Franchises with strong balance contribution may face portfolio economics shifts as rate conditions evolve."},
+       advisory_path:{label:"Treasury contribution analysis",description:"Rate cycle sensitivity and balance-adjusted portfolio economics review."},
+       impact_weight:0.20},
+      {id:"treasury_coordination_absent",category:"treasury",
+       condition:function(a){return (a.BL3||0)<=2;},
+       pattern_flag:"Treasury and payments coordination may be operating with limited structural integration.",
+       priority:{title:"Establish Treasury-Payments Coordination for Priority Relationships",owner:"Treasury + Relationship Management",kpi:"Treasury engagement rate, joint review cadence, balance-linked deal count",why:"Coordination gaps between treasury and payments often reduce total relationship value visibility."},
+       advisory_path:null,
+       impact_weight:0.15},
+      // RAIL MATURITY
+      {id:"rtp_capability_gap",category:"rail",
+       condition:function(a){return (a.MR1||0)<=2;},
+       pattern_flag:"Real-time payment capability may not yet be aligned with commercial use cases or client expectations.",
+       priority:{title:"Develop Real-Time Payment Strategy and Use Case Roadmap",owner:"Product + Tech + Sales",kpi:"RTP send volume, use-case adoption rate, commercial contribution",why:"Real-time capability gaps may become more visible as client expectations evolve and competitors scale."},
+       advisory_path:{label:"Rail routing and cost optimization",description:"Real-time rail strategy and commercial use case development."},
+       impact_weight:0.25},
+      {id:"routing_and_data_weak",category:"rail",
+       condition:function(a){return (a.MR3||0)<=2&&(a.MR5||0)<=2;},
+       pattern_flag:"Routing discipline and data quality patterns may be contributing to operating inefficiency.",
+       priority:{title:"Implement Economics-Aware Routing with Data Quality Program",owner:"Product + Tech + Ops",kpi:"Routing distribution by rail, STP rate, data quality KPIs",why:"Static routing and data quality gaps often compound exception volume and cost structure."},
+       advisory_path:{label:"Rail routing and cost optimization",description:"Rail economics, routing strategy, and data quality improvement program."},
+       impact_weight:0.20},
+      {id:"cross_border_unmanaged",category:"rail",
+       condition:function(a){return a.MR4!=null&&(a.MR4||0)<=2;},
+       pattern_flag:"Cross-border and correspondent flows may not be consistently managed for economics and service quality.",
+       priority:{title:"Establish Cross-Border Flow Management with Economic Visibility",owner:"Network Management + Product",kpi:"Corridor economics, partner cost trends, service performance by flow",why:"Unmanaged cross-border flows may carry elevated costs and inconsistent pricing across corridors."},
+       advisory_path:{label:"Flow economics review",description:"Corridor-level economic visibility and correspondent partner review."},
+       impact_weight:0.20},
+      // WORKFLOW INTEGRATION
+      {id:"workflow_and_attach_limited",category:"workflow",
+       condition:function(a){return (a.GE3||0)<=2&&(a.GE2||0)<=2;},
+       pattern_flag:"Client workflow integration and product attach depth appear limited, which may affect relationship durability.",
+       priority:{title:"Build Workflow Integration Program for Priority Client Relationships",owner:"Relationship Management + Product",kpi:"Workflow integration rate, product depth per client, relationship durability",why:"Limited workflow integration may increase relationship sensitivity to pricing or service competition."},
+       advisory_path:null,
+       impact_weight:0.20},
+      {id:"onboarding_friction",category:"workflow",
+       condition:function(a){return (a.GE4||0)<=2;},
+       pattern_flag:"Onboarding and activation discipline may be creating friction that affects revenue realization timing.",
+       priority:{title:"Standardize Onboarding and Activation Across Major Segments",owner:"Ops + Product + Sales",kpi:"Time-to-activate, onboarding completion rate, revenue realization lag",why:"Onboarding friction delays revenue and may create early relationship risk."},
+       advisory_path:null,
+       impact_weight:0.15},
+      // COST VISIBILITY
+      {id:"unit_cost_absent",category:"cost",
+       condition:function(a){return (a.MC4||0)<=1;},
+       pattern_flag:"Unit cost visibility may be absent, which can limit pricing discipline and investment prioritization.",
+       priority:{title:"Build Unit Cost Model by Rail and Segment",owner:"Finance + Product",kpi:"Unit cost by rail, segment price floors, contribution margin",why:"Cost anchoring is a prerequisite for consistent pricing governance and investment prioritization."},
+       advisory_path:{label:"Flow-level cost structure",description:"Unit cost modeling and cost attribution across rails and segments."},
+       impact_weight:0.30},
+      {id:"cost_visibility_limited",category:"cost",
+       condition:function(a){return (a.MC4||0)>1&&(a.MC4||0)<=2&&(a.MC5||0)<=2;},
+       pattern_flag:"Cost management discipline appears limited across both internal processing and external provider costs.",
+       priority:{title:"Develop Comprehensive Cost Visibility Across Rails and Providers",owner:"Finance + Network Management",kpi:"Unit cost trend, external provider cost per payment, routing cost impact",why:"Gaps in internal and external cost visibility may limit margin management options."},
+       advisory_path:{label:"Flow-level cost structure",description:"End-to-end cost visibility model including correspondent and network costs."},
+       impact_weight:0.20},
+      // GOVERNANCE
+      {id:"ownership_and_kpi_weak",category:"governance",
+       condition:function(a){return (a.GO1||0)<=2&&(a.GO2||0)<=2;},
+       pattern_flag:"Portfolio ownership and KPI review discipline appear limited, which may reduce management visibility into recurring patterns.",
+       priority:{title:"Establish Portfolio Ownership Model with Recurring KPI Review",owner:"Senior Management + Portfolio Owner",kpi:"Ownership clarity, KPI review frequency, actions opened and closed per cycle",why:"Named ownership and recurring review create the accountability structure needed for sustained improvement."},
+       advisory_path:{label:"Portfolio governance design",description:"Operating model design for portfolio ownership, KPI governance, and review cadence."},
+       impact_weight:0.30},
+      {id:"cross_functional_limited",category:"governance",
+       condition:function(a){return (a.GO3||0)<=2;},
+       pattern_flag:"Cross-functional coordination across product, finance, and operations may be operating inconsistently.",
+       priority:{title:"Establish Cross-Functional Operating Review with Shared Portfolio Metrics",owner:"Portfolio Owner + Finance + Ops",kpi:"Review participation rate, actions closed per cycle, cross-functional alignment",why:"Portfolio decisions made without cross-functional input may reflect incomplete economics."},
+       advisory_path:{label:"Portfolio governance design",description:"Cross-functional operating model and shared metrics framework."},
+       impact_weight:0.20},
+      {id:"portfolio_visibility_limited",category:"governance",
+       condition:function(a){return (a.GO6||0)<=2&&(a.GO5||0)<=2;},
+       pattern_flag:"Management visibility into portfolio economics appears limited across major rails and segments.",
+       priority:{title:"Build Integrated Portfolio Visibility for Management Review",owner:"Finance + Product + Portfolio Owner",kpi:"Portfolio coverage, KPI accessibility, management review frequency",why:"Visibility gaps at the portfolio level may slow response to operating or pricing pressure."},
+       advisory_path:{label:"Portfolio governance design",description:"Integrated portfolio reporting and management visibility design."},
+       impact_weight:0.20}
+    ];
+
+    function computeSignals(answers, pillarScores) {
+      var signals = {
+        weakest_pillars:[], strongest_pillars:[],
+        signal_flags:[], pattern_flags:[],
+        recommended_priorities:[], advisory_paths:[]
+      };
+      var pillarIds = Object.keys(pillarScores);
+      var sorted = pillarIds.map(function(id){return {id:id,score:pillarScores[id].score5};})
+                            .sort(function(a,b){return a.score-b.score;});
+      signals.weakest_pillars   = sorted.slice(0,3);
+      signals.strongest_pillars = sorted.slice(-2);
+      var fired = [], catCounts = {};
+      for (var i=0; i<SIGNAL_RULES.length; i++) {
+        var rule = SIGNAL_RULES[i];
+        try {
+          if (rule.condition(answers, pillarScores)) {
+            fired.push(rule);
+            catCounts[rule.category] = (catCounts[rule.category]||0)+1;
+          }
+        } catch(e) {}
+      }
+      function recMult(cat) {
+        var c = catCounts[cat]||0;
+        return c>=3?1.6:c>=2?1.3:1.0;
+      }
+      var allScores = pillarIds.map(function(id){return pillarScores[id].score5;});
+      var weakestScore = Math.min.apply(null, allScores);
+      var scored = fired.map(function(rule){
+        return {score:(5-weakestScore)*rule.impact_weight*recMult(rule.category), rule:rule};
+      }).sort(function(a,b){return b.score-a.score;});
+      var seenFlags={}, seenPri={}, seenAdv={};
+      for (var j=0; j<scored.length; j++) {
+        var sr=scored[j], r=sr.rule;
+        if (!seenFlags[r.pattern_flag]) {
+          signals.pattern_flags.push(r.pattern_flag);
+          seenFlags[r.pattern_flag]=true;
+        }
+        if (r.priority && !seenPri[r.priority.title]) {
+          var p={}; for(var k in r.priority)p[k]=r.priority[k]; p._score=sr.score;
+          signals.recommended_priorities.push(p);
+          seenPri[r.priority.title]=true;
+        }
+        if (r.advisory_path && !seenAdv[r.advisory_path.label]) {
+          signals.advisory_paths.push(r.advisory_path);
+          seenAdv[r.advisory_path.label]=true;
+        }
+      }
+      signals.pattern_flags           = signals.pattern_flags.slice(0,5);
+      signals.recommended_priorities  = signals.recommended_priorities.slice(0,5);
+      signals.advisory_paths          = signals.advisory_paths.slice(0,4);
+      return signals;
+    }
+
+    function renderObservations(signals) {
+      var card = document.getElementById("observationsCard");
+      var el   = document.getElementById("observationsList");
+      if (!el || !signals || !signals.pattern_flags || signals.pattern_flags.length === 0) {
+        if (card) card.style.display = "none";
+        return;
+      }
+      card.style.display = "";
+      var h = '<p class="obs-intro">Scoring patterns suggest the following areas may warrant management attention:</p>';
+      h += '<ul class="obs-bullets">';
+      for (var i=0; i<signals.pattern_flags.length; i++) {
+        h += '<li>' + signals.pattern_flags[i] + '</li>';
+      }
+      h += '</ul>';
+      el.innerHTML = h;
+    }
+
+    function renderAdvisoryBridge(signals) {
+      var card = document.getElementById("advisoryCard");
+      var el   = document.getElementById("advisoryBridgeContent");
+      if (!el || !signals || !signals.advisory_paths || signals.advisory_paths.length === 0) {
+        if (card) card.style.display = "none";
+        return;
+      }
+      card.style.display = "";
+      var h = '<ul class="advisory-paths">';
+      for (var i=0; i<signals.advisory_paths.length; i++) {
+        var ap = signals.advisory_paths[i];
+        h += '<li><span class="ap-label">' + ap.label + '</span> \u2014 ' + ap.description + '</li>';
+      }
+      h += '</ul>';
+      el.innerHTML = h;
+    }
+
     function exportPDF() {
       if (!state.lastResult) return;
       if (!window.jspdf) { alert("PDF library not loaded. Please refresh and try again."); return; }
       var r = state.lastResult;
+      var signals = r.signals || {pattern_flags:[],recommended_priorities:[],advisory_paths:[]};
       var sc = pfiGetScenario(r.overall);
       var { jsPDF } = window.jspdf;
       var doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
@@ -2523,16 +2758,52 @@ const PFI_SCENARIOS = [
       var diagLabels={"FOUNDATIONAL GAPS":{prefix:"FOUNDATIONAL GAP",color:SCORE_R},"DEVELOPING FRANCHISE":{prefix:"PRIORITY AREA",color:[184,92,26]},"OPERATIONALLY STABLE":{prefix:"IMPROVEMENT AREA",color:[138,115,24]},"STRATEGICALLY ALIGNED":{prefix:"OPTIMIZATION AREA",color:[30,107,60]},"ENTERPRISE-GRADE":{prefix:"WATCH AREA",color:[20,82,48]}};var diagMeta=diagLabels[sc.label]||diagLabels["STRUCTURAL FAILURE"];var tagH=4.5;
       sc.structural_issues.forEach(function(text,i){var label=diagMeta.prefix+" "+(i+1);var tagW=label.length>16?32:27;setFont("normal",7.5,GDARK);var iLines=doc.splitTextToSize(text,CW-tagW-5);var rowH=Math.max(iLines.length*3.5,tagH)+3;fillRect(ML,y+rowH/2-tagH/2,tagW,tagH,diagMeta.color,1.5);setFont("bold",5,WHITE);doc.text(label,ML+tagW/2,y+rowH/2+0.8,{align:"center"});setFont("normal",7.5,GDARK);doc.text(iLines,ML+tagW+3,y+(rowH-iLines.length*3.5)/2+3);y+=rowH+2;});
       // Page 3
-      doc.addPage();drawHeader(3,false);drawFooter();y=18;y=sectionHead("90-DAY PRIORITIES",y);
+      doc.addPage();drawHeader(3,false);drawFooter();y=18;
+      if(signals.pattern_flags&&signals.pattern_flags.length>0){
+        y=sectionHead("MANAGEMENT OBSERVATIONS",y);
+        setFont("normal",7.5,GDARK);
+        var obsIntro="Scoring patterns suggest the following areas may warrant management attention:";
+        var obsIntroL=doc.splitTextToSize(obsIntro,CW);
+        doc.text(obsIntroL,ML,y);y+=obsIntroL.length*3.4+2;
+        var obsItems=signals.pattern_flags.slice(0,3);
+        obsItems.forEach(function(flag){
+          var fl=doc.splitTextToSize(flag,CW-5);
+          doc.setFillColor.apply(doc,GOLD);doc.circle(ML+1.5,y+3-2.0,1.2,"F");
+          setFont("normal",7.5,GDARK);doc.text(fl,ML+4.5,y+3);
+          y+=fl.length*3.4+2;
+        });
+        y+=4;
+      }
+      y=sectionHead("90-DAY PRIORITIES",y);
+      var _dynP=(signals.recommended_priorities||[]),_statP=(sc.priorities||[]),_mergedP=[],_usedT={};
+      _dynP.forEach(function(p){if(_mergedP.length<5){_mergedP.push(p);_usedT[p.title]=true;}});
+      _statP.forEach(function(p){if(_mergedP.length<5&&!_usedT[p.title])_mergedP.push(p);});
       var usableH=PH-10-y-8,pGap=2,pCardHt=(usableH-pGap*4)/5,badgeW=11,labelX=ML+badgeW+4,labelW=CW-badgeW-4,LABELCOL=12,VALCOL_X=labelX+LABELCOL+3,valW=labelW-LABELCOL-3-8;
-      sc.priorities.forEach(function(pri,idx){fillRect(ML,y,CW,pCardHt,[253,254,254],2);strokeRect(ML,y,CW,pCardHt,GRULE,0.3,2);fillRect(ML,y,badgeW,pCardHt,NAVY,2);doc.rect(ML+badgeW-3,y,3,pCardHt,"F");setFont("bold",14,GOLD);doc.text(String(idx+1),ML+badgeW/2,y+pCardHt/2+4,{align:"center"});var titleZoneH=pCardHt*0.28;setFont("bold",7.5,NAVY);var titleLines=doc.splitTextToSize(pri.title,labelW-2);doc.text(titleLines[0],labelX,y+titleZoneH/2+2);if(titleLines.length>1)doc.text(titleLines[1],labelX,y+titleZoneH/2+5.5);hRule(labelX,y+titleZoneH,labelW,GRULE,0.3);var bodyTop=y+titleZoneH+1,bodyBot=y+pCardHt-1,bodyH=bodyBot-bodyTop,rowH3=bodyH/3;var rows3=[{label:"OWNER",value:pri.owner,color:NAVY},{label:"KPI",value:pri.kpi,color:NAVY},{label:"WHY",value:pri.why,color:GDARK}];rows3.forEach(function(row,ri){var rowTop=bodyTop+ri*rowH3,rowMid=rowTop+rowH3/2;if(ri<2)hRule(labelX,rowTop+rowH3,labelW,[234,236,238],0.2);setFont("bold",5.5,GOLD);doc.text(row.label,labelX,rowMid+1.5);setFont("normal",7.5,row.color);var vLines=doc.splitTextToSize(row.value,valW);var textBlockH=vLines.length*2.8;var textStartY=rowMid-textBlockH/2+2.5;doc.text(vLines,VALCOL_X,textStartY);});y+=pCardHt+pGap;});
+      _mergedP.forEach(function(pri,idx){fillRect(ML,y,CW,pCardHt,[253,254,254],2);strokeRect(ML,y,CW,pCardHt,GRULE,0.3,2);fillRect(ML,y,badgeW,pCardHt,NAVY,2);doc.rect(ML+badgeW-3,y,3,pCardHt,"F");setFont("bold",14,GOLD);doc.text(String(idx+1),ML+badgeW/2,y+pCardHt/2+4,{align:"center"});var titleZoneH=pCardHt*0.28;setFont("bold",7.5,NAVY);var titleLines=doc.splitTextToSize(pri.title,labelW-2);doc.text(titleLines[0],labelX,y+titleZoneH/2+2);if(titleLines.length>1)doc.text(titleLines[1],labelX,y+titleZoneH/2+5.5);hRule(labelX,y+titleZoneH,labelW,GRULE,0.3);var bodyTop=y+titleZoneH+1,bodyBot=y+pCardHt-1,bodyH=bodyBot-bodyTop,rowH3=bodyH/3;var rows3=[{label:"OWNER",value:pri.owner,color:NAVY},{label:"KPI",value:pri.kpi,color:NAVY},{label:"WHY",value:pri.why,color:GDARK}];rows3.forEach(function(row,ri){var rowTop=bodyTop+ri*rowH3,rowMid=rowTop+rowH3/2;if(ri<2)hRule(labelX,rowTop+rowH3,labelW,[234,236,238],0.2);setFont("bold",5.5,GOLD);doc.text(row.label,labelX,rowMid+1.5);setFont("normal",7.5,row.color);var vLines=doc.splitTextToSize(row.value,valW);var textBlockH=vLines.length*2.8;var textStartY=rowMid-textBlockH/2+2.5;doc.text(vLines,VALCOL_X,textStartY);});y+=pCardHt+pGap;});
       // Page 4
       doc.addPage();drawHeader(4,false);drawFooter();y=18;y=sectionHead("SUGGESTED 30 / 60 / 90 EXECUTION PLAN",y);
       var phaseColW=(CW-4)/3,phaseHdrH=14,phaseBodyH=34,phaseTotalH=phaseHdrH+phaseBodyH,phaseColors=[NAVY,[26,82,118],[21,67,96]];
       sc.execution.forEach(function(phase,pi){var px=ML+pi*(phaseColW+2);fillRect(px,y,phaseColW,phaseTotalH,[253,254,254],3);strokeRect(px,y,phaseColW,phaseTotalH,GRULE,0.3,3);fillRect(px,y,phaseColW,phaseHdrH,phaseColors[pi],3);doc.rect(px,y+phaseHdrH-3,phaseColW,3,"F");setFont("bold",6.5,GOLD);doc.text(phase.period,px+3,y+6);setFont("bold",8,WHITE);doc.text(phase.title,px+3,y+11.5);var by=y+phaseHdrH+5;phase.items.forEach(function(item){setFont("normal",7.5,GDARK);var iLines=doc.splitTextToSize(item,phaseColW-8);var firstBaseline=by+2.5;doc.setFillColor.apply(doc,GOLD);doc.circle(px+3,firstBaseline-0.2,1.2,"F");doc.text(iLines,px+6,firstBaseline);by+=iLines.length*3+3;});});y+=phaseTotalH+8;
       setFont("normal",6.5,GMID);doc.text("Execution sequence \u2014 stabilize before you scale",PW/2,y,{align:"center"});y+=3;hRule(ML,y,CW,GRULE,0.3);y+=5;
       setFont("normal",7.5,WHITE);var stLines=doc.splitTextToSize(sc.strategic_takeaway,CW-8);var stH=stLines.length*4.2+16;fillRect(ML,y,CW,stH,NAVY,3);fillRect(ML,y,2.5,stH,GOLD);setFont("bold",6,GOLD);doc.text("STRATEGIC TAKEAWAY",ML+5,y+6);setFont("normal",7.5,WHITE);doc.text(stLines,ML+5,y+11);y+=stH+5;
-      var noteText="This assessment can serve as the starting point for a deeper portfolio review using your actual transaction data, pricing records, and operating data — which may support deeper portfolio analysis through flow-level portfolio mapping, management scorecards, and operating cost analysis.";setFont("normal",7.5,GDARK);var noteLines=doc.splitTextToSize(noteText,CW-8);var noteH=noteLines.length*3.5+10;fillRect(ML,y,CW,noteH,[244,246,248],2);fillRect(ML,y,2.5,noteH,GOLD);setFont("normal",7.5,GDARK);doc.text(noteLines,ML+5,y+6);y+=noteH+5;
+      var _apaths=(signals.advisory_paths||[]).slice(0,4);
+      if(_apaths.length>0){
+        y=sectionHead("AREAS WHERE DEEPER REVIEW MAY BE WARRANTED",y);
+        _apaths.forEach(function(ap){
+          var apTxt=ap.label+" — "+ap.description;
+          var apL=doc.splitTextToSize(apTxt,CW-5);
+          doc.setFillColor.apply(doc,GOLD);doc.circle(ML+1.5,y+3-2.0,1.2,"F");
+          setFont("normal",7.5,GDARK);doc.text(apL,ML+4.5,y+3);
+          y+=apL.length*3.4+2;
+        });
+        y+=4;
+      }else{
+        var noteText="This assessment can serve as the starting point for a deeper portfolio review using your actual transaction data, pricing records, and operating data — which may support deeper portfolio analysis through flow-level portfolio mapping, management scorecards, and operating cost analysis.";
+        setFont("normal",7.5,GDARK);var noteLines=doc.splitTextToSize(noteText,CW-8);
+        var noteH=noteLines.length*3.5+10;fillRect(ML,y,CW,noteH,[244,246,248],2);
+        fillRect(ML,y,2.5,noteH,GOLD);setFont("normal",7.5,GDARK);
+        doc.text(noteLines,ML+5,y+6);y+=noteH+5;
+      }
       hRule(ML,y,CW,GRULE,0.3);y+=5;setFont("bold",9,NAVY);doc.text("Questions About Your Results",ML,y);y+=5;setFont("bold",8,GDARK);doc.text("Carlos Ure\u00f1a",ML,y);y+=4;setFont("normal",7.5,GMID);doc.text("Payments Strategy & Commercialization",ML,y);y+=4;setFont("bold",7.5,GOLD);doc.text("urena.m.carlos@gmail.com",ML,y);setFont("normal",7.5,GMID);doc.text("  \u00b7  carlosurena.com",ML+40,y);
       doc.save("Payments-Franchise-Index-PFI-Diagnostic.pdf");
     }
