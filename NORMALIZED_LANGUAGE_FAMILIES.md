@@ -170,3 +170,27 @@ Before writing or editing any content:
 3. If a match is found: apply the approved replacement or confirm it qualifies as an accepted exception.
 4. If working with frozen PFI content: surface any family match for a targeted single-string decision.
 5. Do not run broad audits. One string at a time, only when triggered by a family match.
+---
+
+## Standing Auto-Patch Rule
+
+**Effective 2026-05-15. No approval step required.**
+
+When any frozen visible string in PFI_SCENARIOS, SIGNAL_RULES, or any site
+content contains a term from a normalized family:
+
+1. Check whether it qualifies as a defined accepted exception.
+2. If yes — leave unchanged.
+3. If no — apply the approved family replacement automatically.
+4. Log the change. Do not surface for approval.
+
+This rule applies to:
+- All future edits to pfi.html
+- All new content written for carlosurena.com or models.carlosurena.com
+- All consulting materials, LinkedIn content, outreach, and PDF exports
+- Any content written on behalf of Carlos in any mode
+
+The rule does not require Carlos to run scenarios to discover survivors.
+It does not create an approval workflow.
+It fires silently and logs at the bottom of the relevant response.
+
