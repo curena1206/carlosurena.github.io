@@ -775,6 +775,42 @@
     .advisory-paths li::before { content: "—"; position: absolute; left: 0; color: var(--gold); }
     .advisory-paths .ap-label { font-weight: bold; }
   </style>
+<style>
+  /* ── Structural Durability Layer ──────────────────────────── */
+  #structuralCard { margin-top: 12px; }
+  #structuralCard.hidden { display: none; }
+  .structural-rating {
+    font-family: 'Georgia', serif;
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .structural-desc {
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 14px;
+    line-height: 1.55;
+  }
+  .structural-patterns { margin-top: 4px; }
+  .structural-pattern {
+    margin-bottom: 12px;
+    padding-left: 12px;
+  }
+  .structural-pattern-label {
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .structural-pattern-desc {
+    font-family: 'Georgia', serif;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+  }
+</style>
 </head>
 
 <body>
@@ -923,6 +959,8 @@
               </div>
             </div>
           </div>
+
+          <div id="structuralCard" class="card hidden"></div>
 
           <div class="card">
             <div class="card-eyebrow">Pillar heatmap</div>
@@ -2039,6 +2077,7 @@ window.PPD_MODEL = (() => {
       renderPriorities(result.overall, result.signals);
       renderAdvisoryBridge(result.signals);
       render3090(result.overall);
+      renderStructuralStability(result.stability);
     }
 
     function computeAndShow(fromScenario = false) {
@@ -2049,7 +2088,8 @@ window.PPD_MODEL = (() => {
       const a = answersMapForRules();
       const ruleOutput = runRules(a);
       const signals = computeSignals(state.answers, pillarScores, overall);
-      const result = { pillarScores, overall, sub, rules: ruleOutput, signals };
+      const stability = computeStructuralStability(pillarScores);
+      const result = { pillarScores, overall, sub, rules: ruleOutput, signals, stability };
       state.lastResult = result;
       if (els.btnCopy) els.btnCopy.disabled = false;
       if (els.btnCopy2) els.btnCopy2.disabled = false;
@@ -2665,6 +2705,102 @@ const PFI_SCENARIOS = [
        advisory_path:{label:"Portfolio governance design",description:"Integrated portfolio reporting and management visibility design."},
        impact_weight:0.20}
     ];
+
+    // ── STRUCTURAL DURABILITY PATTERNS ─────────────────────────────────────
+    // Each pattern: high capability pillar + low support pillar = structural risk
+    // Severity = (cap_score - sup_score) × multiplier; ordered by severity desc,
+    // capability pillar weight as tiebreaker.
+    var STRUCTURAL_PATTERNS = [
+      { id:"unstable_architecture",
+        cap:"revenue_arch",    sup:"governance",        mult:1.4,
+        label:"Unstable Operating Architecture",
+        desc:"Strong commercial capabilities may not be supported by sufficient governance discipline." },
+      { id:"infrastructure_without_economics",
+        cap:"multi_rail",      sup:"margin_cost",        mult:1.1,
+        label:"Infrastructure Without Economics",
+        desc:"Infrastructure sophistication appears stronger than supporting economic visibility." },
+      { id:"growth_without_revenue_foundation",
+        cap:"growth_engine",   sup:"revenue_arch",       mult:1.3,
+        label:"Growth Without Revenue Foundation",
+        desc:"Growth capabilities may be outpacing the underlying revenue architecture needed to sustain them." },
+      { id:"infrastructure_ahead_of_commercial_maturity",
+        cap:"multi_rail",      sup:"revenue_arch",       mult:1.3,
+        label:"Infrastructure Ahead of Commercial Maturity",
+        desc:"Infrastructure capabilities appear more developed than the supporting commercial framework." },
+      { id:"monetization_fragility",
+        cap:"revenue_arch",    sup:"balance_liquidity",  mult:1.2,
+        label:"Monetization Fragility",
+        desc:"Commercial activity appears stronger than the supporting treasury and balance integration structure." },
+      { id:"revenue_without_cost_visibility",
+        cap:"revenue_arch",    sup:"margin_cost",        mult:1.1,
+        label:"Revenue Without Cost Visibility",
+        desc:"Revenue capability appears stronger than the visibility needed to understand fully loaded economics." },
+      { id:"growth_without_governance_discipline",
+        cap:"growth_engine",   sup:"governance",         mult:1.4,
+        label:"Growth Without Governance Discipline",
+        desc:"Growth initiatives may be scaling faster than supporting management structures." },
+    ];
+
+    var STRUCT_HIGH = 4.0, STRUCT_LOW = 2.0;
+    var STRUCT_CAP_WEIGHTS = {
+      revenue_arch:0.20, growth_engine:0.10, margin_cost:0.20,
+      multi_rail:0.15, balance_liquidity:0.20, governance:0.15
+    };
+
+    function computeStructuralStability(pillarScores) {
+      var fired = [];
+      STRUCTURAL_PATTERNS.forEach(function(p) {
+        var capScore = pillarScores[p.cap] ? pillarScores[p.cap].score5 : 0;
+        var supScore = pillarScores[p.sup] ? pillarScores[p.sup].score5 : 5;
+        if (capScore >= STRUCT_HIGH && supScore <= STRUCT_LOW) {
+          var severity = Math.round((capScore - supScore) * p.mult * 100) / 100;
+          fired.push({ pattern:p, severity:severity, capWeight:STRUCT_CAP_WEIGHTS[p.cap]||0.15 });
+        }
+      });
+      fired.sort(function(a,b) {
+        if (Math.abs(a.severity - b.severity) > 0.01) return b.severity - a.severity;
+        return b.capWeight - a.capWeight;
+      });
+      var n = fired.length;
+      var rating, ratingDesc, ratingColor;
+      if (n === 0) {
+        rating = "Stable Foundation";
+        ratingDesc = "Current performance appears supported by reinforcing capabilities and balanced operating structures.";
+        ratingColor = "#1e6b3c";
+      } else if (n === 1) {
+        rating = "Uneven Foundation";
+        ratingDesc = "Structural strengths are developing unevenly and may constrain consistency over time.";
+        ratingColor = "#b85c1a";
+      } else {
+        rating = "Structural Dependency Risk";
+        ratingDesc = "Strong capabilities may be relying on weaker supporting structures, which can reduce durability over time.";
+        ratingColor = "#8b2020";
+      }
+      return { rating:rating, ratingDesc:ratingDesc, ratingColor:ratingColor, patterns:fired, count:n };
+    }
+
+    function renderStructuralStability(stability) {
+      var el = document.getElementById("structuralCard");
+      if (!el) return;
+      if (!stability) { el.classList.add("hidden"); return; }
+      var c = stability.ratingColor;
+      var h = '<div class="card-eyebrow">Structural Stability</div>';
+      h += '<div class="structural-rating" style="color:' + c + '">' + stability.rating + '</div>';
+      h += '<div class="structural-desc">' + stability.ratingDesc + '</div>';
+      if (stability.patterns.length > 0) {
+        h += '<div class="structural-patterns">';
+        stability.patterns.forEach(function(fp) {
+          h += '<div class="structural-pattern" style="border-left:2px solid ' + c + '">';
+          h += '<span class="structural-pattern-label" style="color:' + c + '">' + fp.pattern.label + '</span>';
+          h += '<span class="structural-pattern-desc">' + fp.pattern.desc + '</span>';
+          h += '</div>';
+        });
+        h += '</div>';
+      }
+      el.innerHTML = h;
+      el.classList.remove("hidden");
+    }
+
     function computeSignals(answers, pillarScores, overall) {
       var signals = {
         weakest_pillars:[], strongest_pillars:[],
@@ -2780,6 +2916,32 @@ const PFI_SCENARIOS = [
       var sx=ML+halfW+4;var activeBand=SCALE_COLORS.find(function(b){return r.overall>=b.lo&&r.overall<=b.hi;})||SCALE_COLORS[0];
       fillRect(sx,y,halfW,cardH,NAVY,2);setFont("bold",5.5,GOLD);doc.text("PFI SCORE",sx+3,y+5);setFont("bold",18,WHITE);doc.text(String(r.overall),sx+3,y+13);setFont("normal",10,[180,190,210]);doc.text("/ 100",sx+3+String(r.overall).length*5,y+13);setFont("bold",8,activeBand.labelDark);doc.text(sc.label,sx+3,y+16.5);
       y+=cardH+5;hRule(ML,y,CW,GOLD,1.2);y+=4;
+      // ── Structural Stability (PDF) ─────────────────────────────────────────
+      if (r.stability && r.stability.count > 0) {
+        var stabInk = r.stability.count >= 2 ? [139,32,32] : [184,92,26];
+        var stabPatterns = r.stability.patterns;
+        var stabH = 13 + stabPatterns.length * 5.5;
+        fillRect(ML, y, CW, stabH, GLIT, 1.5);
+        fillRect(ML, y, 2.5, stabH, stabInk);
+        setFont("bold", 5.5, GMID);
+        doc.text("STRUCTURAL STABILITY", ML+4, y+4.2);
+        setFont("bold", 7.5, stabInk);
+        doc.text(r.stability.rating, ML+48, y+4.2);
+        setFont("normal", 6.5, GDARK);
+        var stabDescLines = doc.splitTextToSize(r.stability.ratingDesc, CW-8);
+        doc.text(stabDescLines[0], ML+4, y+8.5);
+        var py = y + 12;
+        stabPatterns.forEach(function(fp) {
+          doc.setFillColor.apply(doc, stabInk);
+          doc.circle(ML+5, py+0.8, 0.9, "F");
+          setFont("bold", 6.5, GDARK);
+          doc.text(fp.pattern.label, ML+7.5, py+1.8);
+          py += 5.5;
+        });
+        y += stabH + 3;
+        hRule(ML, y, CW, GRULE, 0.3); y += 4;
+      }
+
       y=sectionHead("BENCHMARK INSIGHT",y);setFont("normal",7.5,GDARK);var biLines=doc.splitTextToSize(sc.benchmark_insight,CW);doc.text(biLines,ML,y);y+=biLines.length*3.4+5;
       y=sectionHead("PFI CLASSIFICATION SCALE",y);y+=1.0;var scaleRowH=6.0;
       SCALE_COLORS.forEach(function(band){var isActive=r.overall>=band.lo&&r.overall<=band.hi;var rowMid=y+scaleRowH/2;var textBaseline=rowMid+1.5;var capTop=textBaseline+1.94;var descender=0.5;var boxPad=1.1;var boxTop=capTop+boxPad;var boxBot=textBaseline-descender-boxPad;var badgeH=boxTop-boxBot;var boxY=boxBot;if(isActive){fillRect(ML-1,boxY,CW+2,badgeH,[245,238,238],1.5);}doc.setFillColor.apply(doc,band.ink);doc.rect(ML,capTop-2.8,2.8,2.8,"F");doc.setFont("helvetica","normal");doc.setFontSize(8);doc.setTextColor.apply(doc,NAVY);doc.text(band.label,ML+4.5,textBaseline);setFont("normal",7,GMID);doc.text(band.lo+" \u2013 "+band.hi,ML+38,textBaseline);if(isActive){fillRect(ML+52,boxY,26,badgeH,band.ink,1.5);setFont("bold",5.5,WHITE);var badgeMid=boxY+badgeH/2;doc.text("YOUR SCORE",ML+65,badgeMid+1.0,{align:"center"});}y+=scaleRowH;});y+=4;
