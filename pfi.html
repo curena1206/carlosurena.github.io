@@ -2748,13 +2748,32 @@ const PFI_SCENARIOS = [
     };
 
     function computeStructuralStability(pillarScores, overall) {
-      // Compute average pillar score for baseline condition
+      // ── Layer 1: Baseline Foundation (overall score only) ─────────────────
+      var baseline, baselineDesc, baselineColor, baselineInk;
+      if (overall <= 25) {
+        baseline = "Foundational Instability";
+        baselineDesc = "The franchise appears weak across core operating structures. The issue is not imbalance; it is the absence of a reliable operating foundation.";
+        baselineColor = "#8b2020"; baselineInk = [139,32,32];
+      } else if (overall <= 50) {
+        baseline = "Developing Foundation";
+        baselineDesc = "Core operating structures appear partially formed but may not yet provide consistent support for commercial scaling.";
+        baselineColor = "#b85c1a"; baselineInk = [184,92,26];
+      } else if (overall <= 70) {
+        baseline = "Balanced Foundation";
+        baselineDesc = "Current performance appears relatively balanced across core operating structures, though several areas may still require improvement.";
+        baselineColor = "#8a7318"; baselineInk = [138,115,24];
+      } else {
+        baseline = "Stable Foundation";
+        baselineDesc = "Current performance appears supported by reinforcing capabilities and balanced operating structures.";
+        baselineColor = "#1e6b3c"; baselineInk = [30,107,60];
+      }
+
+      // ── Layer 2: Dependency Overlay (independent of baseline) ─────────────
       var pillarIds = Object.keys(pillarScores);
       var avgPillar = 0;
       pillarIds.forEach(function(id) { avgPillar += pillarScores[id].score5; });
       avgPillar = pillarIds.length > 0 ? avgPillar / pillarIds.length : 0;
 
-      // Detect dependency asymmetry patterns
       var fired = [];
       STRUCTURAL_PATTERNS.forEach(function(p) {
         var capScore = pillarScores[p.cap] ? pillarScores[p.cap].score5 : 0;
@@ -2769,48 +2788,38 @@ const PFI_SCENARIOS = [
         return b.capWeight - a.capWeight;
       });
       var n = fired.length;
-      var rating, ratingDesc, ratingColor, ratingInk;
-
-      // Mode 1: Baseline structural condition
-      if (overall <= 25 || avgPillar <= 1.5) {
-        rating      = "Foundational Instability";
-        ratingDesc  = "The franchise appears weak across core operating structures. The issue is not imbalance between strong and weak capabilities; it is the absence of a reliable operating foundation.";
-        ratingColor = "#8b2020"; ratingInk = [139,32,32];
-      } else if (overall <= 50) {
-        rating      = "Developing Foundation";
-        ratingDesc  = "Core operating structures appear partially formed but may not yet provide consistent support for commercial scaling.";
-        ratingColor = "#b85c1a"; ratingInk = [184,92,26];
-      // Mode 2: Dependency asymmetry (score > 50 only)
-      } else if (n === 0) {
-        rating      = "Stable Foundation";
-        ratingDesc  = "Current performance appears supported by reinforcing capabilities and balanced operating structures.";
-        ratingColor = "#1e6b3c"; ratingInk = [30,107,60];
-      } else if (n === 1) {
-        rating      = "Uneven Foundation";
-        ratingDesc  = "Structural strengths are developing unevenly and may constrain consistency over time.";
-        ratingColor = "#b85c1a"; ratingInk = [184,92,26];
-      } else {
-        rating      = "Structural Dependency Risk";
-        ratingDesc  = "Strong capabilities may be relying on weaker supporting structures, which can reduce durability over time.";
-        ratingColor = "#8b2020"; ratingInk = [139,32,32];
+      var overlayLabel = null, overlayColor = null, overlayInk = null;
+      if (n === 1) {
+        overlayLabel = "Dependency Signals Detected";
+        overlayColor = "#b85c1a"; overlayInk = [184,92,26];
+      } else if (n >= 2) {
+        overlayLabel = "Structural Dependency Risk Detected";
+        overlayColor = "#8b2020"; overlayInk = [139,32,32];
       }
-      return { rating:rating, ratingDesc:ratingDesc, ratingColor:ratingColor,
-               ratingInk:ratingInk, patterns:fired, count:n, avgPillar:Math.round(avgPillar*100)/100 };
+
+      return {
+        baseline:baseline, baselineDesc:baselineDesc,
+        baselineColor:baselineColor, baselineInk:baselineInk,
+        overlayLabel:overlayLabel, overlayColor:overlayColor, overlayInk:overlayInk,
+        patterns:fired, count:n, avgPillar:Math.round(avgPillar*100)/100
+      };
     }
 
     function renderStructuralStability(stability) {
       var el = document.getElementById("structuralCard");
       if (!el) return;
       if (!stability) { el.classList.add("hidden"); return; }
-      var c = stability.ratingColor;
+      var bc = stability.baselineColor;
       var h = '<div class="card-eyebrow">Structural Stability</div>';
-      h += '<div class="structural-rating" style="color:' + c + '">' + stability.rating + '</div>';
-      h += '<div class="structural-desc">' + stability.ratingDesc + '</div>';
-      if (stability.patterns.length > 0) {
+      h += '<div class="structural-rating" style="color:' + bc + '">' + stability.baseline + '</div>';
+      h += '<div class="structural-desc">' + stability.baselineDesc + '</div>';
+      if (stability.overlayLabel) {
+        var oc = stability.overlayColor;
+        h += '<div style="font-family:Georgia,serif;font-size:14px;font-weight:bold;color:' + oc + ';margin:6px 0 10px;">' + stability.overlayLabel + '</div>';
         h += '<div class="structural-patterns">';
         stability.patterns.forEach(function(fp) {
-          h += '<div class="structural-pattern" style="border-left:2px solid ' + c + '">';
-          h += '<span class="structural-pattern-label" style="color:' + c + '">' + fp.pattern.label + '</span>';
+          h += '<div class="structural-pattern" style="border-left:2px solid ' + oc + '">';
+          h += '<span class="structural-pattern-label" style="color:' + oc + '">' + fp.pattern.label + '</span>';
           h += '<span class="structural-pattern-desc">' + fp.pattern.desc + '</span>';
           h += '</div>';
         });
@@ -2935,28 +2944,32 @@ const PFI_SCENARIOS = [
       var sx=ML+halfW+4;var activeBand=SCALE_COLORS.find(function(b){return r.overall>=b.lo&&r.overall<=b.hi;})||SCALE_COLORS[0];
       fillRect(sx,y,halfW,cardH,NAVY,2);setFont("bold",5.5,GOLD);doc.text("PFI SCORE",sx+3,y+5);setFont("bold",18,WHITE);doc.text(String(r.overall),sx+3,y+13);setFont("normal",10,[180,190,210]);doc.text("/ 100",sx+3+String(r.overall).length*5,y+13);setFont("bold",8,activeBand.labelDark);doc.text(sc.label,sx+3,y+16.5);
       y+=cardH+5;hRule(ML,y,CW,GOLD,1.2);y+=4;
-      // ── Structural Stability (PDF) — always renders ────────────────────────
+      // ── Structural Stability (PDF) — two-layer ────────────────────────────
       if (r.stability) {
-        var stabInk = r.stability.ratingInk || [184,92,26];
-        var stabPatterns = r.stability.patterns || [];
-        var stabH = 13 + stabPatterns.length * 5.5;
+        var stabBaseInk = r.stability.baselineInk || [30,107,60];
+        var stabOvInk   = r.stability.overlayInk  || [184,92,26];
+        var stabPats    = r.stability.patterns || [];
+        var stabH = 14 + (r.stability.overlayLabel ? (6 + stabPats.length * 5.5) : 0);
         fillRect(ML, y, CW, stabH, GLIT, 1.5);
-        fillRect(ML, y, 2.5, stabH, stabInk);
+        fillRect(ML, y, 2.5, stabH, stabBaseInk);
         setFont("bold", 5.5, GMID);
         doc.text("STRUCTURAL STABILITY", ML+4, y+4.2);
-        setFont("bold", 7.5, stabInk);
-        doc.text(r.stability.rating, ML+48, y+4.2);
+        setFont("bold", 7.5, stabBaseInk);
+        doc.text(r.stability.baseline, ML+48, y+4.2);
         setFont("normal", 6.5, GDARK);
-        var stabDescLines = doc.splitTextToSize(r.stability.ratingDesc, CW-8);
-        doc.text(stabDescLines[0], ML+4, y+8.5);
-        if (stabPatterns.length > 0) {
-          var py = y + 12;
-          stabPatterns.forEach(function(fp) {
-            doc.setFillColor.apply(doc, stabInk);
-            doc.circle(ML+5, py+0.8, 0.9, "F");
+        var stabDescLines = doc.splitTextToSize(r.stability.baselineDesc, CW-8);
+        doc.text(stabDescLines.slice(0,2), ML+4, y+8.5);
+        if (r.stability.overlayLabel) {
+          var oy = y + 13;
+          setFont("bold", 6.5, stabOvInk);
+          doc.text(r.stability.overlayLabel, ML+4, oy+1.5);
+          oy += 5.5;
+          stabPats.forEach(function(fp) {
+            doc.setFillColor.apply(doc, stabOvInk);
+            doc.circle(ML+5, oy+0.8, 0.9, "F");
             setFont("bold", 6.5, GDARK);
-            doc.text(fp.pattern.label, ML+7.5, py+1.8);
-            py += 5.5;
+            doc.text(fp.pattern.label, ML+7.5, oy+1.8);
+            oy += 5.5;
           });
         }
         y += stabH + 3;
