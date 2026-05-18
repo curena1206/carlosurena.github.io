@@ -2088,7 +2088,7 @@ window.PPD_MODEL = (() => {
       const a = answersMapForRules();
       const ruleOutput = runRules(a);
       const signals = computeSignals(state.answers, pillarScores, overall);
-      const stability = computeStructuralStability(pillarScores);
+      const stability = computeStructuralStability(pillarScores, overall);
       const result = { pillarScores, overall, sub, rules: ruleOutput, signals, stability };
       state.lastResult = result;
       if (els.btnCopy) els.btnCopy.disabled = false;
@@ -2747,7 +2747,14 @@ const PFI_SCENARIOS = [
       multi_rail:0.15, balance_liquidity:0.20, governance:0.15
     };
 
-    function computeStructuralStability(pillarScores) {
+    function computeStructuralStability(pillarScores, overall) {
+      // Compute average pillar score for baseline condition
+      var pillarIds = Object.keys(pillarScores);
+      var avgPillar = 0;
+      pillarIds.forEach(function(id) { avgPillar += pillarScores[id].score5; });
+      avgPillar = pillarIds.length > 0 ? avgPillar / pillarIds.length : 0;
+
+      // Detect dependency asymmetry patterns
       var fired = [];
       STRUCTURAL_PATTERNS.forEach(function(p) {
         var capScore = pillarScores[p.cap] ? pillarScores[p.cap].score5 : 0;
@@ -2762,21 +2769,33 @@ const PFI_SCENARIOS = [
         return b.capWeight - a.capWeight;
       });
       var n = fired.length;
-      var rating, ratingDesc, ratingColor;
-      if (n === 0) {
-        rating = "Stable Foundation";
-        ratingDesc = "Current performance appears supported by reinforcing capabilities and balanced operating structures.";
-        ratingColor = "#1e6b3c";
+      var rating, ratingDesc, ratingColor, ratingInk;
+
+      // Mode 1: Baseline structural condition
+      if (overall <= 25 || avgPillar <= 1.5) {
+        rating      = "Foundational Instability";
+        ratingDesc  = "The franchise appears weak across core operating structures. The issue is not imbalance between strong and weak capabilities; it is the absence of a reliable operating foundation.";
+        ratingColor = "#8b2020"; ratingInk = [139,32,32];
+      } else if (overall <= 50) {
+        rating      = "Developing Foundation";
+        ratingDesc  = "Core operating structures appear partially formed but may not yet provide consistent support for commercial scaling.";
+        ratingColor = "#b85c1a"; ratingInk = [184,92,26];
+      // Mode 2: Dependency asymmetry (score > 50 only)
+      } else if (n === 0) {
+        rating      = "Stable Foundation";
+        ratingDesc  = "Current performance appears supported by reinforcing capabilities and balanced operating structures.";
+        ratingColor = "#1e6b3c"; ratingInk = [30,107,60];
       } else if (n === 1) {
-        rating = "Uneven Foundation";
-        ratingDesc = "Structural strengths are developing unevenly and may constrain consistency over time.";
-        ratingColor = "#b85c1a";
+        rating      = "Uneven Foundation";
+        ratingDesc  = "Structural strengths are developing unevenly and may constrain consistency over time.";
+        ratingColor = "#b85c1a"; ratingInk = [184,92,26];
       } else {
-        rating = "Structural Dependency Risk";
-        ratingDesc = "Strong capabilities may be relying on weaker supporting structures, which can reduce durability over time.";
-        ratingColor = "#8b2020";
+        rating      = "Structural Dependency Risk";
+        ratingDesc  = "Strong capabilities may be relying on weaker supporting structures, which can reduce durability over time.";
+        ratingColor = "#8b2020"; ratingInk = [139,32,32];
       }
-      return { rating:rating, ratingDesc:ratingDesc, ratingColor:ratingColor, patterns:fired, count:n };
+      return { rating:rating, ratingDesc:ratingDesc, ratingColor:ratingColor,
+               ratingInk:ratingInk, patterns:fired, count:n, avgPillar:Math.round(avgPillar*100)/100 };
     }
 
     function renderStructuralStability(stability) {
@@ -2916,10 +2935,10 @@ const PFI_SCENARIOS = [
       var sx=ML+halfW+4;var activeBand=SCALE_COLORS.find(function(b){return r.overall>=b.lo&&r.overall<=b.hi;})||SCALE_COLORS[0];
       fillRect(sx,y,halfW,cardH,NAVY,2);setFont("bold",5.5,GOLD);doc.text("PFI SCORE",sx+3,y+5);setFont("bold",18,WHITE);doc.text(String(r.overall),sx+3,y+13);setFont("normal",10,[180,190,210]);doc.text("/ 100",sx+3+String(r.overall).length*5,y+13);setFont("bold",8,activeBand.labelDark);doc.text(sc.label,sx+3,y+16.5);
       y+=cardH+5;hRule(ML,y,CW,GOLD,1.2);y+=4;
-      // ── Structural Stability (PDF) ─────────────────────────────────────────
-      if (r.stability && r.stability.count > 0) {
-        var stabInk = r.stability.count >= 2 ? [139,32,32] : [184,92,26];
-        var stabPatterns = r.stability.patterns;
+      // ── Structural Stability (PDF) — always renders ────────────────────────
+      if (r.stability) {
+        var stabInk = r.stability.ratingInk || [184,92,26];
+        var stabPatterns = r.stability.patterns || [];
         var stabH = 13 + stabPatterns.length * 5.5;
         fillRect(ML, y, CW, stabH, GLIT, 1.5);
         fillRect(ML, y, 2.5, stabH, stabInk);
@@ -2930,14 +2949,16 @@ const PFI_SCENARIOS = [
         setFont("normal", 6.5, GDARK);
         var stabDescLines = doc.splitTextToSize(r.stability.ratingDesc, CW-8);
         doc.text(stabDescLines[0], ML+4, y+8.5);
-        var py = y + 12;
-        stabPatterns.forEach(function(fp) {
-          doc.setFillColor.apply(doc, stabInk);
-          doc.circle(ML+5, py+0.8, 0.9, "F");
-          setFont("bold", 6.5, GDARK);
-          doc.text(fp.pattern.label, ML+7.5, py+1.8);
-          py += 5.5;
-        });
+        if (stabPatterns.length > 0) {
+          var py = y + 12;
+          stabPatterns.forEach(function(fp) {
+            doc.setFillColor.apply(doc, stabInk);
+            doc.circle(ML+5, py+0.8, 0.9, "F");
+            setFont("bold", 6.5, GDARK);
+            doc.text(fp.pattern.label, ML+7.5, py+1.8);
+            py += 5.5;
+          });
+        }
         y += stabH + 3;
         hRule(ML, y, CW, GRULE, 0.3); y += 4;
       }
