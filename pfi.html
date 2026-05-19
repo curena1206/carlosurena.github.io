@@ -2832,24 +2832,7 @@ const PFI_SCENARIOS = [
       }
       el.innerHTML = h;
       el.classList.remove("hidden");
-    } + '</div>';
-      if (stability.overlayLabel) {
-        var oc = stability.overlayColor;
-        h += '<div style="font-family:helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:0.07em;color:' + oc + ';margin:10px 0 8px;">DEPENDENCY RISK DETECTED</div>';
-        h += '<div class="structural-patterns">';
-        stability.patterns.forEach(function(fp) {
-          h += '<div class="structural-pattern" style="border-left:2px solid ' + oc + '">';
-          h += '<span class="structural-pattern-label" style="color:' + oc + '">' + fp.pattern.label + '</span>';
-          h += '<span class="structural-pattern-desc">' + fp.pattern.desc + '</span>';
-          h += '</div>';
-        });
-        h += '</div>';
-      } else {
-        h += '<div class="structural-desc">' + stability.baselineDesc + '</div>';
-      }
-      el.innerHTML = h;
-      el.classList.remove("hidden");
-    }
+
 
     function computeSignals(answers, pillarScores, overall) {
       var signals = {
