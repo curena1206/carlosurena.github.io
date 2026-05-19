@@ -2832,22 +2832,7 @@ const PFI_SCENARIOS = [
       }
       el.innerHTML = h;
       el.classList.remove("hidden");
-    } + '</div>';
-      if (stability.overlayLabel) {
-        var oc = stability.overlayColor;
-        h += '<div style="font-family:helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:0.07em;color:' + oc + ';margin:10px 0 8px;">DEPENDENCY RISK DETECTED</div>';
-        h += '<div class="structural-patterns">';
-        stability.patterns.forEach(function(fp) {
-          h += '<div class="structural-pattern" style="border-left:2px solid ' + oc + '">';
-          h += '<span class="structural-pattern-label" style="color:' + oc + '">' + fp.pattern.label + '</span>';
-          h += '<span class="structural-pattern-desc">' + fp.pattern.desc + '</span>';
-          h += '</div>';
-        });
-        h += '</div>';
-      } else {
-        h += '<div class="structural-desc">' + stability.baselineDesc + '</div>';
-      }
-      el.innerHTML = h;
+    }
       el.classList.remove("hidden");
     }
 
@@ -3006,38 +2991,7 @@ const PFI_SCENARIOS = [
         y += stabH + 3;
         hRule(ML, y, CW, GRULE, 0.3); y += 4;
       }
-        var stabBaseInk = r.stability.baselineInk || [30,107,60];
-        var stabOvInk   = r.stability.overlayInk  || [184,92,26];
-        var stabPats    = r.stability.patterns || [];
-        var stabH = r.stability.overlayLabel
-          ? (12 + 6 + stabPats.length * 5.5)
-          : 14;
-        fillRect(ML, y, CW, stabH, GLIT, 1.5);
-        fillRect(ML, y, 2.5, stabH, stabBaseInk);
-        setFont("bold", 5.5, GMID);
-        doc.text("STRUCTURAL STABILITY", ML+4, y+4.2);
-        setFont("bold", 7.5, stabBaseInk);
-        doc.text(r.stability.baseline, ML+48, y+4.2);
-        if (r.stability.overlayLabel) {
-          var oy = y + 9;
-          setFont("bold", 7, stabOvInk);
-          doc.text("DEPENDENCY RISK DETECTED", ML+4, oy+1.5);
-          oy += 6;
-          stabPats.forEach(function(fp) {
-            doc.setFillColor.apply(doc, stabOvInk);
-            doc.circle(ML+5, oy+0.8, 0.9, "F");
-            setFont("bold", 6.5, GDARK);
-            doc.text(fp.pattern.label, ML+7.5, oy+1.8);
-            oy += 5.5;
-          });
-        } else {
-          setFont("normal", 6.5, GDARK);
-          var stabDescLines = doc.splitTextToSize(r.stability.baselineDesc, CW-8);
-          doc.text(stabDescLines.slice(0,2), ML+4, y+8.5);
-        }
-        y += stabH + 3;
-        hRule(ML, y, CW, GRULE, 0.3); y += 4;
-      }
+
 
       y=sectionHead("BENCHMARK INSIGHT",y);setFont("normal",7.5,GDARK);var biLines=doc.splitTextToSize(sc.benchmark_insight,CW);doc.text(biLines,ML,y);y+=biLines.length*3.4+5;
       y=sectionHead("PFI CLASSIFICATION SCALE",y);y+=1.0;var scaleRowH=6.0;
