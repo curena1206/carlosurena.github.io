@@ -2810,8 +2810,29 @@ const PFI_SCENARIOS = [
       if (!el) return;
       if (!stability) { el.classList.add("hidden"); return; }
       var bc = stability.baselineColor;
+      var oc = stability.overlayColor;
+      var depLabel = stability.count >= 2
+        ? "STRUCTURAL DEPENDENCY RISK DETECTED"
+        : "DEPENDENCY RISK DETECTED";
       var h = '<div class="card-eyebrow">Structural Stability</div>';
       h += '<div class="structural-rating" style="color:' + bc + '">' + stability.baseline + '</div>';
+      if (stability.count > 0) {
+        h += '<div style="font-family:helvetica,sans-serif;font-size:11px;font-weight:bold;'
+          + 'letter-spacing:0.07em;color:' + oc + ';margin:10px 0 8px;">' + depLabel + '</div>';
+        h += '<div class="structural-patterns">';
+        stability.patterns.forEach(function(fp) {
+          h += '<div class="structural-pattern" style="border-left:2px solid ' + oc + '">' ;
+          h += '<span class="structural-pattern-label" style="color:' + oc + '">' + fp.pattern.label + '</span>';
+          h += '<span class="structural-pattern-desc">' + fp.pattern.desc + '</span>';
+          h += '</div>';
+        });
+        h += '</div>';
+      } else {
+        h += '<div class="structural-desc">' + stability.baselineDesc + '</div>';
+      }
+      el.innerHTML = h;
+      el.classList.remove("hidden");
+    } + '</div>';
       if (stability.overlayLabel) {
         var oc = stability.overlayColor;
         h += '<div style="font-family:helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:0.07em;color:' + oc + ';margin:10px 0 8px;">DEPENDENCY RISK DETECTED</div>';
@@ -2947,6 +2968,44 @@ const PFI_SCENARIOS = [
       y+=cardH+5;hRule(ML,y,CW,GOLD,1.2);y+=4;
       // ── Structural Stability (PDF) — dependency-first hierarchy ───────────
       if (r.stability) {
+        var stabBaseInk = r.stability.baselineInk || [30,107,60];
+        var stabOvInk   = r.stability.overlayInk  || [184,92,26];
+        var stabPats    = r.stability.patterns || [];
+        var depLabel    = r.stability.count >= 2
+          ? "STRUCTURAL DEPENDENCY RISK DETECTED"
+          : "DEPENDENCY RISK DETECTED";
+        var stabH = r.stability.count > 0
+          ? (12 + 6 + stabPats.length * 5.5)
+          : 14;
+        fillRect(ML, y, CW, stabH, GLIT, 1.5);
+        fillRect(ML, y, 2.5, stabH, stabBaseInk);
+        setFont("bold", 5.5, GMID);
+        doc.text("STRUCTURAL STABILITY", ML+4, y+4.2);
+        setFont("bold", 7.5, stabBaseInk);
+        doc.text(r.stability.baseline, ML+48, y+4.2);
+        if (r.stability.count > 0) {
+          var oy = y + 9;
+          setFont("bold", 7, stabOvInk);
+          doc.text(depLabel, ML+4, oy+1.5);
+          oy += 6;
+          stabPats.forEach(function(fp) {
+            doc.setFillColor.apply(doc, stabOvInk);
+            doc.circle(ML+5, oy+0.8, 0.9, "F");
+            setFont("bold", 6.5, GDARK);
+            doc.text(fp.pattern.label, ML+7.5, oy+1.8);
+            var dLines = doc.splitTextToSize(fp.pattern.desc, CW-12);
+            setFont("normal", 6.5, GMID);
+            doc.text(dLines[0], ML+7.5, oy+5.5);
+            oy += 5.5 + (dLines.length > 0 ? 3.5 : 0);
+          });
+        } else {
+          setFont("normal", 6.5, GDARK);
+          var stabDescLines = doc.splitTextToSize(r.stability.baselineDesc, CW-8);
+          doc.text(stabDescLines.slice(0,2), ML+4, y+8.5);
+        }
+        y += stabH + 3;
+        hRule(ML, y, CW, GRULE, 0.3); y += 4;
+      }
         var stabBaseInk = r.stability.baselineInk || [30,107,60];
         var stabOvInk   = r.stability.overlayInk  || [184,92,26];
         var stabPats    = r.stability.patterns || [];
