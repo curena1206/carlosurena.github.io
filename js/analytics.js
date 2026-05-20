@@ -1,5 +1,5 @@
 (function(){
-  var GA4_ID="G-WF7JCXD2HL",CLARITY_ID="wu674xzdbf";
+  var GA4_ID="G-CTPML8CVML",CLARITY_ID="wu674xzdbf";
   function scoreBand(s){s=parseInt(s);if(isNaN(s)||s<0)return"unknown";if(s<=25)return"structural_failure";if(s<=50)return"fragile_franchise";if(s<=70)return"operationally_stable";if(s<=85)return"strategically_aligned";return"best_in_class";}
   function slugify(s){return(s||"unknown").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");}
   function initGA4(){window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};gtag("js",new Date());gtag("config",GA4_ID,{send_page_view:false,anonymize_ip:true});var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id="+GA4_ID;document.head.appendChild(s);}
