@@ -626,6 +626,7 @@
       const _sb = document.getElementById("btnShareLink"); if (_sb) _sb.disabled = false;
 
       renderResults(result);
+      if(window.CUA){var _sc=pfiGetScenario(overall);window.CUA.pfiCompleted(overall,_sc?_sc.label:"");}
       setTimeout(() => {
         document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
       }, 80);
@@ -1356,7 +1357,7 @@ function exportPDF() {
   if (!state.lastResult) return;
   if (!window.jspdf) { alert("PDF library not loaded. Please refresh and try again."); return; }
 
-  var r  = state.lastResult;
+  if(window.CUA){var _sc2=pfiGetScenario(state.lastResult.overall);window.CUA.pdfGenerated(state.lastResult.overall,_sc2?_sc2.label:"");}var r  = state.lastResult;
   var sc = pfiGetScenario(r.overall);
 
   var { jsPDF } = window.jspdf;
