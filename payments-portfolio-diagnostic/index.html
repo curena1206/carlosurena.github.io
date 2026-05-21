@@ -34,8 +34,11 @@
 
     /* Scenario card tag */
     .scenario-card-tag { font-family: Helvetica, sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b7882c; margin-bottom: 4px; }
+    .scenario-bullets-stacked { margin: 6px 0 10px; padding-left: 18px; overflow: visible; list-style: disc; }
+    .scenario-bullets-stacked li { font-family: Helvetica, sans-serif !important; font-size: 11px !important; color: #6b7280; line-height: 1.6; margin-bottom: 1px; }
+    .scenario-bridge { font-family: Helvetica, sans-serif; font-size: 12px; color: #9ca3af; margin: 12px 0 0; font-style: italic; }
     .scenario-grid-compact { gap: 8px; }
-    .scenario-card-compact { overflow: visible; padding: 12px 14px 12px 22px !important; border-left: 2px solid #e5e7eb !important; box-shadow: none !important; background: #fafafa !important; overflow: visible; }
+    .scenario-card-compact { padding: 12px 14px 12px 18px !important; border-left: 2px solid #e5e7eb !important; box-shadow: none !important; background: #fafafa !important; overflow: visible; }
     .scenario-title-compact { font-family: Helvetica, sans-serif; font-size: 12px; font-weight: 700; color: #1e293b; margin: 0 0 5px; letter-spacing: 0.01em; }
     .scenario-bullets-inline { font-family: Helvetica, sans-serif; font-size: 11px; color: #6b7280; margin: 0 0 10px; line-height: 1.5; }
     .scenario-bullets-inline .bul { color: #d1d5db; margin: 0 2px; }
@@ -53,6 +56,9 @@
     .dep-risk-list { margin: 0; padding-left: 16px; }
     .dep-risk-list li { font-family: Helvetica, sans-serif !important; font-size: 12px !important; color: #374151; line-height: 1.6; margin-bottom: 3px; }
     .dep-risk-none { font-family: Helvetica, sans-serif; font-size: 12px; color: #6b7280; font-style: italic; }
+    .structural-finding { font-family: Georgia, serif; font-size: 15px; color: #1e293b; line-height: 1.4; }
+    .structural-focus { font-family: Georgia, serif; font-size: 14px; color: #6b7280; font-style: italic; }
+    .structural-focus-none { font-family: Helvetica, sans-serif; font-size: 12px; color: #9ca3af; font-style: italic; }
 
     /* Full report CTA */
     .full-report-cta { background: #f8f9fb !important; border: 1px solid #e5e7eb !important; border-left: 3px solid #b7882c !important; }
@@ -94,7 +100,7 @@
             Payments portfolios can appear healthy while structural weaknesses quietly compound.
           </h1>
           <h2 style="font-family:Georgia,serif;font-size:17px;font-weight:normal;color:#b7882c;margin:0 0 18px;font-style:italic;">
-            PFI identifies hidden dependency risks across pricing discipline, governance, economics, and operating structure.
+            PFI surfaces dependency risks, operating gaps, and structural conditions before they become embedded.
           </h2>
 
           <div class="hero-stats">
@@ -170,7 +176,7 @@
           </div>
         </div>
 
-        <p style="font-size:13px;color:var(--muted,#6b7280);margin:0 0 12px;">Run synthesized examples that demonstrate how PFI interprets structural conditions.</p>
+        <p style="font-size:13px;color:var(--muted,#6b7280);margin:0 0 12px;">Illustrative examples based on commonly observed portfolio conditions.</p>
         <div id="scenarioContainer" class="scenario-section"></div>
         <div id="scenarioLabel" class="scenario-active-label hidden"></div>
 
@@ -226,10 +232,10 @@
           <div class="card">
             <div class="card-eyebrow">Structural Profile</div>
             <div>
-              <div style="font-family:Helvetica,sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#6b7280;margin-bottom:8px;">Structural Stability</div>
+              <div class="dep-section-label">What we found</div>
               <div id="stabilityBadge"></div>
             </div>
-            <div class="dep-section-label">Dependency Risk</div>
+            <div class="dep-section-label" style="margin-top:16px;">Where to focus first</div>
             <div id="dependencyRiskList"></div>
           </div>
 

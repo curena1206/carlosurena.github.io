@@ -549,44 +549,45 @@
     function renderStructuralProfile(result) {
       const rules = result.rules;
 
-      // Structural stability — derived from min tier of triggered rules
+      const DEP_SHORT = {
+        float_dependency_risk:      "Balance income dependency",
+        concentration_risk_extreme: "Revenue concentration",
+        rate_cycle_exposure_mature: "Rate-cycle exposure",
+        fx_without_corridor:        "FX monetization gap",
+        rtp_readiness_gap:          "Real-time rail gap",
+      };
+
+      const NUM_WORDS = ["Zero","One","Two","Three","Four","Five"];
+
+      const triggered = (rules.triggeredIds || []).filter(id => DEP_SHORT[id]);
+      result._dependencyPatterns = triggered;
+
+      // "What we found"
       if (els.stabilityBadge) {
-        const sources = rules.diagSources || [];
-        const allIds  = rules.triggeredIds || [];
-        // tier 1 rules always appear in diagSources if triggered
-        const hasTier1 = sources.some(s => s.tier === 1);
-        const hasTier2 = sources.some(s => s.tier === 2) || allIds.some(id => ["monetization_capture_gap","pricing_leakage_controls_weak","exceptions_material_not_crisis","unit_cost_immature","cadence_weak_not_absent","balances_not_monetized","fx_without_corridor","fx_spread_leakage","rtp_readiness_gap"].includes(id));
-        const hasTier3 = !hasTier1 && !hasTier2 && allIds.length > 0;
-
-        let label, cls;
-        if (hasTier1)      { label = "Structural Concern Detected"; cls = "stability-critical"; }
-        else if (hasTier2) { label = "Attention Areas Present";     cls = "stability-warning";  }
-        else if (hasTier3) { label = "Patterns Worth Monitoring";   cls = "stability-monitor";  }
-        else               { label = "No Structural Concerns";      cls = "stability-ok";       }
-
-        els.stabilityBadge.innerHTML = `<span class="stability-badge ${cls}">${label}</span>`;
-
-        // Surface to analytics
-        result._stabilityLabel = label;
+        let finding;
+        if (triggered.length > 0) {
+          const n    = NUM_WORDS[triggered.length] || String(triggered.length);
+          const noun = triggered.length === 1 ? "structural pattern requires" : "structural patterns require";
+          finding = `${n} ${noun} attention`;
+        } else if (rules.diagSources && rules.diagSources.length > 0) {
+          finding = "Operating gaps identified — review priorities below";
+        } else {
+          finding = "No structural concerns detected at this score level";
+        }
+        result._stabilityLabel = finding;
+        els.stabilityBadge.innerHTML = `<div class="structural-finding">${finding}</div>`;
       }
 
-      // Dependency risk patterns
+      // "Where to focus first"
       if (els.dependencyRiskList) {
-        const DEP_MAP = {
-          float_dependency_risk:       "Balance income dependency — rate-cycle sensitivity may not be measured",
-          concentration_risk_extreme:  "Revenue concentration — top client relationship sensitivity elevated",
-          rate_cycle_exposure_mature:  "Rate-cycle exposure — sensitivity not fully evaluated at segment level",
-          fx_without_corridor:         "FX monetization gap — spread discipline not fully operationalized",
-          rtp_readiness_gap:           "Real-time rail gap — RTP capability limiting commercial use cases",
-        };
-        const triggered = (rules.triggeredIds || []).filter(id => DEP_MAP[id]);
-        result._dependencyPatterns = triggered;
-
         if (triggered.length > 0) {
-          els.dependencyRiskList.innerHTML =
-            `<ul class="dep-risk-list">${triggered.map(id => `<li>${DEP_MAP[id]}</li>`).join("")}</ul>`;
+          const names  = triggered.map(id => DEP_SHORT[id]);
+          const joined = names.length === 1
+            ? names[0]
+            : names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
+          els.dependencyRiskList.innerHTML = `<div class="structural-focus">${joined}</div>`;
         } else {
-          els.dependencyRiskList.innerHTML = `<div class="dep-risk-none">No dependency risk patterns detected</div>`;
+          els.dependencyRiskList.innerHTML = `<div class="structural-focus-none">No specific patterns detected</div>`;
         }
       }
     }
