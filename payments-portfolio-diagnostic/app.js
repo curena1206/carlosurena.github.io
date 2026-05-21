@@ -259,8 +259,13 @@
           <ul class="scenario-bullets-stacked">${s.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
           <button class="btn btn-scenario-sm" data-id="${s.id}">Run Demo →</button>
         `;
-        card.querySelector("a").addEventListener("click", () => {
+        card.querySelector("button").addEventListener("click", () => {
           if (window.CUA) window.CUA.pfiExamplePDFClicked(s.label);
+          loadScenario(s.id);
+          setTimeout(() => {
+            computeAndShow(true);
+            document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
+          }, 100);
         });
         grid.appendChild(card);
       });
