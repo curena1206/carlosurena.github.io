@@ -256,7 +256,7 @@
         card.innerHTML = `
           <div class="scenario-card-tag">${s.tag}</div>
           <div class="scenario-title-compact">${s.label}</div>
-          <div class="scenario-bullets-inline">${s.bullets.map(b => `<span>${b}</span>`).join(" <span class='bul'>·</span> ")}</div>
+          <ul class="scenario-bullets-stacked">${s.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
           <a class="btn btn-scenario-sm" href="${s.pdf}" target="_blank" rel="noopener" data-label="${s.label}">Run Demo →</a>
         `;
         card.querySelector("a").addEventListener("click", () => {
@@ -266,6 +266,11 @@
       });
 
       els.scenarioContainer.appendChild(grid);
+
+      const bridge = document.createElement("p");
+      bridge.className = "scenario-bridge";
+      bridge.textContent = "Or continue below and answer using your own operating environment.";
+      els.scenarioContainer.appendChild(bridge);
     }
 
     function loadScenario(scenarioId) {
