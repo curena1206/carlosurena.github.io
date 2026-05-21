@@ -249,7 +249,7 @@ window.PPD_MODEL = (() => {
         },
         {
           id: "MC5",
-          title: "External cost management — correspondents, networks, and vendors",
+          title: "External cost management — partners, networks, and vendors",
           desc: "How actively are third-party costs managed as part of the portfolio's operating economics?",
           options: [
             { score: 1, label: "High dependency with limited visibility or management", sub: "External cost exposure may be creating structural economic pressure" },
@@ -331,14 +331,14 @@ window.PPD_MODEL = (() => {
         },
         {
           id: "MR4",
-          title: "Cross-border and correspondent flow management",
-          desc: "Where cross-border or correspondent flows are in scope, how consistently are major flows managed across pricing, partner strategy, service model, and economic visibility? Select 'Not applicable' if these flows are not in scope.",
+          title: "Cross-border and partner flow management",
+          desc: "Where cross-border or partner-settled flows are in scope, how consistently are major flows managed across pricing, partner strategy, service model, and economic visibility? Select 'Not applicable' if these flows are not in scope.",
           options: [
-            { score: null, label: "Not applicable", sub: "Cross-border or correspondent flows are not part of this portfolio" },
+            { score: null, label: "Not applicable", sub: "Cross-border or partner-settled flows are not part of this portfolio" },
             { score: 2, label: "Managed reactively or case-by-case", sub: "Flow management appears event-driven, with limited strategic or economic structure" },
             { score: 3, label: "Defined approach for major flows", sub: "Core flow structures are documented, though broader management consistency may vary" },
             { score: 4, label: "Major flows actively managed with economic visibility", sub: "Pricing, partner strategy, service expectations, and economics are reviewed across priority flows" },
-            { score: 5, label: "Cross-border and correspondent flows integrated into portfolio strategy", sub: "Major flows are managed through structured economic, partner, client, and operating discipline" }
+            { score: 5, label: "Cross-border and partner flows integrated into portfolio strategy", sub: "Major flows are managed through structured economic, partner, client, and operating discipline" }
           ]
         },
         {
@@ -401,14 +401,14 @@ window.PPD_MODEL = (() => {
         },
         {
           id: "BL2",
-          title: "Visibility into balance-adjusted relationship economics",
+          title: "Visibility into full-relationship economics",
           desc: "How consistently are balances, liquidity contribution, or treasury value incorporated into relationship evaluation and pricing decisions?",
           options: [
             { score: 1, label: "Relationship economics evaluated primarily on fee activity", sub: "Broader treasury or liquidity contribution may not be consistently incorporated into economic evaluation" },
             { score: 2, label: "Balance contribution considered selectively", sub: "Some treasury value awareness exists, though application may vary across teams or segments" },
-            { score: 3, label: "Balance-adjusted economics incorporated for major relationships", sub: "Relationship evaluation includes broader economic contribution in key areas of the portfolio" },
+            { score: 3, label: "Full-relationship economics incorporated for major relationships", sub: "Relationship evaluation includes broader economic contribution in key areas of the portfolio" },
             { score: 4, label: "Treasury contribution integrated into pricing and relationship review", sub: "Liquidity and balance value are incorporated into management and commercial decision-making" },
-            { score: 5, label: "Balance-adjusted economics operationalized across the franchise", sub: "Relationship economics consistently incorporate fee, liquidity, and treasury contribution across portfolio management routines" }
+            { score: 5, label: "Full-relationship economics operationalized across the franchise", sub: "Relationship economics consistently incorporate fee, liquidity, and treasury contribution across portfolio management routines" }
           ]
         },
         {
@@ -535,7 +535,7 @@ window.PPD_MODEL = (() => {
           desc: "How consistently does management prioritize investments, remediation, and strategic focus areas using economic and operational criteria?",
           options: [
             { score: 1, label: "Prioritization largely reactive or relationship-driven", sub: "Resource allocation may lack consistent economic or strategic evaluation" },
-            { score: 2, label: "Some prioritization frameworks exist", sub: "Decision criteria are partially defined, though application may vary across teams" },
+            { score: 2, label: "Some prioritization structures exist", sub: "Decision criteria are partially defined, though application may vary across teams" },
             { score: 3, label: "Major initiatives evaluated against defined criteria", sub: "Core governance exists, though portfolio-wide prioritization may not yet be fully integrated" },
             { score: 4, label: "Economic and operational prioritization operationalized", sub: "Management decisions consistently incorporate economic impact and strategic alignment" },
             { score: 5, label: "Enterprise prioritization tied to portfolio economics and strategy", sub: "The franchise demonstrates disciplined allocation of investment, remediation, and strategic focus across the portfolio" }
@@ -571,15 +571,15 @@ window.PPD_MODEL = (() => {
 
   // ── Recommendations library ──────────────────────────────────────────────
   const recommendations = {
-    R1:  { title: "Design and implement segmented pricing by client value and corridor", owner: "Product + Sales + Finance", metric: "Revenue per client, margin by segment, elasticity tracking", why: "Closes monetization capture gaps without depending on volume growth." },
+    R1:  { title: "Design and implement segmented pricing by client value and flow segment", owner: "Product + Sales + Finance", metric: "Revenue per client, margin by segment, elasticity tracking", why: "Closes monetization capture gaps without depending on volume growth." },
     R2:  { title: "Establish rail-level price floors and enforce override controls", owner: "Pricing + Sales Leadership", metric: "Override rate, margin leakage by deal, governance cycle time", why: "Stops silent margin erosion from inconsistent deal-by-deal discounting." },
     R3:  { title: "Redesign packaging model — structured bundle and add-on value tiers", owner: "Product", metric: "ARPA, attach rate, margin contribution per tier", why: "Creates clear levers to capture value and reduces structural bundle leakage." },
-    R4:  { title: "Build and implement balance-adjusted pricing model", owner: "Product + Treasury + Finance", metric: "ROE contribution, balance-weighted profitability by client", why: "Aligns payments pricing with total franchise value — not just fee revenue." },
-    R5:  { title: "Develop corridor-based FX strategy with spread management discipline", owner: "Product + Trading/FX + Sales", metric: "FX capture rate, spread leakage by corridor, corridor-level P&L", why: "Converts cross-border flows into a deliberately managed revenue lever." },
+    R4:  { title: "Build and implement full-relationship pricing model", owner: "Product + Treasury + Finance", metric: "ROE contribution, balance-weighted profitability by client", why: "Aligns payments pricing with total franchise value — not just fee revenue." },
+    R5:  { title: "Develop segment-level FX strategy with spread management discipline", owner: "Product + Finance + Sales", metric: "FX capture rate, spread leakage by segment, segment-level P&L", why: "Converts cross-border flows into a deliberately managed revenue lever." },
     R6:  { title: "Launch Exception Reduction Program with repair KPI ownership and cadence", owner: "Ops + Product + Tech", metric: "Repair rate, STP %, cost per repair, trend vs. target", why: "Repairs are often the largest untracked driver of margin compression in commercial payments." },
-    R7:  { title: "Deploy pre-validation targeting top payment failure modes by rail", owner: "Product + Tech + Ops", metric: "Failure reason frequency, repair reduction rate", why: "Reduces exception volume at the source — improving both margin and client experience." },
+    R7:  { title: "Build pre-validation targeting top payment failure modes by rail", owner: "Product + Tech + Ops", metric: "Failure reason frequency, repair reduction rate", why: "Reduces exception volume at the source — improving both margin and client experience." },
     R8:  { title: "Build unit cost model by rail and segment — and use it in pricing governance", owner: "Finance + Product", metric: "Unit cost by rail, segment price floors, contribution margin", why: "Provides the cost anchor needed for disciplined pricing and roadmap tradeoff decisions." },
-    R9:  { title: "Optimize correspondent and network costs through routing strategy and contract structure", owner: "Network Management + Product + Finance", metric: "Cost per payment by rail, correspondent and network fee trends", why: "Improves gross margin through structural external cost levers that are often overlooked." },
+    R9:  { title: "Reduce partner and network costs through routing strategy and contract structure", owner: "Product + Finance", metric: "Cost per payment by rail, partner and network fee trends", why: "Improves gross margin through structural external cost levers that are often overlooked." },
     R10: { title: "Create STP scorecard by rail and client segment with standing ownership", owner: "Ops + Product", metric: "STP % by rail and segment, repair rates, trend vs. target", why: "Directs leakage reduction effort where the margin impact is highest." },
     R11: { title: "Build segment-level GTM plays anchored in client economics", owner: "Product + Sales", metric: "Win rate, margin per win, attach rate by segment", why: "Makes growth repeatable and ensures new clients contribute positively to the P&L." },
     R12: { title: "Strengthen ERP, TMS, and AP/AR integration motion for top client segments", owner: "Product + Tech + Sales", metric: "Integration adoption rate, time-to-onboard, NPS post-integration", why: "Increases structural stickiness and reduces the risk of relationship-dependent attrition." },
@@ -587,7 +587,7 @@ window.PPD_MODEL = (() => {
     R14: { title: "Build a win/loss feedback loop tied to pricing, onboarding friction, and CX", owner: "Product + Sales Ops", metric: "Loss reason distribution, time-to-yes, onboarding friction scores", why: "Converts market signals into execution priorities — not just anecdotes." },
     R15: { title: "Scale RTP/FedNow send and develop packaged commercial use cases", owner: "Product + Tech + Sales", metric: "RTP send volume, use-case adoption rate, revenue contribution", why: "Converts infrastructure readiness into a commercial growth lever." },
     R16: { title: "ISO 20022 data program focused on STP improvement and repair reduction", owner: "Tech + Ops + Product", metric: "Data quality KPIs, repair driver analysis, STP rate trend", why: "Structured payment data is an underutilized margin and CX improvement lever." },
-    R17: { title: "Implement economics-aware routing strategy across rails and corridors", owner: "Product + Tech", metric: "Routing distribution by rail, cost per payment, SLA performance", why: "Optimizes cost and performance across rails — a lever most franchises underuse." },
+    R17: { title: "Implement economics-aware routing strategy across rails and flow segments", owner: "Product + Tech", metric: "Routing distribution by rail, cost per payment, SLA performance", why: "Improves cost and performance across rails — a lever most franchises underuse." },
     R18: { title: "Establish Pricing Council with documented authority tiers and regular cadence", owner: "Exec Sponsor + Pricing Lead", metric: "Override rate, approval cycle time, margin integrity trend", why: "Governance is often the fastest first fix for systematic pricing leakage." },
     R19: { title: "Implement monthly Portfolio Performance Review across rails, segments, and repairs", owner: "Portfolio Owner", metric: "Pillar KPIs trending, actions opened and closed per cycle", why: "Creates the operating rhythm needed to continuously improve franchise performance." },
     R20: { title: "Tie technology roadmap sequencing to economic KPIs — margin, STP, and attach", owner: "Product + Tech + Finance", metric: "Roadmap ROI by release, KPI movement attributable to delivery", why: "Ensures technology delivery is managed as a business investment, not just an engineering activity." }
@@ -673,7 +673,7 @@ window.PPD_MODEL = (() => {
       id: "fx_spread_leakage",
       tier: 2,
       when: (a) => (a.RA6 >= 2 && a.RA6 <= 3 && a.MR4 !== null && a.MR4 <= 3),
-      diagnosis: "Cross-border FX activity is present but spread management and corridor economics may not be consistently applied. This pattern tends to become more visible as cross-border volume grows.",
+      diagnosis: "Cross-border FX activity is present but spread management and flow-level economics may not be consistently applied. This pattern tends to become more visible as cross-border volume grows.",
       recs: ["R5", "R17", "R8"]
     },
     {
