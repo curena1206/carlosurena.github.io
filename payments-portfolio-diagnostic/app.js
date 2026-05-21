@@ -550,7 +550,7 @@
       const rules = result.rules;
 
       const DEP_SHORT = {
-        float_dependency_risk:      "Balance income dependency",
+        float_dependency_risk:      "balance-sheet dependency",
         concentration_risk_extreme: "Revenue concentration",
         rate_cycle_exposure_mature: "Rate-cycle exposure",
         fx_without_corridor:        "FX monetization gap",
@@ -564,8 +564,11 @@
 
       // "What we found"
       if (els.stabilityBadge) {
+        const hasTier1 = (rules.diagSources || []).some(s => s.tier === 1);
         let finding;
-        if (triggered.length > 0) {
+        if (hasTier1) {
+          finding = "Foundational weaknesses require attention";
+        } else if (triggered.length > 0) {
           const n    = NUM_WORDS[triggered.length] || String(triggered.length);
           const noun = triggered.length === 1 ? "structural pattern requires" : "structural patterns require";
           finding = `${n} ${noun} attention`;
@@ -619,6 +622,13 @@
 
     // ── Render: priorities ────────────────────────────────────────────────
 
+    function trimWhy(text) {
+      if (!text || text.length <= 140) return text;
+      const cut = text.substring(0, 140);
+      const last = cut.lastIndexOf(' ');
+      return (last > 0 ? cut.substring(0, last) : cut) + '…';
+    }
+
     function renderPriorities(overall) {
       if (!els.prioritiesList) return;
       const sc = pfiGetScenario(overall);
@@ -631,7 +641,7 @@
           <div class="priority-body">
             <div class="priority-title">${pri.title}</div>
             <div class="priority-meta">Owner: ${pri.owner} · KPI: ${pri.kpi}</div>
-            <div class="priority-why">${pri.why}</div>
+            <div class="priority-why">${trimWhy(pri.why)}</div>
           </div>
         `;
         els.prioritiesList.appendChild(box);
@@ -670,7 +680,7 @@
     };
     const SUB_STATUS = {
       discipline: [ "Foundational Gaps Detected", "Developing Practices",   "Structured Approach",    "Mature Operating Model"    ],
-      resilience: [ "High Structural Fragility",  "Moderate Vulnerability", "Developing Resilience",  "Resilient Portfolio"       ],
+      resilience: [ "Fragile Foundation",  "Moderate Vulnerability", "Developing Resilience",  "Resilient Portfolio"       ],
       readiness:  [ "Early Capability Stage",     "Foundational Capability","Emerging Readiness",     "Strategically Positioned"  ]
     };
     const DOT_LABELS = ["Low", "Developing", "Moderate", "Strong", "Optimized"];
