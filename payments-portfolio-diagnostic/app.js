@@ -257,7 +257,7 @@
           <div class="scenario-card-tag">${s.tag}</div>
           <div class="scenario-title-compact">${s.label}</div>
           <ul class="scenario-bullets-stacked">${s.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
-          <a class="btn btn-scenario-sm" href="${s.pdf}" target="_blank" rel="noopener" data-label="${s.label}">Run Demo →</a>
+          <button class="btn btn-scenario-sm" data-id="${s.id}">Run Demo →</button>
         `;
         card.querySelector("a").addEventListener("click", () => {
           if (window.CUA) window.CUA.pfiExamplePDFClicked(s.label);
