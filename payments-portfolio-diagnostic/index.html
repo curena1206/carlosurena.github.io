@@ -56,9 +56,10 @@
     .dep-risk-list { margin: 0; padding-left: 16px; }
     .dep-risk-list li { font-family: Helvetica, sans-serif !important; font-size: 12px !important; color: #374151; line-height: 1.6; margin-bottom: 3px; }
     .dep-risk-none { font-family: Helvetica, sans-serif; font-size: 12px; color: #6b7280; font-style: italic; }
-    .structural-finding { font-family: Georgia, serif; font-size: 15px; color: #1e293b; line-height: 1.4; }
-    .structural-focus { font-family: Georgia, serif; font-size: 14px; color: #6b7280; font-style: italic; }
-    .structural-focus-none { font-family: Helvetica, sans-serif; font-size: 12px; color: #9ca3af; font-style: italic; }
+    .sc-statement { font-family: Georgia, serif; font-size: 15px; color: #1e293b; line-height: 1.4; margin-bottom: 14px; }
+    .sc-section-label { font-family: Helvetica, sans-serif; font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .sc-bullets { margin: 0; padding-left: 16px; }
+    .sc-bullets li { font-family: Georgia, serif; font-size: 14px; color: #374151; line-height: 1.7; }
 
     /* Full report CTA */
     .full-report-cta { background: #f8f9fb !important; border: 1px solid #e5e7eb !important; border-left: 3px solid #b7882c !important; }
@@ -228,14 +229,10 @@
             </div>
           </div>
 
-          <!-- Structural Profile (NEW) -->
+          <!-- Structural Conditions -->
           <div class="card">
             <div class="card-eyebrow">Structural Conditions</div>
-            <div>
-              <div class="dep-section-label">What we found</div>
-              <div id="stabilityBadge"></div>
-            </div>
-            <div class="dep-section-label" style="margin-top:16px;">Where to focus first</div>
+            <div id="stabilityBadge"></div>
             <div id="dependencyRiskList"></div>
           </div>
 

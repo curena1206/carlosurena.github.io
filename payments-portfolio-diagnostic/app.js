@@ -550,47 +550,51 @@
       const rules = result.rules;
 
       const DEP_SHORT = {
-        float_dependency_risk:      "balance-sheet dependency",
+        float_dependency_risk:      "Balance-sheet dependency",
         concentration_risk_extreme: "Revenue concentration",
-        rate_cycle_exposure_mature: "Rate-cycle exposure",
-        fx_without_corridor:        "FX monetization gap",
-        rtp_readiness_gap:          "Real-time rail gap",
+        rate_cycle_exposure_mature: "Revenue sensitivity",
+        fx_without_corridor:        "Spread discipline",
+        rtp_readiness_gap:          "Real-time capability adoption",
       };
-
-      const NUM_WORDS = ["Zero","One","Two","Three","Four","Five"];
 
       const triggered = (rules.triggeredIds || []).filter(id => DEP_SHORT[id]);
       result._dependencyPatterns = triggered;
 
-      // "What we found"
-      if (els.stabilityBadge) {
-        const hasTier1 = (rules.diagSources || []).some(s => s.tier === 1);
-        let finding;
-        if (hasTier1) {
-          finding = "Foundational weaknesses require attention";
-        } else if (triggered.length > 0) {
-          const n    = NUM_WORDS[triggered.length] || String(triggered.length);
-          const noun = triggered.length === 1 ? "structural pattern requires" : "structural patterns require";
-          finding = `${n} ${noun} attention`;
-        } else if (rules.diagSources && rules.diagSources.length > 0) {
-          finding = "Operating gaps identified — review priorities below";
-        } else {
-          finding = "No structural concerns detected at this score level";
-        }
-        result._stabilityLabel = finding;
-        els.stabilityBadge.innerHTML = `<div class="structural-finding">${finding}</div>`;
+      const hasTier1 = (rules.diagSources || []).some(s => s.tier === 1);
+      const hasTier2 = (rules.diagSources || []).some(s => s.tier === 2);
+
+      // Statement line
+      let statement, sectionLabel;
+      if (hasTier1) {
+        statement    = "Foundational weaknesses identified";
+        sectionLabel = triggered.length > 0 ? "Primary areas requiring attention:" : null;
+      } else if (hasTier2) {
+        statement    = "Attention areas present";
+        sectionLabel = triggered.length > 0 ? "Primary areas requiring attention:" : null;
+      } else if (triggered.length > 0) {
+        statement    = "Limited dependency signals detected";
+        sectionLabel = "Areas for monitoring:";
+      } else {
+        statement    = "No structural concerns detected";
+        sectionLabel = null;
       }
 
-      // "Where to focus first"
+      result._stabilityLabel = statement;
+
+      if (els.stabilityBadge) {
+        els.stabilityBadge.innerHTML = `<div class="sc-statement">${statement}</div>`;
+      }
+
       if (els.dependencyRiskList) {
-        if (triggered.length > 0) {
-          const names  = triggered.map(id => DEP_SHORT[id]);
-          const joined = names.length === 1
-            ? names[0]
-            : names.slice(0, -1).join(", ") + " and " + names[names.length - 1];
-          els.dependencyRiskList.innerHTML = `<div class="structural-focus">${joined}</div>`;
+        if (triggered.length > 0 && sectionLabel) {
+          const bullets = triggered.map(id => `<li>${DEP_SHORT[id]}</li>`).join("");
+          els.dependencyRiskList.innerHTML = `
+            <div class="sc-section-label">${sectionLabel}</div>
+            <ul class="sc-bullets">${bullets}</ul>`;
+        } else if ((hasTier1 || hasTier2) && triggered.length === 0) {
+          els.dependencyRiskList.innerHTML = `<div class="sc-section-label">Review priority actions below</div>`;
         } else {
-          els.dependencyRiskList.innerHTML = `<div class="structural-focus-none">No specific patterns detected</div>`;
+          els.dependencyRiskList.innerHTML = "";
         }
       }
     }
