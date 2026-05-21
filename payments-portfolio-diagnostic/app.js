@@ -106,6 +106,10 @@
       diagnosisList:     document.getElementById("diagnosisList"),
       prioritiesList:    document.getElementById("prioritiesList"),
       plan3090:          document.getElementById("plan3090"),
+      stabilityBadge:    document.getElementById("stabilityBadge"),
+      dependencyRiskList:document.getElementById("dependencyRiskList"),
+      btnDownloadReport: document.getElementById("btnDownloadReport"),
+      btnEmailCopy:      document.getElementById("btnEmailCopy"),
     };
 
     if (!els.pillarsContainer) {
@@ -212,41 +216,52 @@
 
     // ── Scenario UI ───────────────────────────────────────────────────────
 
+    // ── Scenario UI (illustrative — no answer prefill) ────────────────────
     function renderScenarios() {
       if (!els.scenarioContainer) return;
       els.scenarioContainer.innerHTML = "";
 
+      const ILLUSTRATIVE = [
+        {
+          tag:     "STABILIZE FIRST",
+          label:   "Inherited Underperforming Franchise",
+          bullets: ["Margin compression visible", "Weak ownership structure", "High manual repair activity"],
+          pdf:     "/payments-portfolio-diagnostic/examples/pfi-example-critical.pdf"
+        },
+        {
+          tag:     "MONETIZATION GAP",
+          label:   "Growth Franchise with Monetization Lag",
+          bullets: ["Volumes growing rapidly", "Revenue not keeping pace", "Weak pricing economics"],
+          pdf:     "/payments-portfolio-diagnostic/examples/pfi-example-developing.pdf"
+        },
+        {
+          tag:     "OPTIMIZE & FUTURE-PROOF",
+          label:   "Mature Franchise Stress Test",
+          bullets: ["Strong operating foundation", "Emerging real-time gaps", "Concentrated revenue pressure"],
+          pdf:     "/payments-portfolio-diagnostic/examples/pfi-example-mature.pdf"
+        }
+      ];
+
       const intro = document.createElement("div");
       intro.className = "scenario-intro";
-      intro.innerHTML = `
-        <div class="scenario-intro-text">
-          <strong>Start with a scenario</strong> — or answer the questions fresh below.
-          Each scenario pre-fills all 42 questions and computes results instantly,
-          reflecting real portfolio situations encountered in practice.
-        </div>
-      `;
+      intro.innerHTML = `<div class="scenario-intro-text"><strong>Explore Illustrative Portfolio Examples</strong></div>`;
       els.scenarioContainer.appendChild(intro);
 
       const grid = document.createElement("div");
-      grid.className = "scenario-grid";
+      grid.className = "scenario-grid scenario-grid-compact";
 
-      SCENARIOS.forEach((s) => {
+      ILLUSTRATIVE.forEach((s) => {
         const card = document.createElement("div");
-        card.className = `scenario-card ${state.activeScenario === s.id ? "scenario-active" : ""}`;
-
+        card.className = "scenario-card scenario-card-compact";
         card.innerHTML = `
-          <div class="scenario-tag ${s.tagColor}">${s.tag}</div>
-          <div class="scenario-title">${s.label}</div>
-          <div class="scenario-desc">${s.description}</div>
-          <button class="btn btn-scenario" data-scenario="${s.id}">
-            Load scenario →
-          </button>
+          <div class="scenario-card-tag">${s.tag}</div>
+          <div class="scenario-title-compact">${s.label}</div>
+          <div class="scenario-bullets-inline">${s.bullets.map(b => `<span>${b}</span>`).join(" <span class='bul'>·</span> ")}</div>
+          <a class="btn btn-scenario-sm" href="${s.pdf}" target="_blank" rel="noopener" data-label="${s.label}">Run Demo →</a>
         `;
-
-        card.querySelector(".btn-scenario").addEventListener("click", () => {
-          loadScenario(s.id);
+        card.querySelector("a").addEventListener("click", () => {
+          if (window.CUA) window.CUA.pfiExamplePDFClicked(s.label);
         });
-
         grid.appendChild(card);
       });
 
@@ -332,6 +347,14 @@
               const raw = e.target.value;
               const val = raw === "null" ? null : Number(raw);
               state.answers[q.id] = val;
+              // ── Analytics ────────────────────────────────────────────────
+              if (window.CUA) {
+                const _ac = answeredCount();
+                if (_ac === 1) window.CUA.pfiStarted();
+                if (_ac === 10) window.CUA.trackEvent("pfi_question_10_reached");
+                if (_ac === 20) window.CUA.trackEvent("pfi_question_20_reached");
+              }
+              // ─────────────────────────────────────────────────────────────
               state.lastResult = null;
               state.activeScenario = null;
               if (els.btnCopy) els.btnCopy.disabled = true;
@@ -463,7 +486,7 @@
         round++;
       }
 
-      return { diag, diagSources, recIds };
+      return { diag, diagSources, recIds, triggeredIds: triggered.map(r => r.id) };
     }
 
     // ── Render: heatmap ───────────────────────────────────────────────────
@@ -512,35 +535,75 @@
       });
     }
 
-    // ── Render: diagnosis with tier transparency ───────────────────────────
+    // ── Render: structural profile (stability + dependency risk) ──────────
+    function renderStructuralProfile(result) {
+      const rules = result.rules;
 
-    const TIER_META = {
-      1: { label: "Structural failure", cls: "tier-1" },
-      2: { label: "Monetization gap",   cls: "tier-2" },
-      3: { label: "Portfolio risk",      cls: "tier-3" },
-    };
+      // Structural stability — derived from min tier of triggered rules
+      if (els.stabilityBadge) {
+        const sources = rules.diagSources || [];
+        const allIds  = rules.triggeredIds || [];
+        // tier 1 rules always appear in diagSources if triggered
+        const hasTier1 = sources.some(s => s.tier === 1);
+        const hasTier2 = sources.some(s => s.tier === 2) || allIds.some(id => ["monetization_capture_gap","pricing_leakage_controls_weak","exceptions_material_not_crisis","unit_cost_immature","cadence_weak_not_absent","balances_not_monetized","fx_without_corridor","fx_spread_leakage","rtp_readiness_gap"].includes(id));
+        const hasTier3 = !hasTier1 && !hasTier2 && allIds.length > 0;
 
-    function renderDiagnosis(overall) {
+        let label, cls;
+        if (hasTier1)      { label = "Structural Concern Detected"; cls = "stability-critical"; }
+        else if (hasTier2) { label = "Attention Areas Present";     cls = "stability-warning";  }
+        else if (hasTier3) { label = "Patterns Worth Monitoring";   cls = "stability-monitor";  }
+        else               { label = "No Structural Concerns";      cls = "stability-ok";       }
+
+        els.stabilityBadge.innerHTML = `<span class="stability-badge ${cls}">${label}</span>`;
+
+        // Surface to analytics
+        result._stabilityLabel = label;
+      }
+
+      // Dependency risk patterns
+      if (els.dependencyRiskList) {
+        const DEP_MAP = {
+          float_dependency_risk:       "Balance income dependency — rate-cycle sensitivity may not be measured",
+          concentration_risk_extreme:  "Revenue concentration — top client relationship sensitivity elevated",
+          rate_cycle_exposure_mature:  "Rate-cycle exposure — sensitivity not fully evaluated at segment level",
+          fx_without_corridor:         "FX monetization gap — spread discipline not fully operationalized",
+          rtp_readiness_gap:           "Real-time rail gap — RTP capability limiting commercial use cases",
+        };
+        const triggered = (rules.triggeredIds || []).filter(id => DEP_MAP[id]);
+        result._dependencyPatterns = triggered;
+
+        if (triggered.length > 0) {
+          els.dependencyRiskList.innerHTML =
+            `<ul class="dep-risk-list">${triggered.map(id => `<li>${DEP_MAP[id]}</li>`).join("")}</ul>`;
+        } else {
+          els.dependencyRiskList.innerHTML = `<div class="dep-risk-none">No dependency risk patterns detected</div>`;
+        }
+      }
+    }
+
+    // ── Render: management observations (rules engine output) ─────────────
+    function renderObservations(result) {
       if (!els.diagnosisList) return;
-      const sc = pfiGetScenario(overall);
-      const diagLabels = {
-        "STRUCTURAL FAILURE":    { prefix: "Structural issue",  cls: "tier-1" },
-        "FRAGILE FRANCHISE":     { prefix: "Priority area",     cls: "tier-2" },
-        "OPERATIONALLY STABLE":  { prefix: "Improvement area",  cls: "tier-3" },
-        "STRATEGICALLY ALIGNED": { prefix: "Optimization area", cls: "tier-3" },
-        "BEST-IN-CLASS":         { prefix: "Watch area",        cls: "tier-3" },
-      };
-      const meta = diagLabels[sc.label] || diagLabels["STRUCTURAL FAILURE"];
+      const diag = result.rules.diag || [];
       els.diagnosisList.innerHTML = "";
-      sc.structural_issues.forEach((d, i) => {
+      if (diag.length === 0) {
         const li = document.createElement("li");
         li.className = "diagnosis-item";
-        li.innerHTML = `
-          <span class="diag-tier ${meta.cls}">${meta.prefix} ${i + 1}</span>
-          <div class="diag-text">${d}</div>
-        `;
+        li.innerHTML = `<div class="diag-text">No significant structural observations at current score level.</div>`;
+        els.diagnosisList.appendChild(li);
+        return;
+      }
+      diag.forEach((d, i) => {
+        const li = document.createElement("li");
+        li.className = "diagnosis-item";
+        li.innerHTML = `<span class="diag-tier tier-neutral">Observation ${i + 1}</span><div class="diag-text">${d}</div>`;
         els.diagnosisList.appendChild(li);
       });
+    }
+
+    // ── Render: diagnosis (used by PDF via pfiGetScenario — kept intact) ──
+    function renderDiagnosis(overall) {
+      if (!els.diagnosisList) return; // no-op; renderObservations handles display
     }
 
     // ── Render: priorities ────────────────────────────────────────────────
@@ -549,7 +612,7 @@
       if (!els.prioritiesList) return;
       const sc = pfiGetScenario(overall);
       els.prioritiesList.innerHTML = "";
-      sc.priorities.forEach((pri, idx) => {
+      sc.priorities.slice(0, 3).forEach((pri, idx) => {
         const box = document.createElement("div");
         box.className = "priority";
         box.innerHTML = `
@@ -588,21 +651,49 @@
 
     // ── Render: results ───────────────────────────────────────────────────
 
+    // ── Sub-score badge renderer ───────────────────────────────────────────
+    const SUB_LABELS = {
+      discipline: "Operating Discipline",
+      resilience: "Portfolio Resilience",
+      readiness:  "Strategic Readiness"
+    };
+    const SUB_STATUS = {
+      discipline: [ "Foundational Gaps Detected", "Developing Practices",   "Structured Approach",    "Mature Operating Model"    ],
+      resilience: [ "High Structural Fragility",  "Moderate Vulnerability", "Developing Resilience",  "Resilient Portfolio"       ],
+      readiness:  [ "Early Capability Stage",     "Foundational Capability","Emerging Readiness",     "Strategically Positioned"  ]
+    };
+    const DOT_LABELS = ["Low", "Developing", "Moderate", "Strong", "Optimized"];
+
+    function renderSubBadge(dimension, score) {
+      const s      = parseInt(score, 10) || 0;
+      const tier   = s <= 25 ? 0 : s <= 50 ? 1 : s <= 75 ? 2 : 3;
+      const dots   = Math.ceil(s / 20);
+      const filled = Math.min(Math.max(dots, 1), 5);
+      const dotStr = Array.from({length: 5}, (_, i) => i < filled ? "●" : "○").join("");
+      const dlabel = DOT_LABELS[filled - 1];
+      return `
+        <div class="badge-sub-label">${SUB_LABELS[dimension]}</div>
+        <div class="badge-sub-status">${SUB_STATUS[dimension][tier]}</div>
+        <div class="badge-sub-dots"><span class="badge-dots-str">${dotStr}</span><span class="badge-dots-label">${dlabel}</span></div>
+      `;
+    }
+
     function renderResults(result) {
       if (els.resultsEmpty) els.resultsEmpty.classList.add("hidden");
       if (els.resultsContainer) els.resultsContainer.classList.remove("hidden");
 
       if (els.overallScore) els.overallScore.textContent = result.overall;
       if (els.maturityLabel) els.maturityLabel.textContent = maturityLabel(result.overall);
-      if (els.badgeMonetization) els.badgeMonetization.textContent = `Monetization: ${result.sub.monetization}/100`;
-      if (els.badgeMargin) els.badgeMargin.textContent = `Margin durability: ${result.sub.margin}/100`;
-      if (els.badgeReadiness) els.badgeReadiness.textContent = `Strategic readiness: ${result.sub.readiness}/100`;
+      if (els.badgeMonetization) els.badgeMonetization.innerHTML = renderSubBadge("discipline", result.sub.monetization);
+      if (els.badgeMargin)       els.badgeMargin.innerHTML       = renderSubBadge("resilience", result.sub.margin);
+      if (els.badgeReadiness)    els.badgeReadiness.innerHTML    = renderSubBadge("readiness",  result.sub.readiness);
 
+      renderStructuralProfile(result);
       renderHeatmap(result.pillarScores);
-      renderPillarNarratives(result.pillarScores, result.overall);
-      renderDiagnosis(result.overall);
+      renderObservations(result);
       renderPriorities(result.overall);
-      render3090(result.overall);
+      // pillarNarratives and plan3090 intentionally omitted from screen display
+      // PDF uses pfiGetScenario() directly — not DOM elements
     }
 
     // ── Compute & show ────────────────────────────────────────────────────
@@ -626,8 +717,17 @@
       const _sb = document.getElementById("btnShareLink"); if (_sb) _sb.disabled = false;
 
       renderResults(result);
-      if(window.CUA){var _sc=pfiGetScenario(overall);window.CUA.pfiCompleted(overall,_sc?_sc.label:"");}
-      if(window.CUA){var _sc=pfiGetScenario(overall);window.CUA.pfiCompleted(overall,_sc?_sc.label:"");}
+      // ── Analytics ──────────────────────────────────────────────────────────
+      if (window.CUA) {
+        const _sc = pfiGetScenario(overall);
+        window.CUA.pfiCompleted(overall, _sc ? _sc.label : "", {
+          structural_stability_label: result._stabilityLabel || "",
+          dependency_patterns:        (result._dependencyPatterns || []).join("|")
+        });
+      }
+      // ───────────────────────────────────────────────────────────────────────
+      if (els.btnDownloadReport) els.btnDownloadReport.disabled = false;
+      if (els.btnEmailCopy)      els.btnEmailCopy.disabled      = false;
       setTimeout(() => {
         document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
       }, 80);
@@ -1358,7 +1458,19 @@ function exportPDF() {
   if (!state.lastResult) return;
   if (!window.jspdf) { alert("PDF library not loaded. Please refresh and try again."); return; }
 
-  if(window.CUA){var _sc2=pfiGetScenario(state.lastResult.overall);window.CUA.pdfGenerated(state.lastResult.overall,_sc2?_sc2.label:"");}if(window.CUA){var _sc2=pfiGetScenario(state.lastResult.overall);window.CUA.pdfGenerated(state.lastResult.overall,_sc2?_sc2.label:"");}var r  = state.lastResult;
+  // ── Analytics ────────────────────────────────────────────────────────────
+  if (window.CUA) {
+    var _r  = state.lastResult;
+    var _sc = pfiGetScenario(_r.overall);
+    window.CUA.trackEvent("pfi_pdf_download_clicked", {
+      pfi_score:          _r.overall,
+      pfi_score_band:     window.CUA.scoreBand(_r.overall),
+      structural_pattern: window.CUA.slugify(_sc ? _sc.label : "")
+    });
+  }
+  // ─────────────────────────────────────────────────────────────────────────
+
+  var r  = state.lastResult;
   var sc = pfiGetScenario(r.overall);
 
   var { jsPDF } = window.jspdf;
@@ -1919,6 +2031,21 @@ function exportPDF() {
     els.btnCopy2?.addEventListener("click", exportPDF);
     els.btnCompute?.addEventListener("click", () => computeAndShow(false));
     els.btnCopy?.addEventListener("click", exportPDF);
+    els.btnDownloadReport?.addEventListener("click", exportPDF);
+
+    // Email me a copy — copies shareable link, tracks event
+    els.btnEmailCopy?.addEventListener("click", () => {
+      if (!state.lastResult) return;
+      const url = buildShareURL();
+      const confirm = document.getElementById("emailConfirm");
+      navigator.clipboard.writeText(url).then(() => {
+        if (confirm) { confirm.style.display = "inline"; setTimeout(() => { confirm.style.display = "none"; }, 3000); }
+      }).catch(() => { prompt("Copy this link to share via email:", url); });
+      if (window.CUA) window.CUA.trackEvent("pfi_email_copy_requested", {
+        pfi_score: state.lastResult.overall,
+        pfi_score_band: window.CUA.scoreBand(state.lastResult.overall)
+      });
+    });
 
     // ── Share link ────────────────────────────────────────────────────────
 
