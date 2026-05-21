@@ -223,22 +223,22 @@
 
       const ILLUSTRATIVE = [
         {
+          id:      "inherited",
           tag:     "STABILIZE FIRST",
           label:   "Inherited Underperforming Franchise",
-          bullets: ["Margin compression visible", "Weak ownership structure", "High manual repair activity"],
-          pdf:     "/payments-portfolio-diagnostic/examples/pfi-example-critical.pdf"
+          bullets: ["Margin compression visible", "Weak ownership structure", "High manual repair activity"]
         },
         {
+          id:      "growth_lag",
           tag:     "MONETIZATION GAP",
           label:   "Growth Franchise with Monetization Lag",
-          bullets: ["Volumes growing rapidly", "Revenue not keeping pace", "Weak pricing economics"],
-          pdf:     "/payments-portfolio-diagnostic/examples/pfi-example-developing.pdf"
+          bullets: ["Volumes growing rapidly", "Revenue not keeping pace", "Weak pricing economics"]
         },
         {
+          id:      "mature_stress",
           tag:     "OPTIMIZE & FUTURE-PROOF",
           label:   "Mature Franchise Stress Test",
-          bullets: ["Strong operating foundation", "Emerging real-time gaps", "Concentrated revenue pressure"],
-          pdf:     "/payments-portfolio-diagnostic/examples/pfi-example-mature.pdf"
+          bullets: ["Strong operating foundation", "Emerging real-time gaps", "Concentrated revenue pressure"]
         }
       ];
 
