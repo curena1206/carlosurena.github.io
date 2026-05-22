@@ -254,7 +254,7 @@ window.PPD_MODEL = (() => {
           options: [
             { score: 1, label: "High dependency with limited visibility or management", sub: "External cost exposure may be creating structural economic pressure" },
             { score: 2, label: "Costs managed reactively or deal-by-deal", sub: "Cost discipline exists in specific situations but is not yet systematic" },
-            { score: 3, label: "Contracts reviewed and routing considered periodically", sub: "Some economic management is present, though optimization may be inconsistent" },
+            { score: 3, label: "Contracts reviewed and routing considered periodically", sub: "Some economic management is present, though consistent application may vary" },
             { score: 4, label: "Managed through routing strategy and contract structure", sub: "External cost discipline is visible and incorporated into operating decisions" },
             { score: 5, label: "Continuously evaluated across providers, rails, and economics", sub: "External cost management is treated as a strategic portfolio lever" }
           ]
@@ -307,14 +307,14 @@ window.PPD_MODEL = (() => {
         },
         {
           id: "MR2",
-          title: "ISO 20022 implementation and operational leverage",
+          title: "ISO 20022 implementation and operational value",
           desc: "How effectively is structured payment data being used to improve operational quality, analytics, and client value?",
           options: [
             { score: 1, label: "Not started or limited readiness", sub: "Structured data capability may not yet support operational or analytical improvement" },
             { score: 2, label: "Migration underway; benefits not yet operationalized", sub: "Infrastructure work is progressing, though economic and operational value remains limited" },
-            { score: 3, label: "Implemented but not consistently leveraged", sub: "Compliance or technical readiness exists, though structured data is not yet fully embedded into operations" },
+            { score: 3, label: "Implemented but not consistently applied", sub: "Compliance or technical readiness exists, though structured data is not yet fully embedded into operations" },
             { score: 4, label: "Implemented and used to improve STP and data quality", sub: "Structured data is contributing to operational improvement and better management visibility" },
-            { score: 5, label: "Structured data leveraged for automation, analytics, and client value", sub: "ISO data is operationalized across STP improvement, analytics, pre-validation, and client-level insight" }
+            { score: 5, label: "Structured data applied to automation, analytics, and client value", sub: "ISO data is operationalized across STP improvement, analytics, pre-validation, and client-level insight" }
           ]
         },
         {
@@ -324,7 +324,7 @@ window.PPD_MODEL = (() => {
           options: [
             { score: 1, label: "Static defaults with limited routing discipline", sub: "Routing decisions appear largely historical or operational rather than economically evaluated" },
             { score: 2, label: "Basic routing rules exist", sub: "Some routing structure is present, though economic management is limited" },
-            { score: 3, label: "Routing reviewed for major flows or client needs", sub: "Optimization exists in selected areas, though broader application may be inconsistent" },
+            { score: 3, label: "Routing reviewed for major flows or client needs", sub: "Active management exists in selected areas, though broader application may be inconsistent" },
             { score: 4, label: "Routing incorporated into economic and service evaluation", sub: "Routing decisions are managed across cost, speed, risk, and client-service considerations" },
             { score: 5, label: "Routing strategy integrated into portfolio economics", sub: "Rail selection is consistently evaluated as part of strategic portfolio, pricing, and operating discipline" }
           ]
@@ -581,8 +581,8 @@ window.PPD_MODEL = (() => {
     R8:  { title: "Build unit cost model by rail and segment — and use it in pricing governance", owner: "Finance + Product", metric: "Unit cost by rail, segment price floors, contribution margin", why: "Provides the cost anchor needed for disciplined pricing and roadmap tradeoff decisions." },
     R9:  { title: "Reduce partner and network costs through routing strategy and contract structure", owner: "Product + Finance", metric: "Cost per payment by rail, partner and network fee trends", why: "Improves gross margin through structural external cost levers that are often overlooked." },
     R10: { title: "Create STP scorecard by rail and client segment with standing ownership", owner: "Ops + Product", metric: "STP % by rail and segment, repair rates, trend vs. target", why: "Directs leakage reduction effort where the margin impact is highest." },
-    R11: { title: "Build segment-level GTM plays anchored in client economics", owner: "Product + Sales", metric: "Win rate, margin per win, attach rate by segment", why: "Makes growth repeatable and ensures new clients contribute positively to the P&L." },
-    R12: { title: "Strengthen ERP, TMS, and AP/AR integration motion for top client segments", owner: "Product + Tech + Sales", metric: "Integration adoption rate, time-to-onboard, NPS post-integration", why: "Increases structural stickiness and reduces the risk of relationship-dependent attrition." },
+    R11: { title: "Build segment-level commercial plays anchored in client economics", owner: "Product + Sales", metric: "Win rate, margin per win, attach rate by segment", why: "Makes growth repeatable and ensures new clients contribute positively to the P&L." },
+    R12: { title: "Strengthen ERP, TMS, and AP/AR integration for top client segments", owner: "Product + Tech + Sales", metric: "Integration adoption rate, time-to-onboard, NPS post-integration", why: "Increases structural stickiness and reduces the risk of relationship-dependent attrition." },
     R13: { title: "Realign sales incentives toward margin quality, attach rate, and balance contribution", owner: "Sales Leadership + Finance", metric: "Margin per client, attach rate, discounting frequency by rep", why: "Prevents volume-driven growth that systematically destroys profitability." },
     R14: { title: "Build a win/loss feedback loop tied to pricing, onboarding friction, and CX", owner: "Product + Sales Ops", metric: "Loss reason distribution, time-to-yes, onboarding friction scores", why: "Converts market signals into execution priorities — not just anecdotes." },
     R15: { title: "Scale RTP/FedNow send and develop packaged commercial use cases", owner: "Product + Tech + Sales", metric: "RTP send volume, use-case adoption rate, revenue contribution", why: "Converts infrastructure readiness into a commercial growth lever." },
@@ -717,7 +717,7 @@ window.PPD_MODEL = (() => {
       id: "revenue_mix_concentration_mature",
       tier: 3,
       when: (a) => (a.RA1 <= 2 && a.RA5 >= 3),
-      diagnosis: "Revenue is growing but mix concentration may remain. As the portfolio matures, intentional diversification across economic drivers may become a more important strategic priority.",
+      diagnosis: "Revenue growth appears sustained. Mix concentration may persist. As the portfolio matures, intentional diversification across economic drivers may become a more important strategic priority.",
       recs: ["R1", "R3", "R5"]
     }
   ];

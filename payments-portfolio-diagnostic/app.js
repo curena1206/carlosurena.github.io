@@ -52,8 +52,8 @@
     {
       id: "mature_stress",
       label: "Mature Franchise — Readiness & Margin Stress Test",
-      description: "A well-governed, well-run franchise facing rate cycle pressure and real-time rail gaps. Revenue mix is too dependent on balance income, RTP send is limited, and routing isn't optimized. Strong foundation — specific gaps.",
-      tag: "Optimize & future-proof",
+      description: "A well-governed, well-run franchise facing rate cycle pressure and real-time rail gaps. Revenue mix is too dependent on balance income, RTP send is limited, and routing discipline is not fully applied. Strong foundation — specific gaps.",
+      tag: "Strengthen & sustain",
       tagColor: "tag-blue",
       answers: {
         // Revenue Architecture — diversified mix, balance-heavy, FX embedded
@@ -139,7 +139,7 @@
       return arr.reduce((a, b) => a + b, 0) / arr.length;
     }
     function maturityLabel(score100) {
-      if (score100 >= 75) return "Mature franchise — optimize and defend";
+      if (score100 >= 75) return "Mature franchise — protect and extend";
       if (score100 >= 58) return "Established franchise — monetization gaps present";
       if (score100 >= 42) return "Volume present, margin discipline missing";
       return "Franchise needs stabilization before growth";
@@ -159,14 +159,14 @@
         weak:        "Some revenue levers exist but pricing segmentation is inconsistent and monetization capture is lagging volume growth.",
         developing:  "Revenue mix is reasonable but rail-level economics and pricing segmentation are not yet fully operationalized.",
         strong:      "Revenue architecture is disciplined — mix is diversified, pricing is segmented, and monetization capture is tracking ahead of volume.",
-        exceptional: "Fully optimized revenue architecture with intentional mix targets, value-based segmentation, and consistent monetization capture."
+        exceptional: "Fully managed revenue architecture with intentional mix targets, value-based segmentation, and consistent monetization capture."
       },
       growth_engine: {
         critical:    "Growth is relationship-dependent with no repeatable engine, low workflow embed, and a pipeline dominated by price-driven deals.",
-        weak:        "GTM motions exist but are inconsistent — pipeline quality is mixed and workflow embedding has not yet created durable switching costs.",
-        developing:  "A structured GTM engine is emerging with improving embed depth, but conversion discipline and differentiation clarity are still developing.",
+        weak:        "Commercial motions exist but are inconsistent — pipeline quality is mixed and workflow embedding has not yet created durable switching costs.",
+        developing:  "A structured commercial engine is emerging with improving embed depth, but conversion discipline and differentiation clarity are still developing.",
         strong:      "Growth is repeatable and defensible — workflow embedding is creating switching costs and the pipeline converts on value, not just price.",
-        exceptional: "Multiple diversified GTM engines with deep workflow integration, predictable conversion, and quantified client outcome differentiation."
+        exceptional: "Multiple diversified commercial engines with deep workflow integration, predictable conversion, and quantified client outcome differentiation."
       },
       margin_cost: {
         critical:    "Margin is under severe pressure — exception rates are high, repair costs are untracked, and pricing leakage is occurring without visibility.",
@@ -177,17 +177,17 @@
       },
       multi_rail: {
         critical:    "Rail strategy is absent — real-time send capability is limited, routing is static, and data quality is creating repair and rejection risk.",
-        weak:        "Some rail infrastructure is in place but RTP send, ISO leverage, and routing optimization are not yet generating commercial value.",
-        developing:  "Rail readiness is progressing — ISO migration underway, some routing optimization — but real-time use cases are not yet monetized.",
+        weak:        "Some rail infrastructure is in place but RTP send, ISO adoption, and routing discipline are not yet generating commercial value.",
+        developing:  "Rail readiness is progressing — ISO migration underway, some routing discipline — but real-time use cases are not yet monetized.",
         strong:      "Multi-rail strategy is commercially active — RTP send is scaled, ISO data is improving STP, and routing is managed as an economics lever.",
-        exceptional: "Rail strategy is a competitive differentiator — real-time use cases are packaged and monetized, routing is dynamically optimized, ISO data drives automation."
+        exceptional: "Rail strategy is a competitive differentiator — real-time use cases are packaged and monetized, routing is dynamically managed, ISO data drives automation."
       },
       balance_liquidity: {
         critical:    "Balance contribution is invisible — payments-to-balance linkage is absent, pricing ignores NII, and rate-cycle exposure is unquantified.",
-        weak:        "Balances are present but not systematically linked to pricing or GTM decisions — franchise ROE is being systematically understated.",
+        weak:        "Balances are present but not systematically linked to pricing or commercial decisions — franchise ROE is being systematically understated.",
         developing:  "Balance contribution is tracked for priority clients but not yet embedded in pricing discipline or rate-cycle management across the book.",
-        strong:      "Balance-adjusted pricing is standard practice, operating balance penetration is managed, and rate-cycle sensitivity is measured and owned.",
-        exceptional: "Fully integrated treasury and payments franchise — balance economics drive pricing, overlays optimize ROE, and rate exposure is managed by client cohort."
+        strong:      "Full-relationship pricing is standard practice, operating balance penetration is managed, and rate-cycle sensitivity is measured and owned.",
+        exceptional: "Fully integrated treasury and payments franchise — balance economics drive pricing, overlays support ROE management, and rate exposure is managed by client cohort."
       },
       governance: {
         critical:    "The franchise lacks a functioning operating system — P&L ownership is diffuse, pricing is sales-driven, and KPIs are undefined or unused.",
@@ -236,7 +236,7 @@
         },
         {
           id:      "mature_stress",
-          tag:     "OPTIMIZE & FUTURE-PROOF",
+          tag:     "STRENGTHEN & SUSTAIN",
           label:   "Mature Franchise Stress Test",
           bullets: ["Strong operating foundation", "Emerging real-time gaps", "Concentrated revenue pressure"]
         }
@@ -687,7 +687,7 @@
       resilience: [ "Fragile Foundation",  "Moderate Vulnerability", "Developing Resilience",  "Resilient Portfolio"       ],
       readiness:  [ "Early Capability Stage",     "Foundational Capability","Emerging Readiness",     "Strategically Positioned"  ]
     };
-    const DOT_LABELS = ["Low", "Developing", "Moderate", "Strong", "Optimized"];
+    const DOT_LABELS = ["Low", "Developing", "Moderate", "Strong", "Established"];
 
     function renderSubBadge(dimension, score) {
       const s      = parseInt(score, 10) || 0;
@@ -872,7 +872,7 @@ const PFI_SCENARIOS = [
     pillar_commentary: {
       revenue_arch:
         "Revenue depends on a single economic lever. Pricing, mix, and rail economics are not managed as a " +
-        "system. Fee schedules are not segmented by client value or corridor profitability.",
+        "system. Fee schedules are not segmented by client value or flow-level contribution.",
       growth_engine:
         "Growth is relationship-driven with no repeatable acquisition engine. Workflow embed is low and the " +
         "pipeline is dominated by price-driven deals that compress margin at entry.",
@@ -881,7 +881,7 @@ const PFI_SCENARIOS = [
         "tracked, and pricing leakage is occurring without visibility. Unit economics by rail are unknown.",
       multi_rail:
         "Rail strategy is absent. Real-time send capability is limited, routing is static, and data quality " +
-        "is creating repair and rejection risk across corridors.",
+        "is creating repair and rejection risk across payment rails.",
       balance_liquidity:
         "Balance contribution is invisible. Payments-to-balance linkage is absent, pricing ignores NII, " +
         "and rate-cycle exposure is unquantified. Float economics are not captured.",
@@ -892,18 +892,18 @@ const PFI_SCENARIOS = [
     exec_diagnosis:
       "The franchise lacks a functioning payments operating model. Pricing governance, margin visibility, " +
       "and portfolio management mechanisms are absent or ineffective. All six pillars score at or near " +
-      "minimum \u2014 this is a stabilization mandate, not an optimization exercise.",
+      "minimum \u2014 this is a stabilization mandate, not a performance exercise.",
     structural_issues: [
       "Exception and repair costs are compressing margin at a rate that threatens the P&L. " +
         "Manual intervention requires a dedicated program with named ownership and a repair rate target.",
       "The franchise is operating without a functioning management system. KPIs are undefined or unused " +
         "and cross-functional governance forums are absent. Strategy cannot execute in this environment.",
-      "Pricing governance has broken down. Sales-driven discounting, absent override controls, and poor " +
-        "cost visibility are creating systematic margin leakage invisible to leadership.",
+      "Pricing governance appears absent or inconsistently applied. " +
+        "Sales-driven discounting has accumulated without override controls. Cost visibility appears insufficient for leadership to evaluate the margin impact.",
     ],
     key_issues: [
       "Repair costs compressing margin at a rate that threatens the P&L",
-      "Pricing governance broken down \u2014 sales-driven discounting, absent override controls",
+      "Pricing governance absent or inconsistently applied \u2014 sales-driven discounting, no override controls",
       "No portfolio performance operating rhythm \u2014 KPIs undefined or unused",
     ],
     immediate_focus:
@@ -985,12 +985,12 @@ const PFI_SCENARIOS = [
     benchmark_insight:
       "At this level, the payments franchise has basic operating capability but lacks the governance " +
       "structures and margin discipline to sustain performance. Revenue is generated but leaks through " +
-      "inconsistent pricing and underperforming corridors. The risk is institutionalizing weak practices " +
+      "inconsistent pricing and underperforming flow segments. The risk is institutionalizing weak practices " +
       "rather than achieving structural improvement.",
     pillar_commentary: {
       revenue_arch:
-        "Revenue architecture exists but is not optimized. Pricing is partially segmented, but rail mix " +
-        "management and corridor economics are inconsistently applied.",
+        "Revenue architecture exists but lacks discipline. Pricing is partially segmented, but rail mix " +
+        "management and flow-level economics are inconsistently applied.",
       growth_engine:
         "Growth relies heavily on relationship coverage. Workflow embedding is low and deal quality is " +
         "inconsistent \u2014 some margin-accretive, many margin-dilutive.",
@@ -998,7 +998,7 @@ const PFI_SCENARIOS = [
         "Exception rates are elevated and repair costs are partially tracked but not actively managed. " +
         "Pricing overrides occur without systematic governance.",
       multi_rail:
-        "Multi-rail capability exists but routing logic is not optimized. Real-time rails are available " +
+        "Multi-rail capability exists but routing logic is not consistently managed. Real-time rails are available " +
         "but underutilized. Data quality issues persist.",
       balance_liquidity:
         "Balance linkage to payments is tracked but not priced. NII contribution is acknowledged but not " +
@@ -1009,13 +1009,13 @@ const PFI_SCENARIOS = [
     },
     exec_diagnosis:
       "The payments franchise is generating revenue but has not built the operating infrastructure to " +
-      "protect and grow margin systematically. Governance gaps are creating gradual but compounding " +
-      "margin erosion that compounds over time without visible trigger events.",
+      "protect and grow margin systematically. Governance gaps are creating margin erosion " +
+      "that accumulates without visible trigger events.",
     structural_issues: [
       "Pricing override culture is established and normalized. Without formal governance, discounting " +
         "behavior is self-reinforcing and margin erosion continues at pace.",
-      "Portfolio management is reactive rather than proactive. The absence of a structured review " +
-        "cadence means underperforming corridors and rails persist unaddressed.",
+      "Portfolio management appears reactive. A structured review cadence is absent. " +
+        "Underperforming flow segments and rails persist without structured evaluation.",
       "Balance sheet contribution remains disconnected from payments pricing. The franchise is leaving " +
         "NII value on the table in every rate-sensitive deal.",
     ],
@@ -1043,11 +1043,11 @@ const PFI_SCENARIOS = [
                "creates the feedback loop needed for structural improvement.",
       },
       {
-        title: "Build Rail Routing Optimization Program",
+        title: "Build Rail Routing Efficiency Program",
         owner: "Product + Tech",
         kpi:   "STP rate by rail, cost per transaction, real-time utilization %",
-        why:   "Multi-rail capability is available but underused. Routing optimization directly reduces unit " +
-               "cost and positions the franchise for volume growth.",
+        why:   "Multi-rail capability is available but underused. Routing discipline directly reduces unit " +
+               "cost. The efficiency gain creates headroom for volume growth without margin compression.",
       },
       {
         title: "Integrate NII into Deal Pricing Model",
@@ -1057,10 +1057,10 @@ const PFI_SCENARIOS = [
                "picture of deal profitability and improves pricing discipline.",
       },
       {
-        title: "Establish Corridor Profitability Scorecard",
+        title: "Establish Flow-Level Profitability Scorecard",
         owner: "Finance + Product",
-        kpi:   "Corridor margin, volume trend, cost stack by corridor",
-        why:   "Without corridor-level visibility, resource allocation and pricing decisions lack an economic " +
+        kpi:   "Flow segment margin, volume trend, cost stack by rail",
+        why:   "Without segment-level visibility, resource allocation and pricing decisions lack an economic " +
                "anchor. The scorecard becomes the basis for all portfolio decisions.",
       },
     ],
@@ -1075,9 +1075,9 @@ const PFI_SCENARIOS = [
       },
       {
         period: "Days 31\u201360",
-        title:  "Optimize Operations",
+        title:  "Improve Operating Efficiency",
         items:  [
-          "Begin rail routing optimization program",
+          "Begin rail routing efficiency program",
           "Integrate NII into deal pricing model",
         ],
       },
@@ -1085,7 +1085,7 @@ const PFI_SCENARIOS = [
         period: "Days 61\u201390",
         title:  "Build Portfolio Intelligence",
         items:  [
-          "Launch corridor profitability scorecard",
+          "Launch flow-level profitability scorecard",
           "Link scorecard to resource allocation and pricing decisions",
         ],
       },
@@ -1103,13 +1103,13 @@ const PFI_SCENARIOS = [
     scenario_name: "Stable Platform \u2014 Ready for Commercial Acceleration",
     benchmark_insight:
       "At this level, the payments franchise has functioning operational controls and a credible revenue " +
-      "base. The platform is stable but not yet optimized for growth. The opportunity is to convert " +
+      "base. The platform is stable but not yet positioned for growth. The opportunity is to convert " +
       "operational stability into sustained commercial momentum through improved pricing discipline, " +
-      "corridor expansion, and balance sheet integration.",
+      "flow segment expansion, and balance sheet integration.",
     pillar_commentary: {
       revenue_arch:
         "Revenue architecture is functional. Pricing is segmented at a basic level, but mix management " +
-        "and corridor economics could be more precisely calibrated to margin targets.",
+        "and flow-level economics could be more precisely calibrated to margin targets.",
       growth_engine:
         "Growth engine is active but relies on existing relationships. Workflow embed is improving but " +
         "has not yet created durable switching cost. Pipeline quality is mixed.",
@@ -1117,11 +1117,11 @@ const PFI_SCENARIOS = [
         "Margins are stable and repair costs are tracked. Exception rates are under control. Pricing " +
         "overrides occur but are monitored. Unit economics are partially understood.",
       multi_rail:
-        "Multi-rail capability is deployed. Routing is functional but not dynamically optimized. " +
+        "Multi-rail capability is operational. Routing is functional but not dynamically managed. " +
         "Real-time rails are live and utilization is growing.",
       balance_liquidity:
         "Balance linkage to payments is operational. NII contribution is tracked and included in some " +
-        "pricing models. Float optimization is an emerging capability.",
+        "pricing models. Float economics are developing as a management capability.",
       governance:
         "Governance structures are in place. Management cadence is regular. KPIs are defined and " +
         "reviewed. Pricing authority is documented but enforcement is inconsistent.",
@@ -1131,28 +1131,26 @@ const PFI_SCENARIOS = [
       "converting operational stability into a differentiated, high-margin payments franchise. " +
       "The priority shifts from repair to acceleration.",
     structural_issues: [
-      "Pricing precision remains an opportunity. Basic segmentation exists but corridor-level and " +
-        "client-level price optimization has not been systematically pursued.",
+      "Pricing precision remains an opportunity. Segment-level price discipline has not been systematically pursued.",
       "Workflow embedding is growing but has not yet created switching cost at scale. Deeper product " +
         "integration is the next source of durable revenue.",
-      "Balance sheet economics are tracked but not fully leveraged. More aggressive NII integration " +
-        "into relationship pricing would improve total returns.",
+      "Balance sheet economics are tracked but not fully integrated into relationship pricing. More consistent NII linkage would improve total returns.",
     ],
     key_issues: [
-      "Pricing precision not yet optimized at corridor and client level",
+      "Segment-level price discipline not yet consistently applied",
       "Workflow embedding growing but switching cost not yet established at scale",
       "Balance sheet economics tracked but not fully integrated into relationship pricing",
     ],
     immediate_focus:
       "Shift from operational management to commercial acceleration. The platform is ready. " +
-      "The priority now is corridor optimization, client deepening, and margin improvement.",
+      "The priority now is segment profitability, client deepening, and margin improvement.",
     priorities: [
       {
-        title: "Launch Corridor Profitability Optimization Program",
+        title: "Launch Segment Profitability Program",
         owner: "Product + Finance",
-        kpi:   "Margin by corridor, pricing realization rate, volume mix shift",
-        why:   "Stable operations create the platform for targeted corridor optimization. Systematic analysis " +
-               "of corridor economics will reveal pricing and volume opportunities invisible at the aggregate level.",
+        kpi:   "Margin by flow segment, pricing realization rate, volume mix shift",
+        why:   "Stable operations create a platform for targeted segment profitability work. Systematic review " +
+               "of flow-level economics surfaces pricing and volume opportunities not visible in aggregate reporting.",
       },
       {
         title: "Deepen Workflow Integration Across Top-20 Clients",
@@ -1166,7 +1164,7 @@ const PFI_SCENARIOS = [
         owner: "Tech + Product",
         kpi:   "Cost per transaction by rail, STP rate, routing decision time",
         why:   "Dynamic routing reduces unit cost and improves client experience simultaneously. At this stage " +
-               "of scale, routing optimization has measurable P&L impact.",
+               "of scale, routing discipline has measurable P&L impact.",
       },
       {
         title: "Build Client-Level Profitability Model",
@@ -1176,11 +1174,11 @@ const PFI_SCENARIOS = [
                "franchise cannot allocate resources to the relationships with the highest total return.",
       },
       {
-        title: "Formalize Growth Playbook for New Corridor Entry",
+        title: "Formalize Growth Playbook for Portfolio Expansion",
         owner: "Strategy + Product",
-        kpi:   "Corridor pipeline, time-to-revenue, cost of entry",
-        why:   "Stable franchises that do not systematically pursue corridor expansion cede ground to more " +
-               "aggressive competitors. A repeatable entry playbook reduces the cost and risk of growth.",
+        kpi:   "Flow segment pipeline, time-to-revenue, cost of entry",
+        why:   "Stable franchises that do not systematically expand their flow coverage cede ground to more " +
+               "aggressive competitors. A repeatable expansion playbook reduces the cost and risk of growth.",
       },
     ],
     execution: [
@@ -1188,7 +1186,7 @@ const PFI_SCENARIOS = [
         period: "Days 1\u201330",
         title:  "Accelerate Commercial Levers",
         items:  [
-          "Launch corridor profitability optimization program",
+          "Launch segment profitability program",
           "Begin client-level profitability model build",
         ],
       },
@@ -1204,8 +1202,8 @@ const PFI_SCENARIOS = [
         period: "Days 61\u201390",
         title:  "Scale Growth Engine",
         items:  [
-          "Formalize new corridor entry playbook",
-          "Deploy growth engine across pipeline with repeatable model",
+          "Formalize portfolio expansion playbook",
+          "Activate growth engine across pipeline with repeatable model",
         ],
       },
     ],
@@ -1219,7 +1217,7 @@ const PFI_SCENARIOS = [
   {
     range: [71, 85],
     label: "STRATEGICALLY ALIGNED",
-    scenario_name: "High-Performance Franchise \u2014 Optimizing for Scale",
+    scenario_name: "High-Performance Franchise \u2014 Extending the Lead",
     benchmark_insight:
       "At this level, the payments franchise has strong commercial and operational foundations. Strategy, " +
       "governance, and execution are aligned. The focus shifts to scaling what is working, eliminating " +
@@ -1227,7 +1225,7 @@ const PFI_SCENARIOS = [
       "franchise against competitive pressure.",
     pillar_commentary: {
       revenue_arch:
-        "Revenue architecture is well-developed. Pricing is segmented and corridor economics are actively " +
+        "Revenue architecture is well-developed. Pricing is segmented and flow-level economics are actively " +
         "managed. Mix management is systematic and rail economics are integrated into decisions.",
       growth_engine:
         "Growth engine is structured and repeatable. Workflow embed is high across the top client base. " +
@@ -1236,11 +1234,11 @@ const PFI_SCENARIOS = [
         "Margins are strong and actively managed. Exception rates are low. Repair costs are minimal and " +
         "tracked. Pricing governance is enforced. Unit economics are well-understood.",
       multi_rail:
-        "Multi-rail strategy is sophisticated. Routing is dynamically optimized. Real-time capability is " +
-        "fully deployed. Data quality is high across corridors.",
+        "Multi-rail strategy is sophisticated. Routing is dynamically managed. Real-time capability is " +
+        "fully operational. Data quality is high across flow segments.",
       balance_liquidity:
         "Balance sheet is fully integrated into the payments franchise. NII is priced into relationships " +
-        "systematically. Float optimization is active and rate-cycle exposure is managed.",
+        "systematically. Float economics are actively managed and rate-cycle exposure is monitored.",
       governance:
         "Operating model is mature. Management cadence is rigorous and fully embedded. KPIs are " +
         "comprehensive and consistently reviewed. Pricing governance is enforced with full authority structure.",
@@ -1250,8 +1248,9 @@ const PFI_SCENARIOS = [
       "at this stage is defending the advantage, scaling efficiently, and continuing to raise the " +
       "performance ceiling before competitive pressure forces a reactive response.",
     structural_issues: [
-      "At this performance level, the risks are complacency and complexity. High-performing franchises " +
-        "often over-invest in sustaining existing programs rather than building next-generation capabilities.",
+      "At this performance level, the primary risks are complacency and coordination complexity. " +
+        "High-performing franchises tend to over-invest in sustaining existing programs. " +
+        "Next-generation capability building can stall as a result.",
       "Talent concentration risk is a structural vulnerability in aligned franchises. Performance depends " +
         "on specific individuals, which creates succession and transition risk.",
       "External competitive dynamics require ongoing monitoring. A strategically aligned payments franchise " +
@@ -1265,18 +1264,18 @@ const PFI_SCENARIOS = [
     immediate_focus:
       "Protect the advantage and extend the lead. The franchise is performing well. The risk now is " +
       "competitive disruption and internal complacency. Focus shifts to next-generation capability " +
-      "and portfolio optimization.",
+      "and portfolio management.",
     priorities: [
       {
-        title: "Build Next-Generation Corridor Strategy",
+        title: "Build Next-Generation Flow Coverage Strategy",
         owner: "Strategy + Product",
-        kpi:   "Corridor pipeline, market share by corridor, pricing premium",
+        kpi:   "Flow segment pipeline, market share by segment, pricing premium",
         why:   "Strategically aligned franchises must actively expand their addressable market. Next-generation " +
-               "corridor strategy ensures the franchise is growing its competitive position, not just defending it.",
+               "flow coverage ensures the franchise is growing its competitive position, not just defending it.",
       },
       {
         title: "Institutionalize Talent and Knowledge Transfer Programs",
-        owner: "HR + Senior Leadership",
+        owner: "HR + Business Leadership",
         kpi:   "Succession depth, knowledge documentation rate, retention",
         why:   "Performance concentration is the hidden vulnerability of high-performing franchises. " +
                "Institutionalizing knowledge and building succession depth de-risks the business.",
@@ -1296,10 +1295,10 @@ const PFI_SCENARIOS = [
                "intelligence capability enables faster and better-informed strategic responses.",
       },
       {
-        title: "Optimize Total Returns Across the Client Portfolio",
+        title: "Strengthen Total Returns Across the Client Portfolio",
         owner: "Finance + Relationship Management",
         kpi:   "Total relationship return, NII + fee mix, client tenure",
-        why:   "Portfolio optimization at this level is about maximizing total return, not just fee revenue. " +
+        why:   "Portfolio management at this level is about maximizing total return, not just fee revenue. " +
                "Systematic review of NII and fee economics improves resource allocation significantly.",
       },
     ],
@@ -1308,7 +1307,7 @@ const PFI_SCENARIOS = [
         period: "Days 1\u201330",
         title:  "Defend and Extend",
         items:  [
-          "Launch next-generation corridor strategy process",
+          "Launch next-generation flow coverage strategy process",
           "Begin competitive intelligence capability build",
         ],
       },
@@ -1322,15 +1321,15 @@ const PFI_SCENARIOS = [
       },
       {
         period: "Days 61\u201390",
-        title:  "Optimize Returns",
+        title:  "Strengthen Returns",
         items:  [
-          "Complete total returns optimization across client portfolio",
-          "Deploy expanded corridor strategy with market entry plan",
+          "Complete total returns strengthening across client portfolio",
+          "Activate expanded flow coverage strategy with portfolio expansion plan",
         ],
       },
     ],
     strategic_takeaway:
-      "Strategic alignment is a competitive advantage \u2014 but only if it is actively leveraged. " +
+      "Strategic alignment is a competitive advantage \u2014 but only if it is actively applied. " +
       "The payments franchise that rests on current performance cedes ground to competitors building " +
       "the next generation of capability. The 90-day priority is staying ahead.",
   },
@@ -1347,19 +1346,19 @@ const PFI_SCENARIOS = [
       "managing complexity, and continuing to raise the performance standard.",
     pillar_commentary: {
       revenue_arch:
-        "Revenue architecture is sophisticated and fully integrated. Pricing is dynamically optimized " +
-        "by segment, corridor, and rail. Mix management is active and margin-accretive.",
+        "Revenue architecture is sophisticated and fully integrated. Pricing is dynamically managed " +
+        "by segment, flow type, and rail. Mix management is active and margin-accretive.",
       growth_engine:
         "Growth engine is industry-leading. Workflow embed is deep across the client base. Pipeline is " +
         "systematically managed and consistently margin-accretive. Client acquisition cost is low.",
       margin_cost:
         "Margins are best-in-class and systematically protected. Exception rates are minimal. Unit " +
-        "economics are fully understood at the rail, corridor, and client level.",
+        "economics are fully understood at the rail, flow type, and client level.",
       multi_rail:
-        "Multi-rail capability is fully optimized. Dynamic routing, real-time capability, and data " +
+        "Multi-rail capability is fully operational. Dynamic routing, real-time capability, and data " +
         "quality are all operating at peak performance. Rail strategy is a competitive differentiator.",
       balance_liquidity:
-        "Balance sheet integration is complete and fully optimized. NII is systematically priced. Float " +
+        "Balance sheet integration is complete and fully operationalized. NII is systematically priced. Float " +
         "economics are actively managed. Rate-cycle positioning is proactive.",
       governance:
         "Governance is industry-leading. Operating cadence is rigorous and fully embedded. KPIs are " +
@@ -1372,14 +1371,14 @@ const PFI_SCENARIOS = [
       "the resilience and adaptability to remain at the top.",
     structural_issues: [
       "Sustaining best-in-class performance requires continuous investment in capability refresh. " +
-        "Franchises at this level risk falling behind by optimizing existing programs rather than building the next generation.",
+        "Franchises at this level risk falling behind by sustaining existing programs rather than building the next generation.",
       "Organizational complexity grows with performance. Best-in-class franchises often develop " +
         "coordination overhead and decision latency that erodes the agility that drove their success.",
       "Market leadership creates pricing pressure from competitors and clients. Systematic defense of " +
         "pricing power requires ongoing investment in differentiation and switching cost.",
     ],
     key_issues: [
-      "Capability refresh risk \u2014 optimizing existing programs instead of building next-generation",
+      "Capability refresh risk \u2014 sustaining existing programs instead of building next-generation",
       "Organizational complexity creating decision latency and coordination overhead",
       "Market leadership under pressure \u2014 pricing power requires active defense",
     ],
@@ -1389,13 +1388,13 @@ const PFI_SCENARIOS = [
     priorities: [
       {
         title: "Build Franchise Resilience and Succession Program",
-        owner: "Senior Leadership + HR",
+        owner: "Business Leadership + HR",
         kpi:   "Succession depth, knowledge retention, leadership pipeline",
         why:   "Best-in-class performance creates dependency on specific talent and programs. Systematic " +
                "resilience-building ensures the franchise performs across leadership transitions and market cycles.",
       },
       {
-        title: "Deploy Next-Generation Analytics and Intelligence Platform",
+        title: "Build Next-Generation Analytics and Intelligence Platform",
         owner: "Tech + Finance + Product",
         kpi:   "Decision velocity, analytics coverage, real-time KPI availability",
         why:   "Industry-leading franchises increasingly differentiate through data and analytics capability. " +
@@ -1403,7 +1402,7 @@ const PFI_SCENARIOS = [
       },
       {
         title: "Lead Industry Standards in Payments Governance",
-        owner: "Senior Leadership + Compliance",
+        owner: "Business Leadership + Compliance",
         kpi:   "Industry participation, standards influence, regulatory positioning",
         why:   "Best-in-class franchises shape the industry they lead. Active participation in standards and " +
                "governance positions the franchise as the reference point and creates regulatory advantage.",
@@ -1419,8 +1418,8 @@ const PFI_SCENARIOS = [
         title: "Deepen Client Ecosystem Integration",
         owner: "Relationship Management + Product",
         kpi:   "Ecosystem depth, API integration rate, switching cost index",
-        why:   "The deepest competitive moat at this level is ecosystem integration. Making the franchise the " +
-               "operating infrastructure of client workflows creates durable, compounding competitive advantage.",
+        why:   "At this level, client ecosystem integration is the most durable source of competitive protection. " +
+               "Making the franchise the operating infrastructure of client workflows creates durable, structural advantage.",
       },
     ],
     execution: [
@@ -1445,13 +1444,13 @@ const PFI_SCENARIOS = [
         title:  "Deepen the Moat",
         items:  [
           "Deepen client ecosystem integration across top-50 relationships",
-          "Deploy expanded analytics platform with real-time PFI KPI capability",
+          "Launch expanded analytics platform with real-time PFI KPI capability",
         ],
       },
     ],
     strategic_takeaway:
       "Best-in-class franchises are built over years and lost in a matter of quarters. The priority at " +
-      "this level is not optimization \u2014 it is resilience, adaptability, and the continuous build of " +
+      "this level is not incremental performance management \u2014 it is resilience, adaptability, and the continuous build of " +
       "next-generation capability that ensures the franchise remains the standard against which others are measured.",
   },
 ];
@@ -1789,7 +1788,7 @@ function exportPDF() {
     else if (ps < 3.0) rating = { label: "DEVELOPING",  color: [184, 92,  26]   };
     else if (ps < 4.0) rating = { label: "PROGRESSING", color: [138, 115, 24]   };
     else if (ps < 5.0) rating = { label: "STRONG",      color: [30,  107, 60]   };
-    else               rating = { label: "OPTIMIZED",   color: [20,  82,  48]   };
+    else               rating = { label: "ESTABLISHED", color: [20,  82,  48]   };
 
     // Card background — fixed dimensions, accent bar uses rating color
     fillRect(cx, cy, cardColW, pCardH, [253, 254, 254], 2);
@@ -1839,7 +1838,7 @@ function exportPDF() {
     "STRUCTURAL FAILURE":   { prefix: "STRUCTURAL ISSUE", color: SCORE_R         },
     "FRAGILE FRANCHISE":    { prefix: "PRIORITY AREA",    color: [184, 92,  26]  },
     "OPERATIONALLY STABLE": { prefix: "IMPROVEMENT AREA", color: [138, 115, 24]  },
-    "STRATEGICALLY ALIGNED":{ prefix: "OPTIMIZATION AREA",color: [30,  107, 60]  },
+    "STRATEGICALLY ALIGNED":{ prefix: "MANAGEMENT FOCUS AREA",color: [30,  107, 60]  },
     "BEST-IN-CLASS":        { prefix: "WATCH AREA",       color: [20,  82,  48]  },
   };
   var diagMeta = diagLabels[sc.label] || diagLabels["STRUCTURAL FAILURE"];
@@ -2011,7 +2010,7 @@ function exportPDF() {
   var noteText =
     "Payments Franchise Index (PFI) Diagnostic Engagement — " +
     "This model expands into a structured review using your actual transaction data, pricing records, " +
-    "and corridor economics \u2014 producing a Corridor Profitability Map, Portfolio Scorecard, " +
+    "and flow-level economics \u2014 producing a Flow Profitability Map, Portfolio Scorecard, " +
     "and Infrastructure Cost Stack.";
   setFont("normal", 7.5, GDARK);   // font BEFORE split
   var noteLines = doc.splitTextToSize(noteText, CW - 8);
