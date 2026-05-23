@@ -177,7 +177,7 @@
       },
       multi_rail: {
         critical:    "Rail strategy is absent — real-time send capability is limited, routing is static, and data quality is creating repair and rejection risk.",
-        weak:        "Some rail infrastructure is in place but RTP send, ISO adoption, and routing discipline are not yet generating commercial value.",
+        weak:        "Some rail infrastructure is in place but RTP send, ISO adoption, and routing discipline is not yet generating commercial value.",
         developing:  "Rail readiness is progressing — ISO migration underway, some routing discipline — but real-time use cases are not yet monetized.",
         strong:      "Multi-rail strategy is commercially active — RTP send is scaled, ISO data is improving STP, and routing is managed as an economics lever.",
         exceptional: "Rail strategy is a competitive differentiator — real-time use cases are packaged and monetized, routing is dynamically managed, ISO data drives automation."
@@ -194,7 +194,7 @@
         weak:        "Governance structures exist but lack enforcement — pricing controls are inconsistent, KPI cadence is fragmented, and accountability is unclear.",
         developing:  "Operating model is establishing itself — P&L ownership is clear and a KPI cadence is forming, but pricing governance and execution discipline are still developing.",
         strong:      "Strong operating model with clear P&L authority, enforced pricing governance, and a monthly KPI review driving decisions.",
-        exceptional: "Best-in-class operating system — pricing is governed with elasticity data, every KPI drives resource allocation, and the operating cadence is a competitive advantage."
+        exceptional: "Mature operating system — pricing is governed through elasticity data, KPIs inform resource allocation, and operating cadence reinforces strategic discipline."
       }
     };
     function heatColor(score5) {
@@ -808,7 +808,7 @@
         ...scenarioNote,
         ``,
         `PFI Score: ${r.overall}/100 (${maturityLabel(r.overall)})`,
-        `Monetization: ${r.sub.monetization}/100 · Margin durability: ${r.sub.margin}/100 · Strategic readiness: ${r.sub.readiness}/100`,
+        `Operating Discipline: ${r.sub.monetization}/100 · Portfolio Resilience: ${r.sub.margin}/100 · Strategic Readiness: ${r.sub.readiness}/100`,
         ...floorNote,
         ``,
         `Primary diagnosis:`,
@@ -821,7 +821,7 @@
         ...priorities.map((p, i) => `${i + 1}. ${p}`),
         ``,
         `Payments Franchise Index (PFI) — V1 · Commercial banking payments`,
-        `USD clearing · Wires · ACH · Cross-border · FX-enabled flows · RTP/FedNow · Liquidity overlays`,
+        `Wires · ACH · Cross-border · FX-enabled flows · RTP/FedNow · Liquidity overlays`,
         ``,
         `This is a structured decision aid designed to surface likely constraints — not a definitive assessment.`,
       ].join("\n");
@@ -1008,14 +1008,14 @@ const PFI_SCENARIOS = [
         "tiers are informal and inconsistently applied.",
     },
     exec_diagnosis:
-      "The payments franchise is generating revenue but has not built the operating infrastructure to " +
-      "protect and grow margin systematically. Governance gaps are creating margin erosion " +
+      "The payments franchise is generating revenue. The operating infrastructure to protect and grow " +
+      "margin systematically has not yet been built. Governance gaps are creating margin erosion " +
       "that accumulates without visible trigger events.",
     structural_issues: [
       "Pricing override culture is established and normalized. Without formal governance, discounting " +
         "behavior is self-reinforcing and margin erosion continues at pace.",
       "Portfolio management appears reactive. A structured review cadence is absent. " +
-        "Underperforming flow segments and rails persist without structured evaluation.",
+        "Underperforming flow segments and rails persist without consistent management evaluation.",
       "Balance sheet contribution remains disconnected from payments pricing. The franchise is leaving " +
         "NII value on the table in every rate-sensitive deal.",
     ],
@@ -1128,7 +1128,7 @@ const PFI_SCENARIOS = [
     },
     exec_diagnosis:
       "The payments franchise is operationally sound and commercially active. The next phase requires " +
-      "converting operational stability into a differentiated, high-margin payments franchise. " +
+      "converting operational stability into a commercially disciplined franchise with stronger margin durability. " +
       "The priority shifts from repair to acceleration.",
     structural_issues: [
       "Pricing precision remains an opportunity. Segment-level price discipline has not been systematically pursued.",
@@ -1241,7 +1241,7 @@ const PFI_SCENARIOS = [
         "systematically. Float economics are actively managed and rate-cycle exposure is monitored.",
       governance:
         "Operating model is mature. Management cadence is rigorous and fully embedded. KPIs are " +
-        "comprehensive and consistently reviewed. Pricing governance is enforced with full authority structure.",
+        "integrated and consistently reviewed. Pricing governance is enforced with full authority structure.",
     },
     exec_diagnosis:
       "The payments franchise is operating at a high level across all dimensions. The strategic challenge " +
@@ -1349,10 +1349,10 @@ const PFI_SCENARIOS = [
         "Revenue architecture is sophisticated and fully integrated. Pricing is dynamically managed " +
         "by segment, flow type, and rail. Mix management is active and margin-accretive.",
       growth_engine:
-        "Growth engine is industry-leading. Workflow embed is deep across the client base. Pipeline is " +
+        "Growth engine is mature, repeatable, and commercially disciplined. Workflow embed is deep across the client base. Pipeline is " +
         "systematically managed and consistently margin-accretive. Client acquisition cost is low.",
       margin_cost:
-        "Margins are best-in-class and systematically protected. Exception rates are minimal. Unit " +
+        "Margins are strong and systematically protected. Exception rates are minimal. Unit " +
         "economics are fully understood at the rail, flow type, and client level.",
       multi_rail:
         "Multi-rail capability is fully operational. Dynamic routing, real-time capability, and data " +
@@ -1361,8 +1361,8 @@ const PFI_SCENARIOS = [
         "Balance sheet integration is complete and fully operationalized. NII is systematically priced. Float " +
         "economics are actively managed. Rate-cycle positioning is proactive.",
       governance:
-        "Governance is industry-leading. Operating cadence is rigorous and fully embedded. KPIs are " +
-        "comprehensive, real-time, and inform decision-making at every level.",
+        "Governance is mature and consistently enforced. Operating cadence is rigorous and fully embedded. KPIs are " +
+        "integrated, real-time, and inform decision-making at every level.",
     },
     exec_diagnosis:
       "The payments franchise is executing at the highest level across all dimensions. The challenge at " +
@@ -1397,7 +1397,7 @@ const PFI_SCENARIOS = [
         title: "Build Next-Generation Analytics and Intelligence Platform",
         owner: "Tech + Finance + Product",
         kpi:   "Decision velocity, analytics coverage, real-time KPI availability",
-        why:   "Industry-leading franchises increasingly differentiate through data and analytics capability. " +
+        why:   "High-performing franchises increasingly compete through data and analytics capability. " +
                "A next-generation platform sustains the decision-making advantage that drives performance.",
       },
       {
@@ -1441,7 +1441,7 @@ const PFI_SCENARIOS = [
       },
       {
         period: "Days 61\u201390",
-        title:  "Deepen the Moat",
+        title:  "Deepen the Advantage",
         items:  [
           "Deepen client ecosystem integration across top-50 relationships",
           "Launch expanded analytics platform with real-time PFI KPI capability",
