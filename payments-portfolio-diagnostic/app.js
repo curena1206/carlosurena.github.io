@@ -180,7 +180,7 @@
         weak:        "Some rail infrastructure is in place but RTP send, ISO adoption, and routing discipline is not yet generating commercial value.",
         developing:  "Rail readiness is progressing — ISO migration underway, some routing discipline — but real-time use cases are not yet monetized.",
         strong:      "Multi-rail strategy is commercially active — RTP send is scaled, ISO data is improving STP, and routing is managed as an economics lever.",
-        exceptional: "Rail strategy is a competitive differentiator — real-time use cases are packaged and monetized, routing is dynamically managed, ISO data drives automation."
+        exceptional: "Rail strategy is a durable economic advantage — real-time use cases are packaged and monetized, routing is dynamically managed, ISO data drives automation."
       },
       balance_liquidity: {
         critical:    "Balance contribution is invisible — payments-to-balance linkage is absent, pricing ignores NII, and rate-cycle exposure is unquantified.",
@@ -1356,7 +1356,7 @@ const PFI_SCENARIOS = [
         "economics are fully understood at the rail, flow type, and client level.",
       multi_rail:
         "Multi-rail capability is fully operational. Dynamic routing, real-time capability, and data " +
-        "quality are all operating at peak performance. Rail strategy is a competitive differentiator.",
+        "quality are all operating at peak performance. Rail strategy is a durable economic advantage.",
       balance_liquidity:
         "Balance sheet integration is complete and fully operationalized. NII is systematically priced. Float " +
         "economics are actively managed. Rate-cycle positioning is proactive.",
@@ -1367,12 +1367,12 @@ const PFI_SCENARIOS = [
     exec_diagnosis:
       "The payments franchise is executing at the highest level across all dimensions. The challenge at " +
       "this stage is sustaining performance across organizational change, market cycles, and competitive " +
-      "disruption. Best-in-class franchises become competitive targets \u2014 the priority is building " +
+      "disruption. Franchises at this level become competitive targets \u2014 the priority is building " +
       "the resilience and adaptability to remain at the top.",
     structural_issues: [
-      "Sustaining best-in-class performance requires continuous investment in capability refresh. " +
+      "Sustaining performance at this level requires continuous investment in capability refresh. " +
         "Franchises at this level risk falling behind by sustaining existing programs rather than building the next generation.",
-      "Organizational complexity grows with performance. Best-in-class franchises often develop " +
+      "Organizational complexity grows with performance. Franchises at this level often develop " +
         "coordination overhead and decision latency that erodes the agility that drove their success.",
       "Market leadership creates pricing pressure from competitors and clients. Systematic defense of " +
         "pricing power requires ongoing investment in differentiation and switching cost.",
@@ -1383,14 +1383,14 @@ const PFI_SCENARIOS = [
       "Market leadership under pressure \u2014 pricing power requires active defense",
     ],
     immediate_focus:
-      "Sustain the standard and build next-generation capability. Best-in-class performance is the " +
+      "Sustain the standard and build next-generation capability. Performance at this level is the " +
       "starting point, not the destination. The franchise that stops building loses its lead faster than it gained it.",
     priorities: [
       {
         title: "Build Franchise Resilience and Succession Program",
         owner: "Business Leadership + HR",
         kpi:   "Succession depth, knowledge retention, leadership pipeline",
-        why:   "Best-in-class performance creates dependency on specific talent and programs. Systematic " +
+        why:   "Performance at this level creates dependency on specific talent and programs. Systematic " +
                "resilience-building ensures the franchise performs across leadership transitions and market cycles.",
       },
       {
@@ -1404,7 +1404,7 @@ const PFI_SCENARIOS = [
         title: "Lead Industry Standards in Payments Governance",
         owner: "Business Leadership + Compliance",
         kpi:   "Industry participation, standards influence, regulatory positioning",
-        why:   "Best-in-class franchises shape the industry they lead. Active participation in standards and " +
+        why:   "Franchises at this level shape the industry they lead. Active participation in standards and " +
                "governance positions the franchise as the reference point and creates regulatory advantage.",
       },
       {
@@ -1412,7 +1412,7 @@ const PFI_SCENARIOS = [
         owner: "Strategy + Product",
         kpi:   "New flow revenue, time-to-market, market share in new categories",
         why:   "Market leadership in existing flows must be complemented by systematic expansion into emerging " +
-               "payment categories. Best-in-class franchises grow their addressable market continuously.",
+               "payment categories. Franchises at this level grow their addressable market continuously.",
       },
       {
         title: "Deepen Client Ecosystem Integration",
@@ -1449,7 +1449,7 @@ const PFI_SCENARIOS = [
       },
     ],
     strategic_takeaway:
-      "Best-in-class franchises are built over years and lost in a matter of quarters. The priority at " +
+      "Franchises at this level are built over years and lost in a matter of quarters. The priority at " +
       "this level is not incremental performance management \u2014 it is resilience, adaptability, and the continuous build of " +
       "next-generation capability that ensures the franchise remains the standard against which others are measured.",
   },
