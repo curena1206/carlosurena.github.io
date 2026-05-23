@@ -572,7 +572,7 @@
         statement    = "Attention areas present";
         sectionLabel = triggered.length > 0 ? "Primary areas requiring attention:" : null;
       } else if (triggered.length > 0) {
-        statement    = "Limited dependency signals detected";
+        statement    = "Dependency signals detected";
         sectionLabel = "Areas for monitoring:";
       } else {
         statement    = "No structural concerns detected";
@@ -683,9 +683,9 @@
       readiness:  "Strategic Readiness"
     };
     const SUB_STATUS = {
-      discipline: [ "Foundational Gaps Detected", "Developing Practices",   "Structured Approach",    "Mature Operating Model"    ],
-      resilience: [ "Fragile Foundation",  "Moderate Vulnerability", "Developing Resilience",  "Resilient Portfolio"       ],
-      readiness:  [ "Early Capability Stage",     "Foundational Capability","Emerging Readiness",     "Strategically Positioned"  ]
+      discipline: [ "Foundational Gaps Detected", "Developing Practices",   "Structured Operating Discipline", "Mature Operating Discipline"    ],
+      resilience: [ "Fragile Foundation",  "Moderate Vulnerability", "Established Resilience",  "Durable Portfolio"       ],
+      readiness:  [ "Early Capability Stage",     "Foundational Capability","Scalable Readiness",     "Strategically Positioned"  ]
     };
     const DOT_LABELS = ["Low", "Developing", "Moderate", "Strong", "Established"];
 
@@ -1267,9 +1267,9 @@ const PFI_SCENARIOS = [
       "and portfolio management.",
     priorities: [
       {
-        title: "Build Next-Generation Flow Coverage Strategy",
+        title: "Strengthen Flow Coverage Across Emerging Payment Types",
         owner: "Strategy + Product",
-        kpi:   "Flow segment pipeline, market share by segment, pricing premium",
+        kpi:   "Flow coverage pipeline, market share by payment type, pricing premium",
         why:   "Strategically aligned franchises must actively expand their addressable market. Next-generation " +
                "flow coverage ensures the franchise is growing its competitive position, not just defending it.",
       },
