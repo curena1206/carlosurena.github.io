@@ -81,7 +81,7 @@ window.PPD_MODEL = (() => {
             { score: 2, label: "FX pricing exists but governance appears inconsistent", sub: "Spread management and monetization visibility may vary across segments and flows" },
             { score: 3, label: "FX economics managed across major payment segments", sub: "Core pricing discipline exists, though consistency across the broader portfolio may vary" },
             { score: 4, label: "FX-related economics incorporated into portfolio management", sub: "Pricing, spread management, and economic performance are evaluated systematically across major flows" },
-            { score: 5, label: "FX monetization strategically integrated into payment economics", sub: "FX-related contribution is consistently evaluated alongside broader portfolio economics and client strategy" }
+            { score: 5, label: "FX monetization integrated into payment economics", sub: "FX-related contribution is consistently evaluated alongside broader portfolio economics and client strategy" }
           ]
         },
         {
@@ -112,7 +112,7 @@ window.PPD_MODEL = (() => {
           options: [
             { score: 1, label: "Growth largely relationship- or individual-driven", sub: "Commercial expansion may depend heavily on specific people, legacy relationships, or opportunistic wins" },
             { score: 2, label: "Some repeatability exists across selected segments", sub: "Defined acquisition approaches exist, though scalability and consistency may vary" },
-            { score: 3, label: "Structured acquisition model for major client groups", sub: "Core growth motions are established, though differentiation and expansion quality may vary across the portfolio" },
+            { score: 3, label: "Structured acquisition model for major client groups", sub: "Core growth approaches are established, though differentiation and expansion quality may vary across the portfolio" },
             { score: 4, label: "Growth engine supported by defined commercial processes", sub: "Acquisition, onboarding, and relationship expansion are operationalized across major segments" },
             { score: 5, label: "Growth model integrated into broader portfolio strategy", sub: "Commercial expansion is consistently aligned with client value, operating economics, and strategic portfolio priorities" }
           ]
@@ -162,7 +162,7 @@ window.PPD_MODEL = (() => {
             { score: 2, label: "Specialists exist for selected areas or segments", sub: "Expertise is available in pockets, though broader enablement may be inconsistent" },
             { score: 3, label: "Defined payments expertise across major client groups", sub: "Commercial capability exists, though integration into portfolio strategy may vary" },
             { score: 4, label: "Sales and product coordination operationalized", sub: "Payments expertise supports pricing, solutioning, and relationship expansion consistently" },
-            { score: 5, label: "Commercial capability integrated into strategic franchise positioning", sub: "The organization demonstrates scalable payments expertise tied to client economics, portfolio strategy, and operating differentiation" }
+            { score: 5, label: "Commercial capability integrated into franchise management", sub: "The organization demonstrates scalable payments expertise tied to client economics, portfolio strategy, and operating differentiation" }
           ]
         },
         {
@@ -174,7 +174,7 @@ window.PPD_MODEL = (() => {
             { score: 2, label: "Retention generally stable but vulnerable in selected areas", sub: "Client stickiness exists, though durability may vary across products or segments" },
             { score: 3, label: "Core relationships demonstrate reasonable durability", sub: "The franchise appears capable of maintaining major relationships through normal market conditions" },
             { score: 4, label: "Retention supported by workflow embed and relationship depth", sub: "Client relationships benefit from operational integration and multi-product engagement" },
-            { score: 5, label: "Relationship durability strategically embedded into the franchise", sub: "Retention strength is supported by client integration, operating reliance, and economic alignment across the portfolio" }
+            { score: 5, label: "Relationship durability embedded into franchise management", sub: "Retention strength is supported by client integration, operating reliance, and economic alignment across the portfolio" }
           ]
         },
         {
@@ -396,7 +396,7 @@ window.PPD_MODEL = (() => {
             { score: 2, label: "Some balance linkage exists for selected relationships", sub: "Treasury value is recognized in parts of the portfolio, though consistency may vary" },
             { score: 3, label: "Core payment relationships generally support balances", sub: "Operating balances contribute to relationship economics across major client segments" },
             { score: 4, label: "Balance linkage incorporated into relationship management", sub: "Payments and treasury economics are evaluated together across major commercial relationships" },
-            { score: 5, label: "Operating balances strategically integrated into franchise economics", sub: "Payment activity, treasury value, and relationship economics are consistently managed together across the portfolio" }
+            { score: 5, label: "Operating balances integrated into franchise economics", sub: "Payment activity, treasury value, and relationship economics are consistently managed together across the portfolio" }
           ]
         },
         {
