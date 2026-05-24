@@ -584,9 +584,9 @@ window.PPD_MODEL = (() => {
     R11: { title: "Build segment-level commercial plays anchored in client economics", owner: "Product + Sales", metric: "Win rate, margin per win, attach rate by segment", why: "Makes growth repeatable and ensures new clients contribute positively to the P&L." },
     R12: { title: "Strengthen ERP, TMS, and AP/AR integration for top client segments", owner: "Product + Tech + Sales", metric: "Integration adoption rate, time-to-onboard, NPS post-integration", why: "Increases structural stickiness and reduces the risk of relationship-dependent attrition." },
     R13: { title: "Realign sales incentives toward margin quality, attach rate, and balance contribution", owner: "Sales Leadership + Finance", metric: "Margin per client, attach rate, discounting frequency by rep", why: "Prevents volume-driven growth that systematically destroys profitability." },
-    R14: { title: "Build a win/loss feedback loop tied to pricing, onboarding friction, and CX", owner: "Product + Sales Ops", metric: "Loss reason distribution, time-to-yes, onboarding friction scores", why: "Converts market signals into execution priorities — not just anecdotes." },
+    R14: { title: "Build a win/loss feedback loop tied to pricing, onboarding friction, and client experience", owner: "Product + Sales Ops", metric: "Loss reason distribution, time-to-yes, onboarding friction scores", why: "Converts market signals into execution priorities — not just anecdotes." },
     R15: { title: "Scale RTP/FedNow send and develop packaged commercial use cases", owner: "Product + Tech + Sales", metric: "RTP send volume, use-case adoption rate, revenue contribution", why: "Converts infrastructure readiness into a commercial growth lever." },
-    R16: { title: "ISO 20022 data program focused on STP improvement and repair reduction", owner: "Tech + Ops + Product", metric: "Data quality KPIs, repair driver analysis, STP rate trend", why: "Structured payment data is an underutilized margin and CX improvement lever." },
+    R16: { title: "ISO 20022 data program focused on STP improvement and repair reduction", owner: "Tech + Ops + Product", metric: "Data quality KPIs, repair driver analysis, STP rate trend", why: "Structured payment data is an underutilized margin and client experience improvement lever." },
     R17: { title: "Implement economics-aware routing strategy across rails and flow segments", owner: "Product + Tech", metric: "Routing distribution by rail, cost per payment, SLA performance", why: "Improves cost and performance across rails — a lever most franchises underuse." },
     R18: { title: "Establish Pricing Council with documented authority tiers and regular cadence", owner: "Exec Sponsor + Pricing Lead", metric: "Override rate, approval cycle time, margin integrity trend", why: "Governance is often the fastest first fix for systematic pricing leakage." },
     R19: { title: "Implement monthly Portfolio Performance Review across rails, segments, and repairs", owner: "Portfolio Owner", metric: "Pillar KPIs trending, actions opened and closed per cycle", why: "Creates the operating rhythm needed to continuously improve franchise performance." },
@@ -601,7 +601,7 @@ window.PPD_MODEL = (() => {
       id: "exception_margin_crisis",
       tier: 1,
       when: (a) => (a.MC2 <= 1 && a.MC3 <= 1),
-      diagnosis: "Exception and repair volume appears elevated enough to create meaningful operational and economic pressure. The pattern suggests a dedicated program with named ownership and defined repair rate targets may be warranted.",
+      diagnosis: "Exception and repair volume appears elevated enough to create meaningful operational and economic pressure. The pattern suggests a dedicated program with named ownership and defined repair rate targets.",
       recs: ["R6", "R10", "R19", "R8"]
     },
     {
@@ -624,7 +624,7 @@ window.PPD_MODEL = (() => {
       id: "monetization_capture_gap",
       tier: 2,
       when: (a) => (a.RA5 <= 2 && a.GE5 >= 3),
-      diagnosis: "Commercial activity appears active, but revenue growth may not be scaling consistently with portfolio expansion. This pattern may suggest a pricing design or packaging structure worth reviewing.",
+      diagnosis: "Commercial activity appears active. Revenue growth may not be scaling consistently with portfolio expansion. This pattern may suggest a pricing design or packaging structure worth reviewing.",
       recs: ["R1", "R3", "R2"]
     },
     {
@@ -652,7 +652,7 @@ window.PPD_MODEL = (() => {
       id: "cadence_weak_not_absent",
       tier: 2,
       when: (a) => (a.GO3 === 2 || a.GO4 === 2),
-      diagnosis: "An operating cadence appears to exist but may lack the consistency and follow-through needed to drive sustained execution. Where actions do not reliably close, structural improvement can be slow.",
+      diagnosis: "An operating cadence appears to exist. It may lack the consistency and follow-through needed to drive sustained execution. Where actions do not reliably close, structural improvement can be slow.",
       recs: ["R19", "R20", "R18"]
     },
     {
@@ -666,21 +666,21 @@ window.PPD_MODEL = (() => {
       id: "fx_without_corridor",
       tier: 2,
       when: (a) => (a.MR4 !== null && a.MR4 <= 2 && a.RA6 >= 3),
-      diagnosis: "FX-related payment activity appears present but cross-border flow management and spread discipline may not be fully operationalized. This pattern may be associated with inconsistent FX monetization across the portfolio.",
+      diagnosis: "FX-related payment activity appears present. Cross-border flow management and spread discipline may not be fully operationalized. This pattern may be associated with inconsistent FX monetization across the portfolio.",
       recs: ["R5", "R1", "R19"]
     },
     {
       id: "fx_spread_leakage",
       tier: 2,
       when: (a) => (a.RA6 >= 2 && a.RA6 <= 3 && a.MR4 !== null && a.MR4 <= 3),
-      diagnosis: "Cross-border FX activity is present but spread management and flow-level economics may not be consistently applied. This pattern tends to become more visible as cross-border volume grows.",
+      diagnosis: "Cross-border FX activity is present. Spread management and flow-level economics may not be consistently applied. This pattern tends to become more visible as cross-border volume grows.",
       recs: ["R5", "R17", "R8"]
     },
     {
       id: "rtp_readiness_gap",
       tier: 2,
       when: (a) => (a.MR1 <= 2 && a.GE3 >= 3),
-      diagnosis: "Client workflow integration appears active, but real-time payment capability may be limiting the range of commercially available use cases. This may become a more visible constraint as client expectations evolve.",
+      diagnosis: "Client workflow integration appears active. Real-time payment capability may be limiting the range of commercially available use cases. This may become a more visible constraint as client expectations evolve.",
       recs: ["R15", "R17", "R11"]
     },
 
@@ -703,14 +703,14 @@ window.PPD_MODEL = (() => {
       id: "rate_cycle_exposure_mature",
       tier: 3,
       when: (a) => (a.BL5 <= 2 && a.BL1 >= 3),
-      diagnosis: "Balance contribution appears tracked and meaningful, but rate-cycle sensitivity may not be fully evaluated at the segment or relationship level. This pattern is worth monitoring as the rate environment changes.",
+      diagnosis: "Balance contribution appears tracked and meaningful. Rate-cycle sensitivity may not be fully evaluated at the segment or relationship level. This pattern is worth monitoring as the rate environment changes.",
       recs: ["R4", "R3", "R19"]
     },
     {
       id: "rtp_commercial_gap_mature",
       tier: 3,
       when: (a) => (a.MR1 <= 2 && a.GO1 >= 3),
-      diagnosis: "The operating model appears reasonably structured, but real-time send capability may not yet be at commercial scale. As client expectations evolve, this gap may become a more visible strategic consideration.",
+      diagnosis: "The operating model appears reasonably structured. Real-time send capability may not yet be at commercial scale. As client expectations evolve, this gap may become a more visible strategic consideration.",
       recs: ["R15", "R17", "R12"]
     },
     {
