@@ -550,7 +550,7 @@
       const rules = result.rules;
 
       const DEP_SHORT = {
-        float_dependency_risk:      "Balance-sheet dependency",
+        float_dependency_risk:      "Balance contribution dependency",
         concentration_risk_extreme: "Revenue concentration",
         rate_cycle_exposure_mature: "Revenue sensitivity",
         fx_without_corridor:        "Spread discipline",
@@ -1342,7 +1342,7 @@ const PFI_SCENARIOS = [
     benchmark_insight:
       "At this level, the payments franchise is operating at or near the top of its peer group across " +
       "all six pillars. Revenue architecture, margin discipline, governance, and growth engine quality " +
-      "are all mature and mutually reinforcing. The challenge at this level is sustaining excellence, " +
+      "are all mature and mutually reinforcing. The challenge at this level is sustaining performance, " +
       "managing complexity, and continuing to raise the performance standard.",
     pillar_commentary: {
       revenue_arch:
@@ -1367,7 +1367,7 @@ const PFI_SCENARIOS = [
     exec_diagnosis:
       "The payments franchise is executing at the highest level across all dimensions. The challenge at " +
       "this stage is sustaining performance across organizational change, market cycles, and competitive " +
-      "disruption. Franchises at this level become competitive targets \u2014 the priority is building " +
+      "disruption. Franchises at this level face increasing competitive pressure \u2014 the priority is building " +
       "the resilience and adaptability to remain at the top.",
     structural_issues: [
       "Sustaining performance at this level requires continuous investment in capability refresh. " +
