@@ -432,7 +432,7 @@ window.PPD_MODEL = (() => {
             { score: 2, label: "Some stable balances exist but durability varies", sub: "Relationship stickiness appears uneven across segments or client types" },
             { score: 3, label: "Core balances generally stable across major relationships", sub: "Payment-linked balances contribute to reasonable relationship durability" },
             { score: 4, label: "Balances demonstrate meaningful operating stickiness", sub: "Liquidity value appears connected to broader client operating workflows and treasury behavior" },
-            { score: 5, label: "Operating balances strategically embedded into relationship economics", sub: "Payment activity contributes to durable treasury relationships and long-term liquidity value" }
+            { score: 5, label: "Operating balances embedded into relationship economics", sub: "Payment activity contributes to durable treasury relationships and long-term liquidity value" }
           ]
         },
         {
@@ -468,7 +468,7 @@ window.PPD_MODEL = (() => {
             { score: 2, label: "Some strategic relationship expansion exists", sub: "Payments contribute to broader relationships selectively, though integration may vary" },
             { score: 3, label: "Payments support broader relationship development in key segments", sub: "The franchise demonstrates reasonable alignment between payments and broader banking relationships" },
             { score: 4, label: "Payments incorporated into relationship expansion strategy", sub: "Client economics, treasury engagement, and operating activity are considered together" },
-            { score: 5, label: "Payments strategically integrated into franchise relationship economics", sub: "The organization consistently uses payment activity to strengthen treasury engagement, client operating dependence, and broader relationship value" }
+            { score: 5, label: "Payments integrated into franchise relationship economics", sub: "The organization consistently uses payment activity to strengthen treasury engagement, client operating dependence, and broader relationship value" }
           ]
         }
       ]
