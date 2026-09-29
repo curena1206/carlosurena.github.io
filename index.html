@@ -12,6 +12,8 @@
     .nav-inner{width:100%;max-width:none;height:48px;padding:0 24px}
     .brand{color:#fff;font-family:Georgia,"Times New Roman",serif;font-size:14px;font-weight:700;letter-spacing:.02em}
     .desktop-nav a{margin-left:24px;color:#ffffffbf;font-family:Georgia,"Times New Roman",serif;font-size:13px;letter-spacing:.02em}
+    .desktop-nav a,.mobile-navigation nav a{transition:color 180ms ease}
+    .desktop-nav a[aria-current="location"],.mobile-navigation nav a[aria-current="location"]{color:var(--gold)}
     .desktop-nav a:hover,.desktop-nav a:focus-visible{color:#fff}
     .section{padding:46px 0}
     h1{font-size:52px;line-height:1.03}
@@ -126,12 +128,12 @@
     <div class="nav-inner">
       <a class="brand" href="#top" aria-label="Carlos Ureña, return to top">CARLOS UREÑA</a>
       <nav class="desktop-nav" aria-label="Primary navigation">
-        <a href="#about">About</a><a href="#perspective">Perspective</a><a href="#pfi">PFI</a><a href="#experience">Experience</a><a href="#connect">Connect</a>
+        <a href="#about" aria-current="location">About</a><a href="#perspective">Perspective</a><a href="#pfi">PFI</a><a href="#experience">Experience</a><a href="#connect">Connect</a>
       </nav>
       <details class="mobile-navigation">
         <summary>Menu</summary>
         <nav aria-label="Mobile primary navigation">
-          <a href="#about">About</a><a href="#perspective">Perspective</a><a href="#pfi">PFI</a><a href="#experience">Experience</a><a href="#connect">Connect</a>
+          <a href="#about" aria-current="location">About</a><a href="#perspective">Perspective</a><a href="#pfi">PFI</a><a href="#experience">Experience</a><a href="#connect">Connect</a>
         </nav>
       </details>
     </div>
@@ -222,5 +224,39 @@
     <section class="disclaimer-section" aria-label="Disclaimer"><div class="wrap"><p><strong>Disclaimer:</strong> The views, opinions, and content published on this website are my own and are shared in a personal capacity. Nothing on this site represents the views, positions, or endorsement of any current or former employer or affiliated organization. The content is provided for informational purposes and does not constitute professional advice.</p></div></section>
   </main>
   <footer class="site-footer"><div class="wrap footer-row"><span>Personal profile · All views are my own</span><span>Carlos Ureña © 2026</span></div></footer>
+  <script>
+    (() => {
+      const sectionIds = ['about', 'perspective', 'pfi', 'experience', 'connect'];
+      const sections = sectionIds.map((id) => document.getElementById(id));
+      const navLinks = [...document.querySelectorAll('nav a[href^="#"]')];
+      const mobileNavigation = document.querySelector('.mobile-navigation');
+
+      const setActiveSection = (id) => {
+        navLinks.forEach((link) => {
+          const isActive = link.getAttribute('href') === `#${id}`;
+          if (isActive) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        const activeEntry = entries.find((entry) => entry.isIntersecting);
+        if (activeEntry) setActiveSection(activeEntry.target.id);
+      }, {
+        rootMargin: '-56% 0px -43% 0px',
+        threshold: 0
+      });
+
+      sections.forEach((section) => observer.observe(section));
+
+      navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          if (mobileNavigation?.open) mobileNavigation.open = false;
+        });
+      });
+
+      document.querySelector('.brand').addEventListener('click', () => setActiveSection('about'));
+    })();
+  </script>
 </body>
 </html>
