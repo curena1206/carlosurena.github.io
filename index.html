@@ -31,7 +31,7 @@
     .hero-proposition+.hero-proposition{margin-top:18px}
     .hero-proposition:last-of-type{margin-top:28px}
     .portrait{max-width:390px}
-    .hero .portrait{max-width:390px;max-height:none;overflow:visible;justify-self:end}
+    .hero .portrait{float:right;width:390px;max-width:39%;max-height:none;overflow:visible;margin:0 0 20px 42px}
     .hero .portrait img{display:block;width:100%;height:auto}
     .dark .section-lede{max-width:1060px}
     .convictions-intro{margin-top:18px}
@@ -88,8 +88,9 @@
     .hero .tags{margin:20px 0 24px}
     .hero .hero-proposition:last-of-type{margin-top:0}
     .hero{padding-bottom:46px}
+    .hero-flow{display:flow-root}
     .hero .executive-profile-copy{margin-top:36px}
-    .executive-profile-copy{max-width:760px}
+    .executive-profile-copy{max-width:none}
     .executive-profile-copy h2{margin-bottom:26px}
     .executive-profile-copy p:not(.eyebrow){font-size:17px;line-height:1.7;margin:0 0 20px}
     .executive-profile-copy p:last-child{margin-bottom:0}
@@ -100,7 +101,10 @@
       .hero{padding:42px 0 0}
       .hero-grid{grid-template-columns:1fr;gap:30px}
       .portrait{width:100%;max-width:380px}
-      .hero .portrait{max-width:380px;max-height:none;overflow:visible;justify-self:start}
+      .hero-flow{display:flex;flex-direction:column}
+      .hero .hero-intro{order:1}
+      .hero .portrait{order:2;float:none;width:100%;max-width:380px;max-height:none;overflow:visible;margin:22px 0 0}
+      .hero .executive-profile-copy{order:3;margin-top:32px}
       .hero .portrait img{height:auto}
       .executive-profile{padding-top:32px}
       .convictions{gap:24px;margin-top:26px}
@@ -163,13 +167,15 @@
   </header>
   <main>
     <section id="about" class="hero" aria-labelledby="hero-title">
-      <div class="wrap hero-grid">
-        <div>
+      <div class="wrap hero-flow">
+        <figure class="portrait"><img src="/carlos-urena-prototype-portrait.jpeg" alt="Portrait of Carlos Ureña" width="600" height="800"></figure>
+        <div class="hero-intro">
           <p class="hero-kicker">Payments Product Executive</p>
           <h1 id="hero-title">Turning better decisions into <em>better outcomes.</em></h1>
           <p class="tags">USD Clearing · Cross-Border Payments · Cash Management · Liquidity · Commercialization</p>
           <p class="lede hero-proposition">More than 20 years of experience across global financial institutions, spanning pricing, payments, cash management and product leadership.</p>
-          <div class="executive-profile-copy">
+        </div>
+        <div class="executive-profile-copy">
             <p class="eyebrow">Background</p>
             <h2 id="executive-profile-title">Executive Profile</h2>
             <p>I started my career in pricing and analytics. That gave me an early grounding in how pricing and cost decisions shape a payment product’s performance.</p>
@@ -177,9 +183,7 @@
             <p>I’ve worked at Citi, Deutsche Bank, HSBC and Mashreq. Along the way, I’ve managed established payment businesses, launched new capabilities and improved or repositioned existing products.</p>
             <p>That progression shaped the product leader I am today.</p>
             <p>Outside of work, I’m a husband and dad and a lifelong New York sports fan.</p>
-          </div>
         </div>
-        <figure class="portrait"><img src="/carlos-urena-prototype-portrait.jpeg" alt="Portrait of Carlos Ureña" width="600" height="800"></figure>
       </div>
     </section>
 
